@@ -45,10 +45,11 @@ def get(req):
     # security check, allow hex only
     if re.search('^[A-F0-9]*$', uri):
         filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.xml')
+        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.pgp'], uri + '.xml')
         try:
             try:
                 req.content_type = "text/plain"
-                sigfile = open(filename + '.asc', 'r')
+                sigfile = open(filename_asc + '.asc', 'r')
                 req.write(sigfile.read())
                 sigfile.close()
             except IOError:

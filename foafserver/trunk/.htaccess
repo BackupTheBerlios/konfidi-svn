@@ -15,5 +15,6 @@ PythonOption validate.xml 1
 PythonOption validate.pgp 0
 # relative or absolute path
 PythonOption storage.dir.xml storage
+PythonOption storage.dir.pgp storage
 
 
