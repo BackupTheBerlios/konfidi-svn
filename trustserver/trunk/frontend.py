@@ -111,7 +111,7 @@ def get(req):
 		result += data 	
 
     # maybe deal with errors somewhere in here...
-    req.write("Junk")
+    req.write("Junkly")
     req.write(result)
     return apache.OK    
 
