@@ -182,13 +182,23 @@ class Frontend:
 				try:
 					trustresult = self.send_query(strategy, source, sink, options)
 					trustresult = minidom.parseString(trustresult).documentElement
-					rating = trustresult.getElementsByTagName("rating")[0]
-					path = trustresult.getElementsByTagName("path")[0]
+					try:
+						trust_rating = trustresult.getElementsByTagName("rating")[0].toxml()
+					except IndexError:
+						trust_rating = str(f.rating("0"))
+					try:
+						trust_path = trustresult.getElementsByTagName("path")[0].toxml()
+					except IndexError:
+						trust_path = str(f.path("N/A"))
+					try:
+						trust_data = trustresult.getElementsByTagName("data")[0].toxml()
+					except IndexError:
+						trust_data = str(f.data("N/A"))
 					
 						#req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
 						#req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
 						#req.write("Trust Result: %s\n\n" % (trustresult))			
-					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[rating.toxml(), path.toxml()]
+					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[trust_rating, trust_path, trust_data]
 						#r.append(trust_result)
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
