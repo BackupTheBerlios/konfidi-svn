@@ -3,19 +3,103 @@
     <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
-    <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
+         <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+         <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+         <!ENTITY wot  "http://xmlns.com/wot/0.1/" >
+         <!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
   ]>
-<rdf:RDF xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
-xmlns:owl="http://www.w3.org/2002/07/owl#" 
-xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
+<rdf:RDF 
+	xmlns:owl="&owl;" 
+	xmlns:rdf="&rdf;" 
+	xmlns:rdfs="&rdfs;"
+	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+	xmlns:foaf="&foaf;"
+	xmlns:wot="&wot;"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
+<!-- xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" -->
 
-<owl:Ontology rdf:about=""> 
-<owl:versionInfo>v1.0</owl:versionInfo>
+<owl:Ontology 
+	rdf:about="&trust;" 
+	dc:title="Trust Vocabulary" 
+	dc:description="The Trust RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language." 
+	dc:date="$Date: 2005/03/19 11:38:02 $"
+	> 
+	<owl:versionInfo>v1.0</owl:versionInfo>
+	<owl:imports rdf:resource="&rdfs;"/>
+	<wot:assurance rdf:resource="../trustsig"/>
 </owl:Ontology>
 
+<!-- classes first -->
+
+<!-- what about restrictions like "must have fingerprint", and "must have trustees"?  or are we going more generic than that? -->
+<!-- what about someone with multiple keys?  we should cover that in the trust-server importer-->
+<owl:Class rdf:about="&trust;Item" rdfs:label="Item" rdfs:comment="An item of trust">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource" />
+</owl:Class>
+<!-- old stuff
+<owl:Class rdf:ID="Truster">
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
+	<rdfs:label>Truster</rdfs:label>
+	<rdfs:subClassOf rdf:resource="&foaf;Agent" /> 
+	<rdfs:subClassOf>
+		<owl:Restriction>
+			<owl:onProperty rdf:resource="#keyFingerprint" />
+			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+		</owl:Restriction>
+	</rdfs:subClassOf>
+	<rdfs:subClassOf>
+		<owl:Restriction>
+			<owl:onProperty rdf:resource="#trusts" />
+			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+		</owl:Restriction>
+	</rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:ID="Trustee">
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
+	<rdfs:label>Trustee</rdfs:label>
+	<rdfs:subClassOf rdf:resource="&foaf;Agent" />
+	<rdfs:subClassOf>
+		<owl:Restriction>
+			<owl:onProperty rdf:resource="#keyFingerprint" />
+			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+		</owl:Restriction>
+	</rdfs:subClassOf>
+	<rdfs:subClassOf>
+		<owl:Restriction>
+			<owl:onProperty rdf:resource="#trustValue" />
+			<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+		</owl:Restriction>
+	</rdfs:subClassOf>
+</owl:Class>
+-->
+
+<!-- properties second -->
+
+<owl:ObjectProperty rdf:ID="trustedAbout" rdfs:label="trustedAbout" 
+	rdfs:comment="Relates things to trust items.">
+	<!-- this domain allows anything to be trusted, even trust items themselves.  do we want to restrict this any further? -->
+	<rdfs:domain rdf:resource="&owl;Thing" />
+	<rdfs:range rdf:resource="#Item" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="value" rdfs:label="value">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:domain rdf:resource="#Item" />
+	<rdfs:range rdf:resource="&rdfs;Literal" rdf:datatype="&xsd;nonNegativeInteger" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="subject" rdfs:label="subject">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:domain rdf:resource="#Item" />
+	<rdfs:range rdf:resource="&owl;Thing" />
+</owl:ObjectProperty>
+
+<!-- old stuff
 <owl:ObjectProperty rdf:ID="trustedCompletely">
 	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
 	<rdfs:label>trustedCompletely</rdfs:label>
@@ -88,40 +172,6 @@ xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 	<rdfs:label>keyFingerprint</rdfs:label>
 	<rdfs:domain rdf:resource="&foaf;Agent" />
 </owl:ObjectProperty>
+-->
 
-<owl:Class rdf:ID="Truster">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>Truster</rdfs:label>
-	<rdfs:subClassOf rdf:resource="&foaf;Agent" /> 
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#keyFingerprint" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#trusts" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-</owl:Class>
-
-<owl:Class rdf:ID="Trustee">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>Trustee</rdfs:label>
-	<rdfs:subClassOf rdf:resource="&foaf;Agent" />
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#keyFingerprint" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#trustValue" />
-			<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-</owl:Class>
 </rdf:RDF>
