@@ -12,7 +12,7 @@ import TrustServer
 USERPROG = TrustServer.main
 ###########################################################################
 
-#based on Jürgen Hermanns http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
+#based on Jurgen Hermanns http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
 
 class Log:
     """file like for writes with auto flush after each write
