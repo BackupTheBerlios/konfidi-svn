@@ -5,6 +5,8 @@ import dump
 import os
 import re
 import sys
+import traceback
+#import exceptionTools
 from socket import *
 #from rdflib.Namespace import Namespace
 #from rdflib.TripleStore import TripleStore
@@ -97,18 +99,21 @@ def query(req):
 		# then, check the TrustServer:
 		req.write("Source: %s\n Sink: %s\n Subject: %s\n\n" % (source, sink, subject))
 		req.write("Host: %s\n Port: %i\n\n" % (req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
-		sockobj = socket(AF_INET, SOCK_STREAM)
-		sockobj.connect((req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
-		sockobj.send("%s:%s:%s" % (source, sink, subject))
-		result = ""
-		while 1:
-			data = sockobj.recv(1024)
-			if not data: break
-			result += data 	
-	
-		# maybe deal with errors somewhere in here...
-		req.write(result+"\n\n")
+		try:
+			sockobj = socket(AF_INET, SOCK_STREAM)
+			sockobj.connect((req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
+			sockobj.send("%s:%s:%s" % (source, sink, subject))
+			result = ""
+			while 1:
+				data = sockobj.recv(1024)
+				if not data: break
+				result += data 	
+			# maybe deal with errors somewhere in here...
+			req.write("Result: %s\n\n" % (result))
+		except error, (errno, errstr):
+			req.write("Error(%s): %s" % (errno, errstr))
 		return apache.OK    
+			
 	else:
 		# hmm, something went horribly wrong.
 		req.write("Error 41093.");
