@@ -34,12 +34,10 @@ int quit(string mbox_from, MimeEntity *message, int flag=0) {
     cout << endl << endl << endl;
     cout << message->body() << endl;
 	clog << endl;
-	return 0;
+	exit(flag);
 }
 
-int main(int argc, char* argv[]) {
-
-	bool verbose = false;
+void process_args(int argc, char* argv[], bool & verbose) {
 	if (argc == 1) {
 		// no args
 	} else if (argc == 2 && (string)argv[1] == "-v") {
@@ -49,64 +47,65 @@ int main(int argc, char* argv[]) {
 		cerr << "Valid arguments: " << endl;
 		cerr << "\t-v\t\tverbose" << endl;
 		cerr << endl << "This program accepts a single RFC2822 message (optionally with an mbox-style 'From ' first line) on stdin" << endl;
-		return 1;
+		exit(1);
 	}
+}
 
+string slurp(istream &i) {
 	// read the whole message
 	string whole;
-	getline(cin, whole, '\0');
-	cin.seekg(0, ios::beg);
+	getline(i, whole, '\0');
+	return whole;
+}
 
-
-	// load data
+string read_possible_From_line(istream &i) {
 	// possible "From " line in mbox format
-	// TODO: is this really necessary?
 	string mbox_from;
-	getline(cin, mbox_from);
+	getline(i, mbox_from);
 	if (mbox_from.substr(0, 5) != "From ") {
 		string::reverse_iterator it;
 		for (it = mbox_from.rbegin(); it != mbox_from.rend(); it++) {
-			cin.putback(*it);
+			i.putback(*it);
 		}
-		cin.putback(*it);
+		i.putback(*it);
 		mbox_from = "";
 	} else {
 		mbox_from += "\r\n";
 	}
-	// optimization
-    ios_base::sync_with_stdio(false);
-    // parse and load message
-    MimeEntity message(cin);
-    
+	return mbox_from;
+}
+
+void clean_headers(MimeEntity * message) {
     // check headers
     // TODO: search, iterate through headers and delete!
-    if (message.header().hasField(header_sig))
+    if (message->header().hasField(header_sig))
     {
-	    message.header().field(header_sig).value();
+	    message->header().field(header_sig).value();
     }
-    if (message.header().hasField(header_sig_finger))
+    if (message->header().hasField(header_sig_finger))
     {
-	    message.header().field(header_sig_finger).value();
+	    message->header().field(header_sig_finger).value();
     }
-    if (message.header().hasField(header_trust))
+    if (message->header().hasField(header_trust))
     {
-        cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a " + header_trust + " header!" << endl;
+        cerr << "warning: malformed email " + message->header().messageid().str() + ": already has a " + header_trust + " header!" << endl;
     }
-    
-    // parse text & sig
-    if (message.header().contentType().type() != "multipart" ||
-    	message.header().contentType().subtype() != "signed") {
-        cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
-        message.header().field(header_sig).value("none");
-        return quit(mbox_from, &message);
+}
+
+string parse_email_text(MimeEntity * message, string whole, string mbox_from) {
+    if (message->header().contentType().type() != "multipart" ||
+    	message->header().contentType().subtype() != "signed") {
+        cerr << "warning: email " + message->header().messageid().str() + " is not multipart/signed, it is: " << message->header().contentType().str() << endl;
+        message->header().field(header_sig).value("none");
+        quit(mbox_from, message);
     }
-	if (message.body().parts().size() != 2) {
-        cerr << "warning: email " + message.header().messageid().str() + " doesn't have 2 parts, it has " << message.body().parts().size() << endl;
-        message.header().field(header_sig).value("none");
-        return quit(mbox_from, &message);
+	if (message->body().parts().size() != 2) {
+        cerr << "warning: email " + message->header().messageid().str() + " doesn't have 2 parts, it has " << message->body().parts().size() << endl;
+        message->header().field(header_sig).value("none");
+        quit(mbox_from, message);
 	}
 	
-	string boundary = "--" + message.header().contentType().param("boundary");
+	string boundary = "--" + message->header().contentType().param("boundary");
 	// start at 1st boundary
 	int text_start = whole.find(boundary)+boundary.length()+1;
 	// end at 2nd boundary
@@ -116,24 +115,23 @@ int main(int argc, char* argv[]) {
 	int p=-1;
 	while (std::string::npos != (p=text.find("\n",p+2)))
 		text.replace(p,1,"\r\n");
+	
+	return text;
+}
 
-    MimeEntity last_part = *message.body().parts().back();
+string parse_email_sig(MimeEntity * message, string whole, string mbox_from) {
+    MimeEntity last_part = *message->body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
     	last_part.header().contentType().subtype() != "pgp-signature") {
     	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
-        message.header().field(header_sig).value("none");
-        return quit(mbox_from, &message);
+        message->header().field(header_sig).value("none");
+        quit(mbox_from, message);
     }
-	string sig = last_part.body();
-    
-    if (verbose)
-	    clog << "processing " << message.header().messageid().str() << endl;
-    
-    // gpgme validation
-    gpgme_error_t err;
-    gpgme_ctx_t ctx;
-    err = gpgme_new(&ctx);
-    fail_if_err(err);
+	return last_part.body();
+}
+
+gpgme_verify_result_t gpg_validate(gpgme_ctx_t ctx, string text, string sig) {
+	gpgme_error_t err;
     
     // TODO: do a local lookup first?  how often to update those?
 //    err = gpgme_set_keylist_mode(ctx, GPGME_KEYLIST_MODE_EXTERN);
@@ -146,21 +144,21 @@ int main(int argc, char* argv[]) {
     err = gpgme_data_new_from_mem(&text_data, text.c_str(), text.length(), 1);
     fail_if_err(err);
 
-    
-    string sig_header = "";
     err = gpgme_op_verify(ctx, sig_data, text_data, NULL);
     fail_if_err(err);
-    gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
-    if (verbose)
-	    clog << "did key " << result->signatures->fpr << endl;
-    
-    // this is blocking, probably want to change.
+    return gpgme_op_verify_result (ctx);
+}
+
+void validate_from_matches_signer(MimeEntity * message, string mbox_from, gpgme_ctx_t ctx, gpgme_verify_result_t result) {
+	gpgme_error_t err;
+    // TODO: this is blocking, probably want to change.
     gpgme_key_t key;
 	err = gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
 	fail_if_err(err);
 	
+	
 	bool found_email = false;
-	string from_email = message.header().from().front().mailbox() + '@' + message.header().from().front().domain();
+	string from_email = message->header().from().front().mailbox() + '@' + message->header().from().front().domain();
 	gpgme_user_id_t uid = key->uids;
 	while (uid) {
 		if (from_email == uid->email) {
@@ -169,10 +167,57 @@ int main(int argc, char* argv[]) {
 		uid = uid->next;
 	}
 	if (!found_email) {
-		cerr << "no PGP uid email matched the 'From: ' on " << message.header().messageid().str() << endl;
-		message.header().field(header_sig).value("from mismatch");
-		return quit(mbox_from, &message);
+		cerr << "no PGP uid email matched the 'From: ' on " << message->header().messageid().str() << endl;
+		message->header().field(header_sig).value("from mismatch");
+		quit(mbox_from, message);
 	}
+}
+
+void add_headers(MimeEntity * message, string mbox_from, gpgme_verify_result_t result) {
+    if (result->signatures->status == GPG_ERR_NO_ERROR) {
+        message->header().field(header_sig).value("valid");
+    } else {
+        message->header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
+    }
+    message->header().field(header_sig_finger).value(result->signatures->fpr);
+}
+
+int main(int argc, char* argv[]) {
+	bool verbose = false;
+	process_args(argc, argv, verbose);
+
+	string whole = slurp(cin);
+	cin.seekg(0, ios::beg); // reset stream to beginning
+
+	string mbox_from = read_possible_From_line(cin);
+	
+	// load data
+	// optimization
+    ios_base::sync_with_stdio(false);
+    // parse and load message
+    MimeEntity message(cin);
+    
+    clean_headers(&message);
+
+	string text = parse_email_text(&message, whole, mbox_from);
+	string sig = parse_email_sig(&message, whole, mbox_from);
+    
+    
+    if (verbose)
+	    clog << "processing " << message.header().messageid().str() << endl;
+
+	// set up context
+	gpgme_error_t err;
+    gpgme_ctx_t ctx;
+    err = gpgme_new(&ctx);
+    fail_if_err(err);
+    
+	gpgme_verify_result_t result = gpg_validate(ctx, text, sig);
+    
+    if (verbose)
+	    clog << "did key " << result->signatures->fpr << endl;
+    
+	validate_from_matches_signer(&message, mbox_from, ctx, result);
 	
 	
 	if (verbose) {
@@ -202,13 +247,7 @@ int main(int argc, char* argv[]) {
 	    clog << "next ptr: " << result->signatures->next << endl;
 	}
     
-    
-    if (result->signatures->status == GPG_ERR_NO_ERROR) {
-        message.header().field(header_sig).value("valid");
-    } else {
-        message.header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
-    }
-    message.header().field(header_sig_finger).value(result->signatures->fpr);
+	add_headers(&message, mbox_from, result);
 
-    return quit(mbox_from, &message);
+    quit(mbox_from, &message);
 }
