@@ -9,19 +9,35 @@
    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
-<foaf:Person> 
+<foaf:Person rdf:nodeID="brond"> 
 	<foaf:name>DBrondsema</foaf:name>
 	<wot:fingerprint>Brondsema</wot:fingerprint>
-	<trust:trusts rdf:nodeID="crowe"/>
-	<trust:trusts rdf:nodeID="schamp"/>
 </foaf:Person>
 
 <foaf:Person rdf:nodeID="crowe">
 	<foaf:name>CCrowe</foaf:name>
 	<wot:fingerprint>Crowe</wot:fingerprint>
-	<trust:trustedAbout rdf:nodeID="crowetrust1" />
-	<trust:trustedAbout rdf:nodeID="crowetrust2" />
 </foaf:Person>
+
+<foaf:Person rdf:nodeID="schamp">
+	<foaf:name>ASchamp</foaf:name>
+	<wot:fingerprint>Schamp</wot:fingerprint>
+</foaf:Person>
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="brond" />
+	<trust:trusted rdf:nodeID="crowe"/>
+	<trust:about rdf:nodeID="crowetrust1" />
+	<trust:about rdf:nodeID="crowetrust2" />
+</trust:Relationship>
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="brond" />
+	<trust:trusts rdf:nodeID="schamp"/>
+	<trust:about rdf:nodeID="schamptrust1" />
+	<trust:about rdf:nodeID="schamptrust2" />
+</trust:Relationship>
+
 <trust:Item rdf:nodeID="crowetrust1">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
 	<trust:value>0.50</trust:value>
@@ -31,12 +47,6 @@
 	<trust:value>0.90</trust:value>
 </trust:Item>
 
-<foaf:Person rdf:nodeID="schamp">
-	<foaf:name>ASchamp</foaf:name>
-	<wot:fingerprint>Schamp</wot:fingerprint>
-	<trust:trustedAbout rdf:nodeID="schamptrust1" />
-	<trust:trustedAbout rdf:nodeID="schamptrust2" />
-</foaf:Person>
 <trust:Item rdf:nodeID="schamptrust1">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
 	<trust:value>0.90</trust:value>
@@ -45,9 +55,5 @@
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
 	<trust:value>1.00</trust:value>
 </trust:Item>
-
-<rdf:Description rdf:about="">
-	<wot:assurance rdf:resource="foaf.rdf.asc" />
-</rdf:Description>
 
 </rdf:RDF>
