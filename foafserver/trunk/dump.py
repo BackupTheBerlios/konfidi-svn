@@ -16,6 +16,8 @@ def dump(v):
         return v + '\n'
     elif type(v) is types.IntType:
         return '%i' % v + '\n'
+    elif type(v) is types.LongType:
+        return '%i' % v + '\n'
     elif hasattr(v, '__class__'):
         return __dumpObj(v)
     else:
