@@ -1,3 +1,7 @@
+#
+# To make a static executable, run:
+#  STATIC=-static make mytargets
+#
 
 EXE = dmail-cli-filter
 
@@ -9,7 +13,7 @@ SRCS = $(shell ls $(SRC)/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 
 CFLAGS = -Wall `gpgme-config --cflags`
-LFLAGS = -static `gpgme-config --libs` -lmimetic
+LFLAGS = $(STATIC) `gpgme-config --libs` -lmimetic
 
 
 all: $(EXE)
