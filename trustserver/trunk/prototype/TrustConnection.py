@@ -23,6 +23,8 @@ class TrustConnection:
 		self.trusts = trusts
 
 	def __repr__(self):
-		return "%s on: %s" % (self.fingerprint, self.trusts) 
-
+		str = "%s regarding: " % (self.fingerprint)
+		for t in self.trusts:
+			str += "\n\t\t%s" % (self.trusts) 
+		return str
 		

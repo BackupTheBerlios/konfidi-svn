@@ -22,5 +22,8 @@ class Person:
 				self.trusts.remove(conn)
 		
 	def __repr__(self):
-		return "%s trusts: %s" % (self.fingerprint, self.trusts )
+		str = "%s trusts: " % (self.fingerprint)
+		for t in self.trusts:
+			str += "\n\t%s" % t 
+		return str
 		

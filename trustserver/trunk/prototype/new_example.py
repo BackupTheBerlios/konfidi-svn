@@ -3,53 +3,57 @@ from rdflib.Literal import Literal
 from rdflib.BNode import BNode
 from rdflib.Namespace import Namespace
 from rdflib.constants import TYPE
-
-# Import RDFLib's default TripleStore implementation.
 from rdflib.TripleStore import TripleStore
+from rdflib.constants import DATATYPE
+
+import Person
+import TrustConnection
+import TrustSubject
+import TrustValue
 
 # Create a namespace object for the Friend of a friend namespace.
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl")
+TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl#")
 WOT = Namespace("http://xmlns.com/wot/0.1/")
+RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 
+# this is the main object we're concerned with
 store = TripleStore()
+store.load("example2.rdf")
 
-from rdflib.constants import DATATYPE
+# master dictionary containing all the people
+# will a plain old dictionary suffice, or do I need a hashtable?
+people = {}
 
-store.load("example.rdf")
+# load trust values into list for later
+trust = TripleStore()
+trust.load("http://www.abundantplunder.com/trust/owl/trust.owl#")
+trustValues = []
+for s in trust.subjects(RDF["subPropertyOf"], TRUST["trustValue"]):
+	trustValues.append(s)
 
-# Iterate over triples in store and print them out.
-print "--- printing raw triples ---"
-for s, p, o in store:
-    print "S: %s\nP: %s\nO: %s\n" % (s, p, o)
-    
 # For each foaf:Person in the store print out its mbox property.
-print "--- printing those who trust: ---"
+print "--- printing trust: ---"
 truster = store.subjects(TRUST["trusts"]).next()
-print truster
+f = store.objects(truster, WOT["fingerprint"]).next()
+p = Person.Person(f)
+people[f] = p
 
-print "\n--- printing those who are trusted: ---"
-for trusted in store.objects(truster, TRUST["trusts"]):
-	print trusted
-	#print "name: %s" % store.objects(trusted, FOAF["name"]).next()
-	#print "fingerprint: %s" % store.objects(trusted, WOT["fingerprint"]).next()
-	#print "trusted re:"
-	#for subj in store.objects(trusted, TRUST["trustedCompletely"]):
-	#	print TRUST["trustedCompletely"], subj
-	#for subj in store.objects(trusted, TRUST["trustedHighly"]):
-	#	print TRUST["trustedHighly"], subj
-	#for subj in store.objects(trusted, TRUST["trustedAveragely"]):
-	#	print TRUST["trustedAveragely"], subj
-	#for subj in store.objects(trusted, TRUST["trustedMinimally"]):
-	#	print TRUST["trustedMinimally"], subj
-	#for subj in store.objects(trusted, TRUST["trustedNeutrally"]):
-	#	print TRUST["trustedNeutrally"], subj
-	#for subj in store.objects(trusted, TRUST["distrustedMinimally"]):
-	#	print TRUST["distrustedMinimally"], subj
-	#for subj in store.objects(trusted, TRUST["distrustedAveragely"]):
-	#	print TRUST["distrustedAveragely"], subj
-	#for subj in store.objects(trusted, TRUST["distrustedHighly"]):
-	#	print TRUST["distrustedHighly"], subj
-	#for subj in store.objects(trusted, TRUST["distrustedCompletely"]):
-	#	print TRUST["distrustedCompletely"], subj
-	print "---"
+for trustee in store.objects(truster, TRUST["trusts"]):
+	f2 = store.objects(trustee, WOT["fingerprint"]).next()
+	p2 = Person.Person(f2)
+	people[f2] = p2
+	for value, subject in store.predicate_objects(trustee):
+		if value in trustValues:
+			name = subject.split("#")[1]
+			resource = subject
+			value = value.split("#")[1]
+			tc = TrustConnection.TrustConnection()
+			tc.setFingerprint(f2)
+			tv = TrustValue.TrustValue(value)
+			ts = TrustSubject.TrustSubject(name, resource, tv)
+			tc.addTrustSubject(ts)
+			p.addConnection(tc)
+
+for p in people:
+	print people[p]

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:dc="http://http://purl.org/dc/elements/1.1/"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:wot="http://xmlns.com/wot/0.1/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#" 
+   xmlns:trst="http://www.abundantplunder.com/trust/owl/trust.owl#"
+   >
+   <!--
+xmlns="http://trust.mindswap.org/trustFiles/314.owl#" 
+xmlns:trust="http://trust.mindswap.org/ont/trust.owl#" -->
+<foaf:Person rdf:ID="Andy"> 
+<foaf:name>ASchamp</foaf:name>
+	<wot:fingerprint>Schamp_Fingerprint</wot:fingerprint>
+	<trust:trustsRegarding>
+		<trust:TopicalTrust>
+			<trust:trustSubject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+			<trust:trustedPerson rdf:resource="#Dave"/>
+			<trust:trustValue>8</trust:trustValue>
+		</trust:TopicalTrust>
+	</trust:trustsRegarding>
+	<trust:trustsRegarding>
+		<trust:TopicalTrust>
+			<trust:trustSubject rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<trust:trustedPerson rdf:resource="#Jim"/>
+			<trust:trustValue>3</trust:trustValue>
+		</trust:TopicalTrust>
+	</trust:trustsRegarding>
+</foaf:Person>
+
+<foaf:Person rdf:ID="Dave"> 
+	<foaf:name>DBrondsema</foaf:name>
+	<wot:fingerprint>Brondsema_fingerprint</wot:fingerprint>
+</foaf:Person>
+
+<foaf:Person rdf:ID="Jim">
+	<foaf:name>JLaing</foaf:name>
+	<wot:fingerprint>Laing_fingerprint</wot:fingerprint>
+</foaf:Person>
+
+
+<rdf:Description rdf:about="">
+	<wot:assurance rdf:resource="foaf.rdf.asc" />
+</rdf:Description>
+
+</rdf:RDF>

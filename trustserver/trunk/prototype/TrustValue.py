@@ -10,4 +10,4 @@ class TrustValue:
 		self.value = value
 		
 	def __repr__(self):
-		return "%i" % (self.value)
+		return "%s" % (self.value)
