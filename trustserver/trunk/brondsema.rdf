@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:wot="http://xmlns.com/wot/0.1/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#" 
+   xmlns:trust="http://www.abundantplunder.com/trust/owl/trust.owl#"
+   >
+
+<trust:Truster> 
+	<foaf:name>DBrondsema</foaf:name>
+	<wot:fingerprint>Brondsema</wot:fingerprint>
+	<trust:trusts>
+		<trust:Trustee>
+			<foaf:name>CCrowe</foaf:name>
+			<wot:fingerprint>Crowe</wot:fingerprint>
+			<trust:trustedNeutrally rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<foaf:name>ASchamp</foaf:name>
+			<wot:fingerprint>Schamp</wot:fingerprint>
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+			<trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
+		</trust:Trustee>
+	</trust:trusts>
+</trust:Truster>
+
+<rdf:Description rdf:about="">
+	<wot:assurance rdf:resource="foaf.rdf.asc" />
+</rdf:Description>
+
+</rdf:RDF>
