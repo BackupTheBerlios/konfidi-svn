@@ -19,9 +19,9 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.WOT = Namespace(self.server.config.wot_url+ "#")
 		self.RDF = Namespace(self.server.config.rdf_url+ "#")
 		
-		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
 		self.TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl#")
-		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
+		self.WOT = Namespace("http://xmlns.com/wot/0.1/#")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 		
 		# load trust values into list for later

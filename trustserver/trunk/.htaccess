@@ -19,7 +19,7 @@ LimitRequestBody 102400
 # ALL requests handled by mod_python
 SetHandler mod_python
 
-# all mod_python requests go to trustserver_frontend.py
+# all mod_python requests go to frontend.py
 PythonHandler frontend
 
 PythonDebug On
