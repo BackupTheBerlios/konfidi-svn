@@ -32,13 +32,13 @@ class QueryListener(SocketServer.BaseRequestHandler):
 				#TPF = __import__("Strategies.%sTPF" % strategy)
 				#tpf = TPF.
 				try:
-					exec("from Strategies.%sTPF import %sTPF" % (strategy, strategy))
-					exec("tpf = %sTPF(\"%s\", \"%s\", \"%s\")" % (strategy, source, sink, options))
+					exec("from TrustStrategies.%sTPF import %sTPF" % (strategy, strategy))
+					exec("tpf = %sTPF(self.people)" % (strategy))
 				except (ImportError):
 					from Strategies.DefaultTPF import DefaultTPF
-					tpf = DefaultTPF(source, sink, options)
+					tpf = DefaultTPF(self.people)
 					
-				result = tpf.query(self.people)
+				result = tpf.query(source, sink, options)
 				
 				#s = self.query(source, sink, subject)
 				# check to see if we need to make this smarter/bigger
