@@ -14,19 +14,16 @@ class LocalWotsapPathfinder(PGPPathfinder):
 
 	def runwotsap(self, source, sink, limit=None):
 		"""note how wotsap doesn't support a long fingerprint, so we just take the last 8 chars"""
-		exec("from %s import wotsapmain" % (self.config["app"])
-		out = StringIO()
-		err = StringIO()
-		oldout = sys.stdout
-		olderr = sys.stderr
+		exec("from %s import Wot" % (self.config["app"])
 		
-		sys.stdout = out
-		sys.stdout = err
-		
-		wotsapmain(["-w", self.config["data"], source[-8:], sink[-8:])
-		
-		out = out.getvalue()
-		err = err.getvalue()
-		sys.stdout = oldout
-		sys.stderr = olderr
-		return (out, err)
+		# see also wotsapmain
+		wot = Wot(self.config["data"])
+		try:
+			web = wot.findpaths(source[-8:], sink[-8:], None)
+		except wotError, err:
+			#errmsg = unicode(err).encode(encoding, 'replace')
+			return (None, err)
+		if web is None:
+			return (None, "Sorry, unable to find path.")
+
+		return (wot.creategraph(web, format='txt').encode(encoding, 'replace'), None)
