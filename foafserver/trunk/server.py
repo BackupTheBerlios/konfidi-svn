@@ -10,6 +10,7 @@ from rdflib.TripleStore import TripleStore
 from rdflib.StringInputSource import StringInputSource
 from xml.sax import SAXParseException
 from mod_python import apache
+from mod_python import util
 
 # our own error class
 class FOAFServerError(Exception):
@@ -32,10 +33,6 @@ def uniqueURI(req):
         uri += ""
     return uri
 
-# URL-unescape (from http://c2.com/cgi/wiki?QueryStringParserTranslations)
-def urldecode(astring):
-    return re.sub('%(..)', lambda mo: chr(int(mo.group(1), 16)), astring.replace('+', ' '))
-        
 def ishex(string):
     return re.search('^[A-F0-9]+$', string)
 
@@ -111,23 +108,34 @@ def form(req):
     <body>""")
     
     if (req.method == "POST"):
-        # get just this argument
-        content = req.read()
-        content_start = len("foaf_content=")
-        content_end = content.find("&")
-        content = content[content_start:content_end]
         
-        store_error = storefoaf(req, urldecode(content))
+        form = util.FieldStorage(req, 1)
+        
+        try:
+            content = form["foaf_content"]
+        except KeyError:
+            if not(form["foaf_file"].filename):
+                req.write("<p>You must select a file</p>")
+            content=form["foaf_file"].value
+        
+        store_error = storefoaf(req, content)
         if store_error:
             req.write("<p>Error: " + store_error + "</p>")
         else:
             req.write("<p>FOAF succesfully uploaded</p>")
     
-    req.write("""<form action="form" method="POST">
-    Submit an unsiqned FOAF record:<br/>
+    req.write("""
+    <h2>Submit an unsiqned FOAF record</h2>
+    <form action="form" method="POST" enctype="multipart/form-data">
+    Upload FOAF file: <input type="file" name="foaf_file"/>
+    <input type="submit" name="submit" value="Submit">
+    </form>
+    <hr/>
+    Or paste FOAF XML:
+    <form action="form" method="POST">
     <textarea name="foaf_content" rows="20" cols="50" wrap="none"></textarea>
     <br/>
-    <input type="submit" name="submit" value="submit">
+    <input type="submit" name="submit" value="Submit">
     </form>
     </body></html>""")
     return apache.OK
