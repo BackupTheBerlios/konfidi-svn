@@ -39,8 +39,14 @@ int main(int argc, char* argv[]) {
     
     // check headers
     // TODO: search, iterate through headers and delete!
-    message.header().field(header_sig_finger).value();
-    message.header().field(header_sig).value();
+    if (message.header().hasField(header_sig))
+    {
+	    message.header().field(header_sig).value();
+    }
+    if (message.header().hasField(header_sig_finger))
+    {
+	    message.header().field(header_sig_finger).value();
+    }
     if (message.header().hasField(header_trust))
     {
         cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a " + header_trust + " header!" << endl;
