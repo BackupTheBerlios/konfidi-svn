@@ -14,7 +14,7 @@ class LocalWotsapPathfinder(PGPPathfinder):
 
 	def runwotsap(self, source, sink, limit=None):
 		"""note how wotsap doesn't support a long fingerprint, so we just take the last 8 chars"""
-		exec("from %s import Wot" % (self.config["app"])
+		exec("from %s import Wot" % (self.config["app"]))
 		
 		# see also wotsapmain
 		wot = Wot(self.config["data"])
