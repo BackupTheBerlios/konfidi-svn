@@ -1,4 +1,5 @@
 from TrustPathFinder import TrustPathFinder
+import xmlgen
 
 class PeopleListTPF(TrustPathFinder):
 	def query(self, source, sink, options):
