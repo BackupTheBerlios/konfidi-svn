@@ -86,39 +86,38 @@ def index(req):
 	return apache.OK
 
 def query(req):	
-	
 	if (req.method == "POST" or req.method == "GET"):
 		form = util.FieldStorage(req, 1)
 		source = form["source"]
 		sink = form["sink"]
 		subject = form["subject"]
+		
+		# first, check the PGP server:
+		pass    	
+		# then, check the TrustServer:
+		req.write("Source: %s, Sink: %s, Subject: %s" % source, sink, subject)
+		sockobj = socket(AF_INET, SOCK_STREAM)
+		sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
+		sockobj.send("%s:%s:%s" % (source, sink, subject))
+		result = "krang"
+		result += "foo"
+		krang = "junk"
+		while 1:
+			data = sockobj.recv(1024)
+			if not data: break
+			result += data 	
+			krang += "ly"
+	
+		# maybe deal with errors somewhere in here...
+		req.content_type = "text/html"
+		req.write("Junkly")
+		req.write("grak."+krang)
+		req.write("Krudd."+result)
+		return apache.OK    
 	else:
-		# hmm, something went wrong.
+		# hmm, something went horribly wrong.
 		req.write("Error 41093.");
 		return apache.OK
-
-	# first, check the PGP server:
-	pass    	
-	# then, check the TrustServer:
-	req.write("Source: %s, Sink: %s, Subject: %s" % source, sink, subject)
-	sockobj = socket(AF_INET, SOCK_STREAM)
-	sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
-	sockobj.send("%s:%s:%s" % (source, sink, subject))
-	result = "krang"
-	result += "foo"
-	krang = "junk"
-	while 1:
-		data = sockobj.recv(1024)
-		if not data: break
-		result += data 	
-		krang += "ly"
-
-	# maybe deal with errors somewhere in here...
-	req.content_type = "text/html"
-	req.write("Junkly")
-	req.write("grak."+krang)
-	req.write("Krudd."+result)
-	return apache.OK    
 
 def form(req):
 	req.content_type = "text/html"
