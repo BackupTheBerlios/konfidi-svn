@@ -77,11 +77,15 @@ class Frontend:
 		<a href="query?strategy=Default&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
 		<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
 		<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+		<br>Edge cases:<br>
+		Ghandi, Spammer, email
+		Ghandi, Scumbag, email
 		<h4>TrustServer commands</h4>
 		<a href="command?cmd=start">Start server</a><br>
 		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.--><br>
-		<a href="command?cmd=load1">Load data set 1</a><br>
-		<a href="command?cmd=load2">Load data set 2</a><br>
+		<a href="command?cmd=load1">Load data set 1 (schamp, laing, brondsema)</a><br>
+		<a href="command?cmd=load2">Load data set 2 (real keys, etc)</a><br>
+		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
 		Or <a href="people">show people</a><br>
@@ -136,6 +140,10 @@ class Frontend:
 				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/small/ && python ../../trustserver/load_rdf.py")
 				req.write("std out: %s\n" % stdout.read())
 				req.write("std err: %s\n" % stderr.read())
+			elif (cmd == "load3"):
+				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/edgecases/ && python ../../trustserver/load_rdf.py")
+				req.write("stdout: %s\n" % stdout.read())
+				req.write("stderr: %s\n" % stderr.read())
 			else:
 				pass
 			return apache.OK
