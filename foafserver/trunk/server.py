@@ -114,7 +114,20 @@ def get(req):
         return apache.HTTP_FORBIDDEN
 
 def put(req):
-    return apache.HTTP_NOT_IMPLEMENTED
+    fingerprint = uniqueURI(req)
+    content = req.read()
+    apache.log_error("!!" + content + "!!", apache.APLOG_NOTICE)
+    err = storefoaf(content, fingerprint)
+    
+    tmp = open("/tmp/foafserver.1", 'w')
+    tmp.write(content)
+    tmp.close()
+
+    if err:
+        apache.log_error(err, apache.APLOG_NOTICE)
+        return apache.HTTP_NOT_ACCEPTABLE
+    else:
+        return apache.OK
 
 def form(req):
     req.content_type = "text/html"
@@ -164,31 +177,40 @@ def form(req):
 
 # TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
 # TODO: what else to validate?
-def validate(content):
+def validate(content, uri_fingerprint):
     FOAF = Namespace("http://xmlns.com/foaf/0.1/")
     TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl")
     WOT = Namespace("http://xmlns.com/wot/0.1/")
     RDF = Namespace("http://www.w3.org/2000/01/rdf-schema")
     store = TripleStore()
+    
     try:
         store.parse(StringInputSource(content))
     except SAXParseException:
         raise FOAFServerError, "invalid XML: " + str(sys.exc_info()[1])
+        
     try:
         truster = store.subjects(TRUST["trusts"]).next()
     except StopIteration:
         raise FOAFServerError, "must have a trust:Truster"
+        
     try:
         fingerprint = store.objects(truster, WOT["fingerprint"]).next()
     except StopIteration:
         raise FOAFServerError, "Truster must have a wot:fingerprint"
+        
     if not(ishex(fingerprint)):
         raise FOAFServerError, "Invalid fingerprint format; must be hex"
+        
     # TODO: something with fingerprint
     try:
         mbox = store.objects(truster, FOAF["mbox"]).next()
     except StopIteration:
         raise FOAFServerError, "Truster must have a foaf:mbox"
+        
+    if uri_fingerprint and uri_fingerprint != fingerprint:
+        raise FOAFServerError, "URI fingerprint doesn't match FOAF fingerprint"
+        
     return fingerprint
 
 def savetofile(req, content, fingerprint):
@@ -197,9 +219,9 @@ def savetofile(req, content, fingerprint):
     foaffile.write(content)
     foaffile.close()
 
-def storefoaf(req, content):
+def storefoaf(req, content, uri_fingerprint=""):
     try:
-        fingerprint = validate(content)
+        fingerprint = validate(content, uri_fingerprint)
     except FOAFServerError:
         return str(sys.exc_info()[1])
     err = savetofile(req, content, fingerprint)
