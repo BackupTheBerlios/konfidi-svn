@@ -33,7 +33,7 @@
 
 <trust:Relationship>
 	<trust:truster rdf:nodeID="brond" />
-	<trust:trusts rdf:nodeID="schamp"/>
+	<trust:trusted rdf:nodeID="schamp"/>
 	<trust:about rdf:nodeID="schamptrust1" />
 	<trust:about rdf:nodeID="schamptrust2" />
 </trust:Relationship>
@@ -43,7 +43,7 @@
 	<trust:rating>0.50</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="crowetrust2">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
 	<trust:rating>0.90</trust:rating>
 </trust:Item>
 
