@@ -114,6 +114,7 @@ def get(req):
 
     # maybe deal with errors somewhere in here...
     req.write("Junkly")
+    req.write(krang)
     req.write(result)
     return apache.OK    
 
