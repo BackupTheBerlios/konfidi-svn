@@ -2,19 +2,24 @@ import types
 
 def dump(v):
     """Print a nicely formatted overview of any data structure"""
+    if v is None:
+        return "(None)\n"
     if type(v) is types.DictType:
         return __dumpDict(v)
     elif hasattr(v, '__iter__') and hasattr(v, 'items'):
         return __dumpDict(v)
     elif type(v) is types.TupleType:
         return __dumpTuple(v)
-    elif type(v) is types.ObjectType:
-        return __dumpObj(v)
+    elif type(v) is types.ListType:
+        return __dumpTuple(v)
+    elif type(v) is types.StringType:
+        return v + '\n'
+    elif type(v) is types.IntType:
+        return '%i' % v + '\n'
     elif hasattr(v, '__class__'):
         return __dumpObj(v)
     else:
-        return __dumpOobj(v)
-        #return '%s' % v + ' ' + '%s' % type(v) + '\n'
+        return '%s' % v + ' ' + '%s' % type(v) + '\n'
 
 def __dumpTuple(tup):
     return (len(tup) * '%s ') % tuple(tup) + '\n'
@@ -23,7 +28,7 @@ def __dumpDict(di, format="%-25s %s"):
     ret = ""
     for (key, val) in di.items():
         ret += format % (str(key)+':', val) + '\n'
-    return ret + '\n'
+    return ret
 
 def __dumpObj(obj, maxlen=77, lindent=24, maxspew=600):
     """Print a nicely formatted overview of an object.
