@@ -1,7 +1,10 @@
+import os
 import time
 import thread
 import sys
 import cfgparse
+
+from select import select 
 
 from UpdateListener import UpdateListener
 from QueryListener import QueryListener
@@ -28,8 +31,7 @@ class TrustServer:
 	def getPeople(self):
 		return self.people
 
-if __name__ == "__main__":	
-
+def main():
 	# load the configuration data
 	c = cfgparse.ConfigParser()
 	# default values
@@ -40,9 +42,12 @@ if __name__ == "__main__":
 	c.add_option('trust_url', type='string', default='http://www.abundantplunder.com/trust/owl/trust.owl#', keys='Schema')
 	c.add_option('woturl', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema#', keys='Schema')
-	c.add_file('trustserver.cfg', None, 'ini')
+	c.add_file('/home/ams5/public_html/trunk/trustserver.cfg', None, 'ini')
 	config = c.parse()
 
+	#os.mkfifo('/tmp/trustpipe')
+	#fin = open('/tmp/trustpipe', 'r')
+	
 	print "Server Started"	
 	t = TrustServer(config, {})
 	thread.start_new(t.startUpdateListener, ('',) )
@@ -50,15 +55,23 @@ if __name__ == "__main__":
 	# this is really just for output prettiness
 	time.sleep(3)
 	print "Server running.  Enter commands below: "
+	selectables = [sys.stdin]
 	while 1:
-		cmd = sys.stdin.readline()
-		if cmd.rstrip() == "quit": sys.exit(0)
-		elif cmd.rstrip() == "people": 
-			for p in t.getPeople():
-				print t.people[p]
-		else:
-			print "commands: \n\tpeople -- print the people dictionary\n\tquit -- exit the server."
-		#else:
-		#	print cmd
-		
-	
+		(input, output, exc) = select([sys.stdin], [], [sys.stdin], 60)
+		if input:
+			cmd = sys.stdin.readline()
+			if cmd.rstrip() == "quit": 
+				break
+			elif cmd.rstrip() == "people": 
+				for p in t.getPeople():
+					print t.people[p]
+			elif cmd.rstrip() == "help":
+				print "commands: \n\tpeople -- print the people dictionary\n\tquit -- exit the server."
+			#else:
+			#	print cmd
+	#os.unlink('/tmp/trustpipe')
+	sys.exit(0)		
+
+if __name__ == "__main__":	
+	main()
+
