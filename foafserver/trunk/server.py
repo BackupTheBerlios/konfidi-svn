@@ -48,16 +48,20 @@ def handler(req):
     
     if (uniqueURI(req) == "test"):
         return test(req)
-    if (uniqueURI(req) == "form"):
+    elif (uniqueURI(req) == "form"):
         return form(req)
-    if (uniqueURI(req) == ""):
+    elif (uniqueURI(req) == ""):
         return index(req)
-    if (req.method == "GET"):
+    elif (uniqueURI(req) == "weird"):
+        req.status = apache.HTTP_NOT_IMPLEMENTED
+        req.content_type = "text/html"
+        req.write("501: we can't do that yet!")
+        return apache.OK
+    elif (req.method == "GET"):
         return get(req)
-    if (req.method == "PUT"):
+    elif (req.method == "PUT"):
         return put(req)
-    else:
-        return apache.HTTP_NOT_IMPLEMENTED
+    return apache.OK
 
 #
 # various handlers depending on the request
