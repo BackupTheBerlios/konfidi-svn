@@ -93,17 +93,12 @@ int main(int argc, char* argv[]) {
         return quit(mbox_from, &message);
 	}
 	
-//	string text = message.body().parts().front()->body();
-	string boundary = message.header().contentType().param("boundary");
-	// start at 2nd boundary
-	int text_start = whole.find(boundary);
-	text_start = whole.find(boundary, text_start+1);
-	// end at 3rd boundary
-	int text_end = whole.find(boundary, text_start+1);
-	cout << text_start << endl;
-	cout << text_end << endl;
-	string text = whole.substr(text_start, text_end-text_start);
-	cout << '!' << text << '!' << endl;
+	string boundary = "--" + message.header().contentType().param("boundary");
+	// start at 1st boundary
+	int text_start = whole.find(boundary)+boundary.length()+1;
+	// end at 2nd boundary
+	int text_end = whole.find(boundary, text_start);
+	string text = whole.substr(text_start, text_end-text_start-1);
 
     MimeEntity last_part = *message.body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
