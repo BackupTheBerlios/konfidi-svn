@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF
-   xmlns:dc="http://purl.org/dc/elements/1.1/#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-   xmlns:foaf="http://xmlns.com/foaf/0.1/#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:wot="http://xmlns.com/wot/0.1/#"
+   xmlns:wot="http://xmlns.com/wot/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   xmlns="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
    >
 
-<trust:Truster> 
+<foaf:Person rdf:nodeID="jw"> 
 	<foaf:name>joeswife</foaf:name>
 	<wot:fingerprint>joeswife</wot:fingerprint>
-	<trust:trusts>
-		<trust:Trustee>
-			<wot:fingerprint>joe</wot:fingerprint>
-			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
-		</trust:Trustee>
-	</trust:trusts>
-</trust:Truster>
+</foaf:Person>
+<foaf:Person rdf:nodeID="j">
+	<wot:fingerprint>joe</wot:fingerprint>
+</foaf:Person>
+<Relationship>
+	<truster rdf:nodeID="jw"/>
+	<trusted rdf:nodeID="j"/>
+	<about>
+		<Item>
+			<rating>9.0</rating>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+		</Item>
+	</about>
+</Relationship>
 
 </rdf:RDF>
