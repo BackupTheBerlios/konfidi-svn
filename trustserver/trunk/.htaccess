@@ -1,0 +1,26 @@
+# Configuration file for Trust server Apache module frontend
+
+# the host and port on which these servers run
+PythonOption trustserver.host localhost
+PythonOption trustserver.port 50000
+PythonOption pgpserver.host localhost
+PythonOption pgpserver.port 50000
+
+# this was for the foafserver, don't know if we need it for the trust server.
+# limit uploads to 100K
+# unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
+LimitRequestBody 102400
+
+
+########################################
+#  Do not change any of these settings #
+########################################
+
+# ALL requests handled by mod_python
+SetHandler mod_python
+
+# all mod_python requests go to trustserver_frontend.py
+PythonHandler frontend
+
+PythonDebug On
+PythonAutoReload On
