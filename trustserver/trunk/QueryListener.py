@@ -14,6 +14,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		self.people = self.server.people
 		
 	def handle(self):
+		f = xmlgen.Factory()
 		data = self.request.recv(1024)
 		try:
 			[strategy,source,sink,options] = data.split(":")
@@ -34,20 +35,19 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			r = tpf.query(source, sink, options)
 			searchtime = "%.6f" % (time.time() - searchtime)
 			self.server.lock.release_read()
-			
 			# build the xml response
-			f = xmlgen.Factory()
 			result = f.queryresult(r, executed="1", strategy=strategy, search_time=searchtime, lock_time=lockwait)
-			r = str(result)
-			# check to see if we need to make this smarter/bigger
-			self.request.send("%s" % r)
+			
 			
 		except KeyError, k:
-			self.request.send("Person %s not found in dataset.\n" % (k))
+			result = f.queryresult(f.error("Person %s not found in dataset"))
 		except PathNotFoundError, p:
-			self.request.send("No path found from source to sink:\n%s\n\n" % (p)) 
+			result = f.queryresult(f.error("No path found from source to sink: %s" % (p))) 
 		#except (ValueError):
 		#	self.request.send("Invalid query")
 	
+		r = str(result)
+		# check to see if we need to make this smarter/bigger
+		self.request.send("%s" % r)
 		self.request.close()
 	

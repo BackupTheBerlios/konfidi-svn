@@ -10,6 +10,7 @@ import operator
 import time
 from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
+import re
 #from pickle import dumps
 
 #local
@@ -24,9 +25,9 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		#self.WOT = Namespace(self.server.config.wot_url + "#")
 		#self.RDF = Namespace(self.server.config.rdf_url + "#")
 		
-		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
+		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 		self.TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
-		self.WOT = Namespace("http://xmlns.com/wot/0.1/#")
+		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 
 		# load trust values into list for later
@@ -62,13 +63,22 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		trust.load(source)	
 		#self.server.lock.acquire_write()
 		# new version
-		
+		count = 0
 		for (relationship, truster) in trust.subject_objects(self.TRUST["truster"]):
-			source = self.server.getPerson(trust.objects(truster, self.WOT["fingerprint"]).next())
-			sink = self.server.getPerson(trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["fingerprint"]).next())
+			# clean up the fingerprints
+			source_fingerprint = trust.objects(truster, self.WOT["fingerprint"]).next()
+			sink_fingerprint = trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["fingerprint"]).next()
+			# these don't work yet...
+			source_fingerprint = re.sub(r'[^0-9A-F]', r'', source_fingerprint.upper())
+			sink_fingerprint = re.sub(r'[^0-9A-F]', r'', sink_fingerprint.upper())
+			source = self.server.getPerson(source_fingerprint)
+			sink = self.server.getPerson(sink_fingerprint)
 			for item in trust.objects(relationship, self.TRUST["about"]):
 				topic = trust.objects(item, self.TRUST["topic"]).next().split("#")[1]
-				rating = trust.objects(item, self.TRUST["rating"]).next()
-				source.addTrustLink(sink.getFingerprint(), topic, rating)
+				rating = float(trust.objects(item, self.TRUST["rating"]).next())
+				if rating > 0.0 and rating < 1.0:
+					source.addTrustLink(sink.getFingerprint(), topic, rating)
+					count += 1
+		print "Added %d trust links." % count
 		#self.server.lock.release_write()
 		
