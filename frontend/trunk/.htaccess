@@ -6,6 +6,20 @@ PythonOption trustserver.port 20000
 PythonOption pgpserver.host localhost
 PythonOption pgpserver.port 50000
 
+# PGP Pathfinding strategy
+# just use the name, not the full class name
+# e.g. LocalWotsap instead of LocalWotsapPathfinder
+PythonOption pgpserver.pathfinder LocalWotsap
+
+
+# PGPServer Specific Directives:
+# These should be parsed into a 2-level dictionary as key.key2 = value
+# (e.g., config["LocalWotsap"]["app"] = whatev)
+# and then the config of the chosen pathfinder can be passed into the
+# constructor, and it can expect to find what it's looking for:
+PythonOption LocalWotsap.app /home/dpb2/downloads/wotsap-0.6/wotsap
+PythonOption LocalWotsap.data /data/prg/data/keys/latest.wot
+
 # this was for the foafserver, don't know if we need it for the trust server.
 # limit uploads to 100K
 # unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
@@ -24,3 +38,4 @@ PythonHandler frontend
 
 PythonDebug On
 PythonAutoReload On
+

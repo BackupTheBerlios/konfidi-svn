@@ -14,7 +14,7 @@ class LocalWotsapPathfinder(PGPPathfinder):
 
     def runwotsap(self, source, sink, limit=None):
         """note how wotsap doesn't support a long fingerprint, so we just take the last 8 chars"""
-        (stdin, stdout, stderr) = os.popen3("python %s -w %s %s %s" % (config.LocalWotsapPathfinder_app, config.LocalWotsapPathfinder_data, source[-8:], sink[-8:]))
+        (stdin, stdout, stderr) = os.popen3("python %s -w %s %s %s" % (self.config["app"], self.config["data"], source[-8:], sink[-8:]))
         stdin.close()
         out = stdout.read()
         err = stderr.read()
