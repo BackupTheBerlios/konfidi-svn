@@ -90,7 +90,7 @@
 <owl:ObjectProperty rdf:ID="value" rdfs:label="value">
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 	<rdfs:domain rdf:resource="#Item" />
-	<rdfs:range rdf:resource="&rdfs;Literal" rdf:datatype="&xsd;nonNegativeInteger" />
+	<rdfs:range rdf:resource="&rdfs;Literal" rdf:type="&xsd;nonNegativeInteger" />
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="subject" rdfs:label="subject">
