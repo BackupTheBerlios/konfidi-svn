@@ -1,5 +1,7 @@
+from mod_python import apache
+
 # local
-import dump
+apache.import_module("dump")
 
 # system
 import os
@@ -180,39 +182,24 @@ def form(req):
 # TODO: what else to validate?
 def validate(content, uri_fingerprint):
     FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
-    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#")
+    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.1/trust.owl#")
     WOT = Namespace("http://xmlns.com/wot/0.1/#")
     RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
     store = TripleStore()
-    
+
+    # TODO: verify all <truster>s have fingerprints
+    # and that they're all the same
     try:
         store.parse(StringInputSource(content))
     except SAXParseException:
         raise FOAFServerError, "invalid XML: " + str(sys.exc_info()[1])
-        
-    try:
-        truster = store.subjects(TRUST["trusts"]).next()
-    except StopIteration:
-        raise FOAFServerError, "invalid xmlns:trust, or missing trust:Truster"
-        
-    try:
-        fingerprint = store.objects(truster, WOT["fingerprint"]).next()
-    except StopIteration:
-        raise FOAFServerError, "invalid xmlns:wot, or Truster missing a wot:fingerprint"
     
+    fingerprint = "EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"
     fingerprint = fingerprint.replace(" ", "")
     fingerprint = fingerprint.replace(":", "")
     if not(ishex(fingerprint)):
         raise FOAFServerError, "Invalid fingerprint format; must be hex"
     
-    # TODO: validate all wot:fingerprints?
-    
-    # TODO: something with fingerprint
-    try:
-        mbox = store.objects(truster, FOAF["mbox"]).next()
-    except StopIteration:
-        raise FOAFServerError, "Truster must have a foaf:mbox"
-        
     if uri_fingerprint and uri_fingerprint != fingerprint:
         raise FOAFServerError, "URI fingerprint doesn't match FOAF fingerprint"
         

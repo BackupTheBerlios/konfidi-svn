@@ -2,8 +2,8 @@
 # Configuration file for FOAF server
 
 # either a relative or absolute path
-PythonOption storage.dir.rdf /home/dpb2/dev/dmail/tests/small
-PythonOption storage.dir.sig ../tests/small
+PythonOption storage.dir.rdf /home/dpb2/dev/dmail/tests/trunk/small
+PythonOption storage.dir.sig ../tests/trunk/small
 
 # the trust server to which we communicate all new files
 PythonOption trustserver.hostname localhost
@@ -19,6 +19,9 @@ LimitRequestBody 102400
 ########################################
 #  Do not change any of these settings #
 ########################################
+
+# don't try to use mod_negotiation at all, it can mess up URI handling
+Options -MultiViews
 
 # ALL requests handled by mod_python
 SetHandler mod_python
