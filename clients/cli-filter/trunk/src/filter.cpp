@@ -39,6 +39,19 @@ int quit(string mbox_from, MimeEntity *message, int flag=0) {
 
 int main(int argc, char* argv[]) {
 
+	bool verbose = false;
+	if (argc == 1) {
+		// no args
+	} else if (argc == 2 && (string)argv[1] == "-v") {
+		verbose = true;
+	} else {
+		cerr << "Invalid argument." << endl << endl;
+		cerr << "Valid arguments: " << endl;
+		cerr << "\t-v\t\tverbose" << endl;
+		cerr << endl << "This program accepts a single RFC2822 message (optionally with an mbox-style 'From ' first line) on stdin" << endl;
+		return 1;
+	}
+
 	// read the whole message
 	string whole;
 	getline(cin, whole, '\0');
@@ -103,7 +116,6 @@ int main(int argc, char* argv[]) {
 	int p=-1;
 	while (std::string::npos != (p=text.find("\n",p+2)))
 		text.replace(p,1,"\r\n");
-	cout << '$' << text << '$' << endl;
 
     MimeEntity last_part = *message.body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
@@ -114,7 +126,8 @@ int main(int argc, char* argv[]) {
     }
 	string sig = last_part.body();
     
-    clog << "processing " << message.header().messageid().str() << endl;
+    if (verbose)
+	    clog << "processing " << message.header().messageid().str() << endl;
     
     // gpgme validation
     gpgme_error_t err;
@@ -138,7 +151,8 @@ int main(int argc, char* argv[]) {
     err = gpgme_op_verify(ctx, sig_data, text_data, NULL);
     fail_if_err(err);
     gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
-    clog << "did key " << result->signatures->fpr << endl;
+    if (verbose)
+	    clog << "did key " << result->signatures->fpr << endl;
     
     // this is blocking, probably want to change.
     gpgme_key_t key;
@@ -161,16 +175,35 @@ int main(int argc, char* argv[]) {
 	}
 	
 	
-//    gpgme_key_sig_t key_sig;
-//    cout << "key: " << key_sig->keyid << " " << key_sig->name << endl;
-    clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
-    clog << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
-    clog << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
-    clog << "BAD: " << (result->signatures->status & GPG_ERR_BAD_SIGNATURE) << endl;
-    clog << "GPG_ERR_NO_PUBKEY: " << (result->signatures->status & GPG_ERR_NO_PUBKEY) << endl;
+	if (verbose) {
+	    clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
+	    clog << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
+	    clog << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
+	    clog << "rev key: " << (result->signatures->summary & GPGME_SIGSUM_KEY_REVOKED) << endl;
+	    clog << "exp key: " << (result->signatures->summary & GPGME_SIGSUM_KEY_EXPIRED) << endl;
+	    clog << "exp sig: " << (result->signatures->summary & GPGME_SIGSUM_SIG_EXPIRED) << endl;
+	    clog << "no key: " << (result->signatures->summary & GPGME_SIGSUM_KEY_MISSING) << endl;
+	    clog << "old crl: " << (result->signatures->summary & GPGME_SIGSUM_CRL_TOO_OLD) << endl;
+	    clog << "no crl: " << (result->signatures->summary & GPGME_SIGSUM_CRL_MISSING) << endl;
+	    clog << "bad policy: " << (result->signatures->summary & GPGME_SIGSUM_BAD_POLICY) << endl;
+	    clog << "syserr: " << (result->signatures->summary & GPGME_SIGSUM_SYS_ERROR) << endl;
+	    
+	    clog << "no err: " << (result->signatures->status & GPG_ERR_NO_ERROR) << endl;
+	    clog << "exp sig: " << (result->signatures->status & GPG_ERR_SIG_EXPIRED) << endl;
+	    clog << "exp key: " << (result->signatures->status & GPG_ERR_KEY_EXPIRED) << endl;
+	    clog << "rev cert: " << (result->signatures->status & GPG_ERR_CERT_REVOKED) << endl;
+	    clog << "general err: " << (result->signatures->status & GPG_ERR_GENERAL) << endl;
+	    clog << "BAD: " << (result->signatures->status & GPG_ERR_BAD_SIGNATURE) << endl;
+	    clog << "no pubkey: " << (result->signatures->status & GPG_ERR_NO_PUBKEY) << endl;
+	    
+	    clog << "timestamp: " << result->signatures->timestamp << endl;
+	    clog << "expires: " << result->signatures->exp_timestamp << endl;
+	    clog << "reason: " << gpgme_strerror(result->signatures->validity_reason) << endl;
+	    clog << "next ptr: " << result->signatures->next << endl;
+	}
     
     
-    if (result->signatures->summary & GPGME_SIGSUM_VALID) {
+    if (result->signatures->status == GPG_ERR_NO_ERROR) {
         message.header().field(header_sig).value("valid");
     } else {
         message.header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
