@@ -36,11 +36,11 @@
 	<trust:rating>0.90</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt2">
-	<trust:topic rdf:resource="&subject#cooking"/>
+	<trust:topic rdf:resource="&subject;#cooking"/>
 	<trust:rating>0.60</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt3">
-	<trust:topic rdf:resource="&subject#dmail"/>
+	<trust:topic rdf:resource="&subject;#dmail"/>
 	<trust:rating>0.95</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt4">

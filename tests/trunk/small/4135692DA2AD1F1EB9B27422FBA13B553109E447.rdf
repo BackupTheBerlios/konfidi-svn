@@ -19,7 +19,7 @@
 
 <foaf:Person rdf:nodeID="agofor">
 	<foaf:name>AGoforth</foaf:name>
-	<wot:fingerprint>Goforth</wot:fingerprint>
+	<wot:fingerprint>DEADBEEF BABE</wot:fingerprint>
 </foaf:Person>
 
 <trust:Relationship>
