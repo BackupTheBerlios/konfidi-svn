@@ -363,14 +363,14 @@ class Frontend:
 		req.write(dump.dump(req.get_options()))
 		req.write("\nModPython Config:\n-------------\n")
 		req.write(dump.dump(req.get_config()))
-	    
+		
 		req.write("\nOS Env:\n-------------\n")
 		req.write(dump.dump(os.environ))
 	
 		req.write("\nProcess Env:\n-------------\n")
 		req.add_common_vars()
 		req.write(dump.dump(req.subprocess_env))
-	    
+		
 		req.write("\n")
 		req.write("server_root=" + apache.server_root() + "\n")
 		req.write("document_root=" + req.document_root() + "\n")
@@ -381,11 +381,11 @@ class Frontend:
 		req.write("uri=" + dump.dump(req.uri))
 		req.write("filename=" + dump.dump(req.filename))
 		req.write("py interpreter=" + dump.dump(req.interpreter))
-	    
+		
 		req.write("\n")
 		req.write("__file__=" + __file__ + "\n")
 		req.write("dir=" + os.path.dirname(__file__) + "\n")
-	    
+		
 		req.write("\n")
 		if apache.mpm_query(apache.AP_MPMQ_IS_THREADED):
 			req.write("mpm is threaded\n")
@@ -397,11 +397,13 @@ class Frontend:
 			req.write("mpm is NOT forked\n")
 		
 		req.write("\n")
+		req.write("sys.path: %s\n" % sys.path)
+		req.write("\n")
 		req.write("POST form data:\n")    
 		req.write("content length: " + dump.dump(req.clength))
 		req.write(dump.dump(req.read()))
 		#req.write(dump.dump(apache.config_tree()))
-	    
+		
 		return apache.OK
 
 
