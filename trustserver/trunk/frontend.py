@@ -68,16 +68,14 @@ def index(req):
 	req.content_type = "text/html"
 	req.write("""
     <html>
-    <head><title>TrustServer Frontent</title></head>
+    <head><title>TrustServer Frontend</title></head>
     <body>
     <h2>TrustServer Frontend v""" + frontend_version + """</h2>
     
     <h4>Querying</h4>
     Just do a GET using to the url "query", defining the variables "source", "sink", and "subject"
     <br>
-    <!--<a href="123">sample: andy schamp</a><br>
-    <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>
-    -->
+    <a href="query?source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
     <h4>Web interface</h4>
     Or use <a href="form">this form</a><br>
     
