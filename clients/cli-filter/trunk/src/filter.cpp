@@ -51,24 +51,6 @@ string slurp(istream &i) {
 	return whole;
 }
 
-// TODO: move this and some other functions into Email methods
-string read_possible_From_line(istream &i) {
-	// possible "From " line in mbox format
-	string mbox_from;
-	getline(i, mbox_from);
-	if (mbox_from.substr(0, 5) != "From ") {
-		string::reverse_iterator it;
-		for (it = mbox_from.rbegin(); it != mbox_from.rend(); it++) {
-			i.putback(*it);
-		}
-		i.putback(*it);
-		mbox_from = "";
-	} else {
-		mbox_from += "\r\n";
-	}
-	return mbox_from;
-}
-
 void delete_header(Header * header, string field_name) {
     // header is a child of std::deque<Field>
 	deque<Field>::iterator it;
@@ -166,7 +148,6 @@ void validate_from_matches_signer(Email * email, gpgme_ctx_t ctx, gpgme_verify_r
 	string from_email = email->message->header().from().front().mailbox() + '@' + email->message->header().from().front().domain();
 	gpgme_user_id_t uid = key->uids;
 	while (uid) {
-		clog << "1" << endl;
 		if (from_email == uid->email) {
 			found_email = true;
 		}
@@ -243,8 +224,6 @@ void add_trust_headers(Email * email, string to) {
 }
 
 int main(int argc, char* argv[]) {
-	Email* email = new Email();
-	
 	// set up context
 	gpgme_error_t err;
     gpgme_ctx_t ctx;
@@ -259,17 +238,13 @@ int main(int argc, char* argv[]) {
 		return 5;
 	}
 
-	email->exact_text = slurp(cin);
-	cin.seekg(0, ios::beg); // reset stream to beginning
+	Email* email = new Email(slurp(cin));
 
-	email->mbox_from = read_possible_From_line(cin);
-	
-	// load data
-	// optimization
-    ios_base::sync_with_stdio(false);
-    // parse and load message
-    MimeEntity message(cin);
-    email->message = &message;
+	clog << "//////////////" << endl;
+	clog << email->exact_text;
+	clog << "//////////////" << endl;
+	clog << *email->message << endl;
+	clog << "##############" << endl;
     
     clean_headers(email);
     email->message->header().field(header_this_app).value(header_this_app_value);

@@ -12,6 +12,7 @@ using namespace mimetic;
 class Email
 {
 public:
+	Email(string);
 	/** optional leading 'From ' line */
 	string mbox_from;
 	/** literal text of the whole message */
@@ -20,6 +21,10 @@ public:
 	MimeEntity *message;
 	
 	void printOn(ostream*);
+	
+protected:
+	/** possible "From " line in mbox format */
+	void set_possible_From_line();
 };
 
 #endif
