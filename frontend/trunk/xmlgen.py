@@ -32,35 +32,16 @@ class Element:
     return self
 
   def __str__(self):
-    #return "" + self.indented(0)
     s = '<' + self.__name
     for name, value in self.__attrs.items():
       s = s + ' ' + name + '="' + str(value) + '"'
     if self.__cdata or self.__children:
-      s = s + ">\n"  + string.joinfields(self.__cdata, '')
+      s = s + ">"  + string.joinfields(self.__cdata, '')
       for child in self.__children:
-        s = s + child.__str__()
+        s = s + str(child)
       s = s + '</' + self.__name + '>'
     else:
       s = s + '/>'
-    s = s+"\n"
-    return s
-    
-  def indented(self, indent=0):
-    s = ("\t" * (indent)) + '<' + self.__name
-    for name, value in self.__attrs.items():
-      s = s + ' ' + name + '="' + str(value) + '"'
-    if self.__cdata or self.__children:
-      s = s + ">\n" + ("\t" * (indent+1)) + string.joinfields(self.__cdata, '')
-      for child in self.__children:
-        if child.__class__ == Element:
-          s = s + child.indented(indent+1)
-        else:
-          s = s + str(child)
-      s = s + "\n" + ("\t" * (indent)) + "</" + self.__name + '>'
-    else:
-      s = s + '/>'
-    s = s+"\n"
     return s
 
 class Factory:

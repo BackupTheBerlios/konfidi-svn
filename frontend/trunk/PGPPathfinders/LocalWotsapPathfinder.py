@@ -16,9 +16,11 @@ class LocalWotsapPathfinder(PGPPathfinder):
 		if not err:
 			out = re.sub('<', '&lt;', out)
 			out = re.sub('>', '&gt;', out)
-			return f.pgp_result[f.connected("1"), f.path(out), f.error()] # + err
+			return f.pgp_result()[f.connected("1"), f.path(out), f.error()] # + err
 		else:
-			return f.pgp_result[f.connected("0"), f.path(), f.error(err)]
+			err = re.sub('<', '&lt;', err)
+			err = re.sub('>', '&gt;', err)
+			return f.pgp_result()[f.connected("0"), f.path(), f.error(err)]
 
 	def connected(self, source, sink, limit=None):
 		(out, err) = self.runwotsap(source, sink, limit)
@@ -39,7 +41,7 @@ class LocalWotsapPathfinder(PGPPathfinder):
 			web = wot.findpaths(source[-8:], sink[-8:], None)
 		except mod.wotError, err:
 			#errmsg = unicode(err).encode(encoding, 'replace')
-			return (None, err)
+			return (None, str(err))
 		if web is None:
 			return (None, "Sorry, unable to find path.")
 			

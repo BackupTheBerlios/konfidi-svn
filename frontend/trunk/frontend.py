@@ -226,7 +226,7 @@ class Frontend:
 					r.append(pgp_result)
 				if opt["trustquery"]:
 					r.append(trust_result)
-			req.write(str(f.result[r]))
+			req.write(self.xml_indenter(str(f.result[r])))
 			return apache.OK
 			
 				
@@ -234,6 +234,30 @@ class Frontend:
 			# hmm, something went horribly wrong.
 			return apache.HTTP_METHOD_NOT_ALLOWED
 	
+	def xml_indenter(self, xml, indent=0):
+		if len(xml) == 0:
+			#print "None\n"
+			return "";
+		(tag, xml) = self.munch_tag(xml)
+		if tag[0] != '<' or tag[-2:] == '/>' or tag[-3:] == '/ >':
+			return "%s%s\n%s" % ("\t"*indent, tag, self.xml_indenter(xml, indent))
+		elif tag[:2] == '</':
+			return "%s%s\n%s" % ("\t"*(indent-1), tag, self.xml_indenter(xml, indent-1))
+		else:
+			return "%s%s\n%s" % ("\t"*indent, tag, self.xml_indenter(xml, indent+1))
+		
+	def munch_tag(self, xml):
+		if xml[0] != '<':
+			bound = xml.index('<')
+			literal = xml[:bound]
+			xml = xml[bound:]
+			return (literal, xml)
+		
+		bound = xml.index('>') + 1
+		tag = xml[:bound]
+		xml = xml[bound:]
+		return (tag, xml)
+			
 	def send_query(self, strategy, source="foo", sink="bar", options="baz"):
 		sockobj = socket(AF_INET, SOCK_STREAM)
 		sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
