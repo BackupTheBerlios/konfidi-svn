@@ -7,6 +7,7 @@ from rdflib.TripleStore import TripleStore
 from rdflib.constants import DATATYPE
 import SocketServer
 import operator
+import time
 from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
 #from pickle import dumps
@@ -69,5 +70,6 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 			for value, resource in store.predicate_objects(trustee):
 				if value in self.trustValues:
 					self.server.lock.acquire_write()
+					#time.sleep(15)
 					p.addTrustLink(f2, resource.split("#")[1], resource, BasicTrustValue(value.split("#")[1]))
 					self.server.lock.release_write()

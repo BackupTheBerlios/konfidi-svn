@@ -4,11 +4,11 @@ from TrustPathFinder import TrustPathFinder
 
 class PrototypeTPF(TrustPathFinder):
 	def query(self, source, sink, opts):
-                options = {}
-                # split the list of options, and build a dictionary out of it
-                for o in opts.split("|"):
-                        (k, v) = o.split("=")
-                        options[k] = v
+		options = {}
+		# split the list of options, and build a dictionary out of it
+		for o in opts.split("|"):
+			(k, v) = o.split("=")
+			options[k] = v
 		path = self.findPath(source, sink, options["subject"])
 		#print "final path to sink: %s" % path
 		rating = self.getPathRating(path, options["subject"])
