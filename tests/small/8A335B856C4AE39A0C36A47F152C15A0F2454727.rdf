@@ -6,16 +6,16 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl"
+   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#"
    >
 
 <trust:Truster> 
 	<foaf:name>Andrew Schamp</foaf:name>
-	<wot:fingerprint>8A33 5B85 6C4A E39A 0C36  A47F 152C 15A0 F245 4727</wot:fingerprint>
+	<wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
 	<trust:trusts>
 		<trust:Trustee>
 			<foaf:name>DBrondsema</foaf:name>
-			<wot:fingerprint>EAB0 FABE DEA8 1AD4 0869  02FE 56F0 526F 9BB3 CE70</wot:fingerprint>
+			<wot:fingerprint>EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70</wot:fingerprint>
 			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
 			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
