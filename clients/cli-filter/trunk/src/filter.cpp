@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <string>
 
 #include <mimetic/mimetic.h>
 #include <gpgme.h>
@@ -32,9 +33,22 @@ const char* header_trust = "X-Trust-Email-Value";
 int main(int argc, char* argv[]) {
 
 	// load data
+	// possible "From " line in mbox format
+	string mbox_from;
+	getline(cin, mbox_from);
+	if (mbox_from.substr(0, 5) != "From ") {
+		string::reverse_iterator it;
+		for (it = mbox_from.rbegin(); it != mbox_from.rend(); it++) {
+			cin.putback(*it);
+		}
+		cin.putback(*it);
+		mbox_from = "";
+	} else {
+		mbox_from += "\r\n";
+	}
 	// optimization
-    ios_base::sync_with_stdio(false);  
-    // parse and load message      
+    ios_base::sync_with_stdio(false);
+    // parse and load message
     MimeEntity message(cin);
     
     // check headers
@@ -57,13 +71,13 @@ int main(int argc, char* argv[]) {
     	message.header().contentType().subtype() != "signed") {
         cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
         message.header().field(header_sig).value("none");
-        cout << message;
+        cout << mbox_from << message;
         return 0;
     }
 	if (message.body().parts().size() != 2) {
         cerr << "warning: email " + message.header().messageid().str() + " doesn't have 2 parts, it has " << message.body().parts().size() << endl;
         message.header().field(header_sig).value("none");
-        cout << message;
+        cout << mbox_from << message;
         return 0;
 	}
 	string text = message.body().parts().front()->body();
@@ -72,7 +86,7 @@ int main(int argc, char* argv[]) {
     	last_part.header().contentType().subtype() != "pgp-signature") {
     	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
         message.header().field(header_sig).value("none");
-        cout << message;
+        cout << mbox_from << message;
         return 0;
     }
 	string sig = last_part.body();
@@ -116,6 +130,6 @@ int main(int argc, char* argv[]) {
     }
     message.header().field(header_sig_finger).value(result->signatures->fpr);
 
-	cout << message;
+	cout << mbox_from << message;
 	return 0;
 }
