@@ -1,8 +1,8 @@
 # Configuration file for Trust server Apache module frontend
 
 # the host and port on which these servers run
-PythonOption trustserver.host localhost
-PythonOption trustserver.port 50000
+PythonOption trustserver.host 127.0.0.1
+PythonOption trustserver.port 20000
 PythonOption pgpserver.host localhost
 PythonOption pgpserver.port 50000
 
