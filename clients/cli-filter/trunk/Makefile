@@ -12,8 +12,8 @@ SRCS = $(shell ls $(SRC)/*.cpp)
 # assume we must create a .o for each of them
 OBJS = $(SRCS:.cpp=.o)
 
-CFLAGS = -Wall `gpgme-config --cflags`
-LFLAGS = $(STATIC) `gpgme-config --libs` -lmimetic
+CFLAGS = -Wall `gpgme-config --cflags` `curl-config --cflags`
+LFLAGS = $(STATIC) `gpgme-config --libs` -lmimetic `curl-config --libs`
 
 
 all: $(EXE)

@@ -6,13 +6,15 @@
 
 #include <mimetic/mimetic.h>
 #include <gpgme.h>
+#include <curl/curl.h>
 
 using namespace std;
 using namespace mimetic;
 
 const char* header_sig = "X-PGP-Signature";
 const char* header_sig_finger = "X-PGP-Fingerprint";
-const char* header_trust = "X-Trust-Email-Value";
+const char* header_trust_num = "X-Trust-Email-Rating";
+const char* header_trust_level = "X-Trust-Email-Level";
 const char* header_this_app = "X-Dmail-Client";
 const char* header_this_app_value = "cli-filter 0.1";
 
@@ -90,7 +92,8 @@ void delete_header(Header * header, string field_name) {
 void clean_headers(MimeEntity * message) {
     delete_header(&message->header(), header_sig);
     delete_header(&message->header(), header_sig_finger);
-    delete_header(&message->header(), header_trust);
+    delete_header(&message->header(), header_trust_num);
+    delete_header(&message->header(), header_trust_level);
 }
 
 string parse_email_text(MimeEntity * message, string whole, string mbox_from) {
@@ -170,13 +173,51 @@ void validate_from_matches_signer(MimeEntity * message, string mbox_from, gpgme_
 	}
 }
 
-void add_headers(MimeEntity * message, string mbox_from, gpgme_verify_result_t result) {
+void add_gpg_headers(MimeEntity * message, string mbox_from, gpgme_verify_result_t result) {
     if (result->signatures->status == GPG_ERR_NO_ERROR) {
         message->header().field(header_sig).value("valid");
     } else {
         message->header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
     }
     message->header().field(header_sig_finger).value(result->signatures->fpr);
+}
+
+size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
+	cout << (char*)buffer << endl;
+	istringstream buffer_stream((char*)buffer);
+	double value;
+	buffer_stream >> value;
+	clog << "got " << value << endl;
+	
+	ostringstream value_stream;
+	value_stream << value;
+	
+	MimeEntity * message = (MimeEntity *) userp;
+	message->header().field(header_trust_num).value(value_stream.str());
+	message->header().field(header_trust_level).value("**********");
+	// TODO: not sure what we're supposed to return
+	return nmemb;
+}
+
+void add_trust_headers(MimeEntity * message, string mbox_from, string from, string to) {
+	
+	CURLcode res;
+	CURL *handle = curl_easy_init();
+	if(handle) {
+		string trust_server_url = "http://brondsema.gotdns.com/~ams5/frontend/trunk/query";
+		string turst_server_params = "strategy=Prototype&subject=email&";
+		string source_sink = "source=" + from + "&" + "sink=" + to + "&";
+		string url = trust_server_url + "?" + turst_server_params + source_sink;
+		clog << "fetching " << url << endl;
+		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_handle_data);
+		curl_easy_setopt(handle, CURLOPT_WRITEDATA, message);
+		res = curl_easy_perform(handle);
+		curl_easy_cleanup(handle);
+	} else { 
+		cerr << "couldn't init curl" << endl;
+		quit(mbox_from, message);
+	}
 }
 
 int main(int argc, char* argv[]) {
@@ -246,7 +287,8 @@ int main(int argc, char* argv[]) {
 	    clog << "next ptr: " << result->signatures->next << endl;
 	}
     
-	add_headers(&message, mbox_from, result);
+	add_gpg_headers(&message, mbox_from, result);
+	add_trust_headers(&message, mbox_from, result->signatures->fpr, "EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70");
 
     quit(mbox_from, &message);
 }
