@@ -1,11 +1,10 @@
-
-#include <gpgme.h>
-
-
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <sstream>
+
 #include <mimetic/mimetic.h>
+#include <gpgme.h>
 
 using namespace std;
 using namespace mimetic;
@@ -28,15 +27,21 @@ using namespace mimetic;
 
 int main(int argc, char* argv[]) {
 
-    ios_base::sync_with_stdio(false);        // optimization
-    MimeEntity message(cin);           // parse and load message
+	// load data
+	// optimization
+    ios_base::sync_with_stdio(false);  
+    // parse and load message      
+    MimeEntity message(cin);           
     
+    // check headers
     if (message.header().hasField("X-Trust-Email"))
     {
         cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a X-Trust-Email header!" << endl;
     }
     
-    if (message.header().contentType() 1= "multipart/signed") {
+    // parse text & sig
+    if (message.header().contentType().type() != "multipart" ||
+    	message.header().contentType().subtype() != "signed") {
         cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
         exit(3);
     }
@@ -54,11 +59,11 @@ int main(int argc, char* argv[]) {
 	string sig = last_part.body();
     
     
+    // gpgme validation
     gpgme_error_t err;
     gpgme_ctx_t ctx;
     err = gpgme_new(&ctx);
     fail_if_err(err);
-    cout << "did ctx" << endl;
     
     gpgme_data_t sig_data;
     err = gpgme_data_new_from_mem(&sig_data, sig.c_str(), sig.length(), 1);
@@ -66,28 +71,33 @@ int main(int argc, char* argv[]) {
     gpgme_data_t text_data;
     err = gpgme_data_new_from_mem(&text_data, text.c_str(), text.length(), 1);
     fail_if_err(err);
-    cout << "did data" << endl;
 
     
     string sig_header = "";
     err = gpgme_op_verify(ctx, sig_data, text_data, NULL);
     fail_if_err(err);
-    cout << "did ver" << endl;
+    gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
+    gpgme_key_t key;
+    // this is blocking, probably want to change.
+    gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
+    cout << "did key " << result->signatures->fpr << endl;
+//    gpgme_key_sig_t key_sig;
+//    cout << "key: " << key_sig->keyid << " " << key_sig->name << endl;
+    cout << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
+    cout << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
+    cout << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
+    cout << "BAD: " << (result->signatures->status & GPG_ERR_BAD_SIGNATURE) << endl;
+    cout << "GPG_ERR_NO_PUBKEY: " << (result->signatures->status & GPG_ERR_NO_PUBKEY) << endl;
     
-    if (err == GPG_ERR_NO_ERROR) {
+    
+    if (result->signatures->summary & GPGME_SIGSUM_VALID) {
         message.header().field("X-PGP-Signature").value("valid");
     } else {
-        message.header().field("X-PGP-Signature").value("invalid, " + err);
+        message.header().field("X-PGP-Signature").value((string)"invalid, " + gpg_strerror(result->signatures->status));
     }
-    gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
-    cout << "did res" << endl;
-    gpgme_key_t r_key;
-    gpgme_get_key(ctx, result->signatures->fpr, &r_key, 0);
-    cout << "did key " << result->signatures->fpr << endl;
-    
-    
-    string ourheaders = "X-Trust-Email: **";
-    //cout << headers << "\n" << sig_header + "\n" + ourheaders << body << flush;
+    message.header().field("X-PGP-Signature-Fingerprint").value(result->signatures->fpr);
+
+    cout << message;
     
     return 0;
 }
