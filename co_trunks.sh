@@ -1,7 +1,14 @@
 #!/bin/bash
 
+#
+# To run this (without even checking it out!) execute:
+#
+# mkdir dmail; cd dmail # this is an umbrella dir for all the dmail apps
+# svn cat http://brondsema.gotdns.com/svn/dmail/co_trunks.sh | bash
+#
+
 # You can override BASE and TBT like this:
-# TBT=tags/1.0-beta ./co_trunks.sh
+# svn cat http://brondsema.gotdns.com/svn/dmail/co_trunks.sh | TBT=tags/1.0-beta bash
 
 if [ ! "$BASE" ]
 then
