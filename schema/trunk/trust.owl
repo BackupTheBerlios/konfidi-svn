@@ -14,7 +14,7 @@
 	xmlns:owl="&owl;" 
 	xmlns:rdf="&rdf;" 
 	xmlns:rdfs="&rdfs;"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
 	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
@@ -47,8 +47,8 @@
 		<xsd:restriction xsd:base="xsd:decimal">
 			<xsd:totalDigits>4</xsd:totalDigits>
 			<xsd:fractionDigits>2</xsd:fractionDigits>
-			<xsd:minInclusive xsd:value="0.00" />
-			<xsd:maxInclusive xsd:value="1.00" />
+			<xsd:minInclusive> 0.00</xsd:minInclusive>
+			<xsd:maxInclusive> 1.00</xsd:maxInclusive>
 		</xsd:restriction>
 	</xsd:simpleType>
 </xsd:element>
