@@ -5,9 +5,11 @@
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
 	<!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
 	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-	<!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
-	<!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
+	<!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+	<!ENTITY wot  "http://xmlns.com/wot/0.1/" >
 	<!ENTITY rel "http://vocab.org/relationship/#" >
+	<!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+	<!ENTITY vs "http://www.w3.org/2003/06/sw-vocab-status/ns#" >
   ]>
 <!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
 <rdf:RDF 
@@ -19,8 +21,8 @@
 	xmlns:rel="&rel;"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
-	xmlns:dc="http://purl.org/dc/elements/1.1/#"
-	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+	xmlns:dc="&dc;"
+	xmlns:vs="&vs;"
 >
 
 <rdf:Description rdf:about="">
