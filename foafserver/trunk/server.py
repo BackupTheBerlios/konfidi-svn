@@ -6,6 +6,17 @@ import os
 # initialization code
 phase = 'init'
 
+def uniqueURI(req):
+    """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
+    req.add_common_vars()
+    uri = req.filename[len(os.path.dirname(__file__))+1:]
+    try:
+        uri += req.subprocess_env['PATH_INFO']
+    except KeyError:
+        uri += ""
+    return uri
+
+
 def handler(req):
     req.allow_methods(["GET", "PUT"])
     apache.log_error("request!", apache.APLOG_NOTICE)
@@ -13,7 +24,7 @@ def handler(req):
     if req.get_config().has_key('PythonDebug'):
         reload(dump)
     
-    if (req.parsed_uri[apache.URI_PATH] == "/~dpb2/foafserver/test"):
+    if (uniqueURI(req) == "test"):
         return test(req)
     elif (req.method == "GET"):
         return get(req)
@@ -23,12 +34,11 @@ def handler(req):
         return apache.HTTP_NOT_IMPLEMENTED
 
 def get(req):
-    req.write(dump.dump(req.parsed_uri))
+    req.write(uniqueURI(req))
     return apache.OK
 
 def test(req):
     req.content_type = "text/plain"
-    
     """
     if phase == 'init':
         init_var2 = 2
