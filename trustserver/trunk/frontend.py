@@ -95,7 +95,7 @@ def query(req):
 		# first, check the PGP server:
 		pass    	
 		# then, check the TrustServer:
-		req.write("Source: %s, Sink: %s, Subject: %s" % source, sink, subject)
+		req.write("Source: %s, Sink: %s, Subject: %s" % (source, sink, subject))
 		sockobj = socket(AF_INET, SOCK_STREAM)
 		sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
 		sockobj.send("%s:%s:%s" % (source, sink, subject))
