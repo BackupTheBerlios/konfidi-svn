@@ -6,6 +6,7 @@ from rdflib.constants import TYPE
 from rdflib.TripleStore import TripleStore
 from rdflib.constants import DATATYPE
 import SocketServer
+import operator
 from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
 #from pickle import dumps
@@ -14,30 +15,31 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 	def setup(self):
 		# Create a namespace object for the Friend of a friend namespace.
 		# figure out trailing pound thing...
-		self.FOAF = Namespace(self.server.config.foaf_url+ "#")
-		self.TRUST = Namespace(self.server.config.trust_url+ "#")
-		self.WOT = Namespace(self.server.config.wot_url+ "#")
-		self.RDF = Namespace(self.server.config.rdf_url+ "#")
+		self.foafy = self.server.config.foaf_url + "#"
+		self.FOAF = Namespace(self.server.config.foaf_url + "#")
+		self.TRUST = Namespace(self.server.config.trust_url + "#")
+		self.WOT = Namespace(self.server.config.wot_url + "#")
+		self.RDF = Namespace(self.server.config.rdf_url + "#")
 		
-		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
-		self.TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl#")
+		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/" + "#")
+		#self.TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/#")
-		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
+		#self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 		
 		# load trust values into list for later
 		trust = TripleStore()
-		#trust.load(self.server.config.trust_url+"#")
-		trust.load("http://www.abundantplunder.com/trust/owl/trust.owl#")
-		#"http://www.abundantplunder.com/trust/owl/trust.owl#"
+		trust.load(self.server.config.trust_url + "#")
+		#trust.load("http://www.abundantplunder.com/trust/owl/trust.owl#")
 		self.trustValues = []
 		for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
 			self.trustValues.append(s)
 	def handle(self):
 		print "update connection opened."
-		#print "FOAF: %s" % (dumps(self.FOAF))
+		print "FOAF: %s" % (self.FOAF)
 		print "TRUST: %s" % (self.TRUST)
-		#print "WOT: %s" % (dumps(self.WOT))
-		#print "RDF: %s" % (dumps(self.RDF))
+		print "WOT: %s" % (self.WOT)
+		print "RDF: %s" % (self.RDF)
+		print "foafy: %s" % (self.foafy)
 		str = ''
 		while 1:
 			data = self.request.recv(1024)
