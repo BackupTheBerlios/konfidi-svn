@@ -12,8 +12,11 @@ using namespace mimetic;
 class Email
 {
 public:
+	/** optional leading 'From ' line */
 	string mbox_from;
+	/** literal text of the whole message */
 	string exact_text;
+	/** class used for parsing, but not writing */
 	MimeEntity *message;
 	
 	void printOn(ostream*);
