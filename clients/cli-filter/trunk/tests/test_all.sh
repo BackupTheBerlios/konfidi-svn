@@ -27,7 +27,23 @@ do
 		# if-stmt on result of that bytewise comparison
 		if $APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checkfile - | cmp $checkfile - 2>/dev/null
 		then
-			echo "    PASS"
+			checknotfile=$testname.notheaders
+			if [ -f $checknotfile ]
+			then
+				# run app (ignore stderr)
+				# sort output
+				# get lines which are common to it and checknotfile
+				# count characters
+				# compare that to "0"
+				if [ "0" -eq $($APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checknotfile - | wc -c) ]
+				then
+					echo "    PASS"
+				else
+					echo "    FAIL"
+				fi
+			else
+				echo "    PASS"
+			fi
 		else
 			echo "    FAIL"
 		fi
