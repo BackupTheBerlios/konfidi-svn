@@ -43,6 +43,9 @@ def main():
 	c.add_option('trust_url', type='string', default='http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl', keys='Schema')
 	c.add_option('wot_url', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema', keys='Schema')
+	c.add_option('class', type='string', keys='PGP Pathfinder')
+	c.add_option('LocalWotsapPathfinder_app', type='string', keys='PGP Pathfinder')
+	c.add_option('LocalWotsapPathfinder_data', type='string', keys='PGP Pathfinder')
 	c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
 	config = c.parse()
 

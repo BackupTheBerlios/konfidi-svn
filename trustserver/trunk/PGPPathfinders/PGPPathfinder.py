@@ -1,6 +1,6 @@
 class PGPPathfinder:
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.config = config
 
     def graph(self, source, sink, limit):
         raise NotImplementedError
