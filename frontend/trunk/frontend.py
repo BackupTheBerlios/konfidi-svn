@@ -414,8 +414,10 @@ def uniqueURI(req):
 	"""Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
 	req.add_common_vars()
 	uri = req.filename[len(os.path.dirname(__file__))+1:]
+	apache.log_error("uri ams5 1: %s" % uri, apache.APLOG_NOTICE)
 	try:
 		uri += req.subprocess_env['PATH_INFO']
+		apache.log_error("uri ams5 2: %s" % uri, apache.APLOG_NOTICE)
 	except KeyError:
 		uri += ""
 	return uri
@@ -450,5 +452,6 @@ def parse_config(opts):
 
 def handler(req):
 	"""main handler; called by mod_python"""
+	from frontend import Frontend
 	f = Frontend(req)
 	return f.handle()
