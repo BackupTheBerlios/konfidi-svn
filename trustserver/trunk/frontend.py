@@ -103,6 +103,7 @@ def get(req):
 	sockobj = socket(AF_INET, SOCK_STREAM)
 	sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
 	sockobj.send("%s:%s:%s" % (source, sink, subject))
+	result = "krang"
 	while 1:
 		data = sockobj.recv(1024)
 		if not data: break
