@@ -29,6 +29,11 @@ const char* header_trust = "X-Trust-Email-Value";
     }                                                           \
   while (0)
 
+int quit(string mbox_from, MimeEntity *message, int flag=0) {
+    cout << mbox_from << &message;
+	clog << endl;
+	return 0;
+}
 
 int main(int argc, char* argv[]) {
 
@@ -71,14 +76,12 @@ int main(int argc, char* argv[]) {
     	message.header().contentType().subtype() != "signed") {
         cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
         message.header().field(header_sig).value("none");
-        cout << mbox_from << message;
-        return 0;
+        return quit(mbox_from, &message);
     }
 	if (message.body().parts().size() != 2) {
         cerr << "warning: email " + message.header().messageid().str() + " doesn't have 2 parts, it has " << message.body().parts().size() << endl;
         message.header().field(header_sig).value("none");
-        cout << mbox_from << message;
-        return 0;
+        return quit(mbox_from, &message);
 	}
 	string text = message.body().parts().front()->body();
     MimeEntity last_part = *message.body().parts().back();
@@ -86,11 +89,11 @@ int main(int argc, char* argv[]) {
     	last_part.header().contentType().subtype() != "pgp-signature") {
     	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
         message.header().field(header_sig).value("none");
-        cout << mbox_from << message;
-        return 0;
+        return quit(mbox_from, &message);
     }
 	string sig = last_part.body();
     
+    clog << "processing " << message.header().messageid().str() << endl;
     
     // gpgme validation
     gpgme_error_t err;
@@ -113,14 +116,14 @@ int main(int argc, char* argv[]) {
     gpgme_key_t key;
     // this is blocking, probably want to change.
     gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
-    cout << "did key " << result->signatures->fpr << endl;
+    clog << "did key " << result->signatures->fpr << endl;
 //    gpgme_key_sig_t key_sig;
 //    cout << "key: " << key_sig->keyid << " " << key_sig->name << endl;
-    cout << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
-    cout << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
-    cout << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
-    cout << "BAD: " << (result->signatures->status & GPG_ERR_BAD_SIGNATURE) << endl;
-    cout << "GPG_ERR_NO_PUBKEY: " << (result->signatures->status & GPG_ERR_NO_PUBKEY) << endl;
+    clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
+    clog << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
+    clog << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
+    clog << "BAD: " << (result->signatures->status & GPG_ERR_BAD_SIGNATURE) << endl;
+    clog << "GPG_ERR_NO_PUBKEY: " << (result->signatures->status & GPG_ERR_NO_PUBKEY) << endl;
     
     
     if (result->signatures->summary & GPGME_SIGSUM_VALID) {
@@ -130,6 +133,5 @@ int main(int argc, char* argv[]) {
     }
     message.header().field(header_sig_finger).value(result->signatures->fpr);
 
-	cout << mbox_from << message;
-	return 0;
+    return quit(mbox_from, &message);
 }
