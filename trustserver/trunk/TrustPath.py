@@ -31,6 +31,14 @@ class TrustPath:
 		return l
 	def __repr__(self):
 		return "%s, %s" % self.path
+	
+class PathNotFoundError(Exception):
+	def __init__(self, source, sink, subject):
+		self.source = source
+		self.sink = sink
+		self.subject = subject
+	def __str__(self):
+		return repr("%s, %s, %s" % (self.source, self.sink, self.subject))
 		
 class ListSubclassFifo(list):
     __slots__ = ('back',)

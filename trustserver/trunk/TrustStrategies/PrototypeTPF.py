@@ -1,4 +1,5 @@
-from TrustPath import TrustPath	
+from TrustPath import TrustPath
+from TrustPath import PathNotFoundError
 from TrustPath import Fifo
 from TrustPathFinder import TrustPathFinder
 
@@ -9,18 +10,26 @@ class PrototypeTPF(TrustPathFinder):
 		for o in opts.split("|"):
 			(k, v) = o.split("=")
 			options[k] = v
+		
 		path = self.findPath(source, sink, options["subject"])
 		#print "final path to sink: %s" % path
 		rating = self.getPathRating(path, options["subject"])
 		#print "final rating: %s" % rating
 		return "%s" % rating
+		
 	
 	def findPath(self, source, sink, subject):
 		#print "searching for: %s to %s regarding %s" % (source, sink, subject)
 		paths = {}
 		seen = {source:1}
 		newpaths = { source:list([u"%s" % source]) }
-		while sink not in seen:
+		length = 0
+		didsomething = 1
+		while sink not in seen and didsomething:
+			#high limit for now, but do we really need it?
+			if length > 30:
+				raise PathNotFoundError(source, sink, subject)
+			
 			# keep only the longest paths.
 			paths = newpaths
 			newpaths = {}
@@ -28,15 +37,22 @@ class PrototypeTPF(TrustPathFinder):
 				# save the current path
 				curpath = paths[p]
 				# for each child of p
+				didsomething = 0
 				for s in self.people[p].trusts:
 					if s not in seen:
-						if (subject in self.people[p].trusts[s]) or ("default" in self.people[p].trusts[s]):
-							# mark child as seen
-							seen[s] = 1
-							# add new path ending in child to path dict
-							t = list(curpath)
-							t.append(s)
-							newpaths[s] = t
+						didsomething = 1
+						try:
+							if (subject in self.people[p].trusts[s]) or ("default" in self.people[p].trusts[s]):
+								# mark child as seen
+								seen[s] = 1
+								# add new path ending in child to path dict
+								t = list(curpath)
+								t.append(s)
+								newpaths[s] = t
+						except KeyError, k:
+							print "error: %s" % (k)
+			length += 1
+			
 		paths = newpaths
 		return paths[sink]
 	
