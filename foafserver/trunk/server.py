@@ -1,8 +1,16 @@
+# local
 import dump
-from mod_python import apache
 
+# system
 import os
 import re
+import sys
+from rdflib.Namespace import Namespace
+from rdflib.TripleStore import TripleStore
+from rdflib.StringInputSource import StringInputSource
+from xml.sax import SAXParseException
+from mod_python import apache
+
 
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
@@ -69,8 +77,44 @@ def get(req):
         apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
         return apache.HTTP_FORBIDDEN
 
-def storefoaf(content):
+# TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
+# TODO: what else to validate?
+def validate(content):
+    FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl")
+    WOT = Namespace("http://xmlns.com/wot/0.1/")
+    RDF = Namespace("http://www.w3.org/2000/01/rdf-schema")
+    store = TripleStore()
+    try:
+        store.parse(StringInputSource(content))
+    except SAXParseException:
+        return "invalid XML: " + str(sys.exc_info()[1])
+    try:
+        truster = store.subjects(TRUST["trusts"]).next()
+    except StopIteration:
+        return "must have a trust:Truster"
+    try:
+        fingerprint = store.objects(truster, WOT["fingerprint"]).next()
+    except StopIteration:
+        return "Truster must have a wot:fingerprint"
+    # TODO: something with fingerprint
+    try:
+        mbox = store.objects(truster, FOAF["mbox"]).next()
+    except StopIteration:
+        return "Truster must have a foaf:mbox"
+    return "xx" + fingerprint
+
+def savetofile(content):
     pass
+
+def storefoaf(content):
+    err = validate(content)
+    if err:
+        return err
+    err = savetofile(content)
+    if err:
+        return err
+    return "success"
     
 def put(req):
     return apache.HTTP_NOT_IMPLEMENTED
@@ -93,8 +137,11 @@ def form(req):
         content_end = content.find("&")
         content = content[content_start:content_end]
         
-        storefoaf(urldecode(content))
-        req.write("<p>FOAF succesfully uploaded</p>")
+        store_error = storefoaf(urldecode(content))
+        if store_error:
+            req.write("<p>Error: " + store_error + "</p>")
+        else:
+            req.write("<p>FOAF succesfully uploaded</p>")
     
     req.write("""<form action="form" method="POST">
     Submit an unsiqned FOAF record:<br/>
