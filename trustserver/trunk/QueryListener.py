@@ -4,7 +4,7 @@ import SocketServer
 import string
 
 #local
-from dump import dump
+#from dump import dump
 
 class QueryListener(SocketServer.BaseRequestHandler):
 	def setup(self):

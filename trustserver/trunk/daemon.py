@@ -33,7 +33,7 @@ def main():
     #os.open('/tmp/trustpipe', os.O_RDONLY) 
     #sys.stdin = open('/tmp/trustpipe', 'r')
     #ensure the that the daemon runs a normal user
-    os.setegid(100)     #set group first "pydaemon"
+# os.setegid(100)     #set group first "pydaemon"
 #not allowed    os.seteuid(1008)     #set user "pydaemon"
     #start the user program here:
     USERPROG()

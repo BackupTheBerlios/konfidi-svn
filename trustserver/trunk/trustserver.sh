@@ -7,7 +7,7 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 BASEDIR=`dirname $0`
-DAEMON=$BASEDIR/daemon.py
+DAEMON=$BASEDIR/TrustServer.py
 NAME=trustserver
 DESC="TrustServer"
 
@@ -19,15 +19,14 @@ case "$1" in
   start)
 	echo -n "Starting $DESC: "
 	mkdir -p $BASEDIR/run
-	start-stop-daemon --start --quiet --pidfile $BASEDIR/run/$NAME.pid \
-		--exec $DAEMON --startas $DAEMON --make-pidfile
+	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON 
 	echo "$NAME."
 	;;
   stop)
 	echo -n "Stopping $DESC: "
-	start-stop-daemon --stop --quiet --oknodo --pidfile $BASEDIR/run/$NAME.pid
+	start-stop-daemon --stop --oknodo --pidfile $BASEDIR/run/$NAME.pid
 	# \	--exec $DAEMON
-	rm -f $BASEDIR/run/$NAME.pid
+	#rm -f $BASEDIR/run/$NAME.pid
 	echo "$NAME."
 	;;
   #reload)
@@ -49,12 +48,10 @@ case "$1" in
 	#	just the same as "restart".
 	#
 	echo -n "Restarting $DESC: "
-	start-stop-daemon --stop --quiet --pidfile \
-		$BASEDIR/run/$NAME.pid
+	start-stop-daemon --stop --pidfile $BASEDIR/run/$NAME.pid
 		# --exec $DAEMON
 	sleep 1
-	start-stop-daemon --start --quiet --pidfile \
-		$BASEDIR/run/$NAME.pid --exec $DAEMON
+	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON 
 	echo "$NAME."
 	;;
   *)

@@ -12,7 +12,7 @@ from BasicTrustValue import BasicTrustValue
 #from pickle import dumps
 
 #local
-from dump import dump
+#from dump import dump
 
 class UpdateListener(SocketServer.BaseRequestHandler):
 	def setup(self):
