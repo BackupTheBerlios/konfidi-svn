@@ -70,8 +70,8 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 			source_fingerprint = trust.objects(truster, self.WOT["fingerprint"]).next()
 			sink_fingerprint = trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["fingerprint"]).next()
 			# turn these off for now, for our test cases.  figure a better solution later
-			#source_fingerprint = re.sub(r'[^0-9A-F]', r'', source_fingerprint.upper())
-			#sink_fingerprint = re.sub(r'[^0-9A-F]', r'', sink_fingerprint.upper())
+			source_fingerprint = re.sub(r'[^0-9A-Z]', r'', source_fingerprint.upper())
+			sink_fingerprint = re.sub(r'[^0-9A-Z]', r'', sink_fingerprint.upper())
 			source = self.server.getPerson(source_fingerprint)
 			sink = self.server.getPerson(sink_fingerprint)
 			#print "sf: %s, sif: %s" % (source_fingerprint, sink_fingerprint)
