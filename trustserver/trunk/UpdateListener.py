@@ -11,33 +11,40 @@ from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
 #from pickle import dumps
 
+#local
+from dump import dump
+
 class UpdateListener(SocketServer.BaseRequestHandler):
 	def setup(self):
 		# Create a namespace object for the Friend of a friend namespace.
 		# figure out trailing pound thing...
-		self.FOAF = Namespace(self.server.config.foaf_url + "#")
-		self.TRUST = Namespace(self.server.config.trust_url + "#")
-		self.WOT = Namespace(self.server.config.wot_url + "#")
-		self.RDF = Namespace(self.server.config.rdf_url + "#")
+		#self.FOAF = Namespace(self.server.config.foaf_url + "#")
+		#self.TRUST = Namespace(self.server.config.trust_url + "#")
+		#self.WOT = Namespace(self.server.config.wot_url + "#")
+		#self.RDF = Namespace(self.server.config.rdf_url + "#")
 		
 		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
 		self.TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/#")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-		
+		print dump(self.FOAF)+"\n\n"
+		print dump(self.WOT)+"\n\n"
+		print dump(self.TRUST)+"\n\n"
+		print dump(self.RDF)+"\n\n"
 		# load trust values into list for later
 		trust = TripleStore()
-		trust.load(self.server.config.trust_url)
+		#trust.load(self.server.config.trust_url)
 		trust.load("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#")
 		self.trustValues = []
 		for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
 			self.trustValues.append(s)
+			
 	def handle(self):
 		print "update connection opened."
-		print "FOAF: %s" % (self.FOAF)
-		print "TRUST: %s" % (self.TRUST)
-		print "WOT: %s" % (self.WOT)
-		print "RDF: %s" % (self.RDF)
+		#print "FOAF: %s" % (self.FOAF)
+		#print "TRUST: %s" % (self.TRUST)
+		#print "WOT: %s" % (self.WOT)
+		#print "RDF: %s" % (self.RDF)
 		str = ''
 		while 1:
 			data = self.request.recv(1024)
@@ -48,6 +55,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.load(str)
 		#self.load(openAnything(str))
 		print "update connection closed."
+		
 	def load(self, source):	
 		print "Update Listener: parsing input: %s" % source
 		# this is the main object we're concerned with

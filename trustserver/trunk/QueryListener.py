@@ -1,8 +1,12 @@
+#system
 import SocketServer
 from TrustPath import TrustPath	
 from TrustPath import Fifo
 #import pickle
 import string
+
+#local
+from dump import dump
 
 class QueryListener(SocketServer.BaseRequestHandler):
 	def setup(self):
@@ -14,8 +18,8 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		data = self.request.recv(1024)
 		if data == "people":
 			print "\tpeople:\n\t"
-			for p in self.people:
-				print self.people[p]
+			print dump(self.people)
+			print dump(self.server.people)
 	
 			#print string.join(self.people, "\n\t")
 			#self.request.send(string.join(self.people, "\n"))

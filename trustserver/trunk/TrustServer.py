@@ -16,6 +16,7 @@ class TrustServer:
 		self.config = config
 		self.updatePort = config.update_port
 		self.queryPort = config.query_port
+		# this people object should be the global object that is shared by both updateListener and queryListener
 		self.people = people
 		self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people, self.config)
 		self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people, self.config)
@@ -53,6 +54,9 @@ def main():
 	# new processes of the above, and then exit.:
 	while 1:
 		time.sleep(120)
+		#print "people: \n"
+		#for p in t.getPeople():
+		#	print "\t%s" % (t.people[p])
 	# this is really just for output prettiness
 	#time.sleep(3)
 	#print "Server running.  Enter commands below: "
