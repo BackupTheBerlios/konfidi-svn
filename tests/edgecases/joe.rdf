@@ -35,6 +35,10 @@
 			<wot:fingerprint>guywithoutfoaf</wot:fingerprint>
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
 		</trust:Trustee>
+		<trust:Trustee>
+			<wot:fingerprint>joeswife</wot:fingerprint>
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+		</trust:Trustee>
 	</trust:trusts>
 </trust:Truster>
 
