@@ -9,26 +9,42 @@
    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
-<trust:Truster> 
+<foaf:Person> 
 	<foaf:name>DBrondsema</foaf:name>
 	<wot:fingerprint>Brondsema</wot:fingerprint>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>CCrowe</foaf:name>
-			<wot:fingerprint>Crowe</wot:fingerprint>
-			<trust:trustedNeutrally rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
-			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
-		</trust:Trustee>
-	</trust:trusts>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>ASchamp</foaf:name>
-			<wot:fingerprint>Schamp</wot:fingerprint>
-			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-			<trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
-		</trust:Trustee>
-	</trust:trusts>
-</trust:Truster>
+	<trust:trusts rdf:nodeID="crowe"/>
+	<trust:trusts rdf:nodeID="schamp"/>
+</foaf:Person>
+
+<foaf:Person rdf:nodeID="crowe">
+	<foaf:name>CCrowe</foaf:name>
+	<wot:fingerprint>Crowe</wot:fingerprint>
+	<trust:trustedAbout rdf:nodeID="crowetrust1" />
+	<trust:trustedAbout rdf:nodeID="crowetrust2" />
+</foaf:Person>
+<trust:Item rdf:nodeID="crowetrust1">
+	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+	<trust:value>0.50</trust:value>
+</trust:Item>
+<trust:Item rdf:nodeID="crowetrust2">
+	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
+	<trust:value>0.90</trust:value>
+</trust:Item>
+
+<foaf:Person rdf:nodeID="schamp">
+	<foaf:name>ASchamp</foaf:name>
+	<wot:fingerprint>Schamp</wot:fingerprint>
+	<trust:trustedAbout rdf:nodeID="schamptrust1" />
+	<trust:trustedAbout rdf:nodeID="schamptrust2" />
+</foaf:Person>
+<trust:Item rdf:nodeID="schamptrust1">
+	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:value>0.90</trust:value>
+</trust:Item>
+<trust:Item rdf:nodeID="schamptrust2">
+	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
+	<trust:value>1.00</trust:value>
+</trust:Item>
 
 <rdf:Description rdf:about="">
 	<wot:assurance rdf:resource="foaf.rdf.asc" />

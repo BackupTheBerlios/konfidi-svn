@@ -15,38 +15,38 @@
 	<trust:trusts rdf:nodeID="Dave" />
 	<trust:trusts rdf:nodeID="Jim" />	
 </foaf:Person>
-<foaf:Person>
+<foaf:Person rdf:nodeID="Jim">
 	<foaf:name>JLaing</foaf:name>
 	<wot:fingerprint>Laing</wot:fingerprint>
 	<trust:trustedAbout rdf:nodeID="jimtrust1" />
 </foaf:Person>
 <trust:Item rdf:nodeID="jimtrust1">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
-	<trust:value>70</trust:value>
+	<trust:value>0.70</trust:value>
 </trust:Item>
-<foaf:Person>
+<foaf:Person rdf:nodeID="Dave">
 	<foaf:name>DBrondsema</foaf:name>
 	<wot:fingerprint>Brondsema</wot:fingerprint>
-	<trust:trustedAbout rdf:nodeID="jimtrust1" />
-	<trust:trustedAbout rdf:nodeID="jimtrust2" />
-	<trust:trustedAbout rdf:nodeID="jimtrust3" />
-	<trust:trustedAbout rdf:nodeID="jimtrust4" />
+	<trust:trustedAbout rdf:nodeID="davetrust1" />
+	<trust:trustedAbout rdf:nodeID="davetrust2" />
+	<trust:trustedAbout rdf:nodeID="davetrust3" />
+	<trust:trustedAbout rdf:nodeID="davetrust4" />
 </foaf:Person>
-<trust:Item rdf:nodeID="davemtrust1">
+<trust:Item rdf:nodeID="davetrust1">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
-	<trust:value>90</trust:value>
+	<trust:value>0.90</trust:value>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust2">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking" />
-	<trust:value>60</trust:value>
+	<trust:value>0.60</trust:value>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust3">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail" />
-	<trust:value>95</trust:value>
+	<trust:value>0.95</trust:value>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust4">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#music" />
-	<trust:value>10</trust:value>
+	<trust:value>0.10</trust:value>
 </trust:Item>
 
 
