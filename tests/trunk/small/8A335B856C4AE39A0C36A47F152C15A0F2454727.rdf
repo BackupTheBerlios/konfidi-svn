@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY subject "http://www.abundantplunder.com/trust/subjects">
+]>
 <rdf:RDF
-   xmlns:dc="http://purl.org/dc/elements/1.1/#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-   xmlns:foaf="http://xmlns.com/foaf/0.1/#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:wot="http://xmlns.com/wot/0.1/#"
+   xmlns:wot="http://xmlns.com/wot/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
@@ -29,19 +32,19 @@
 </trust:Relationship>
 
 <trust:Item rdf:nodeID="dt1">
-	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:topic rdf:resource="&subject;#default"/>
 	<trust:rating>0.90</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt2">
-	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
+	<trust:topic rdf:resource="&subject#cooking"/>
 	<trust:rating>0.60</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt3">
-	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
+	<trust:topic rdf:resource="&subject#dmail"/>
 	<trust:rating>0.95</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="dt4">
-	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#music"/>
+	<trust:topic rdf:resource="&subject;#music"/>
 	<trust:rating>0.40</trust:rating>
 </trust:Item>
 
@@ -57,7 +60,7 @@
 	<trust:about rdf:nodeID="jt1" />
 </trust:Relationship>
 <trust:Item rdf:nodeID="jt1">
-	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
+	<trust:topic rdf:resource="&subject;#default" />
 	<trust:rating>0.70</trust:rating>
 </trust:Item>
 

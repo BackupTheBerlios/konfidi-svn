@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+<!ENTITY subject "http://www.abundantplunder.com/trust/subjects">
+]>
 <rdf:RDF
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
     xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
-    xmlns:foaf="http://xmlns.com/foaf/0.1/#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:wot="http://xmlns.com/wot/0.1/#"
-    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
+    xmlns:wot="http://xmlns.com/wot/0.1/"
     >
 
 <foaf:Person rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"> 
@@ -28,19 +30,19 @@
 	<trusted rdf:nodeID="andy"/>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<topic rdf:resource="&subject;#email"/>
 			<rating>0.80</rating>
 		</Item>
 	</about>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#java"/>
+			<topic rdf:resource="&subject;#java"/>
 			<rating>0.90</rating>
 		</Item>
 	</about>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#wiki"/>
+			<topic rdf:resource="&subject;#wiki"/>
 			<rating>0.60</rating>
 		</Item>
 	</about>
@@ -62,18 +64,17 @@
 	</trusted>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+			<topic rdf:resource="&subject;#default"/>
 			<rating>0.75999932</rating>
 		</Item>
 	</about>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<topic rdf:resource="&subject;#email"/>
 			<rating>1.0000</rating>
 		</Item>
 	</about>
 </Relationship>
-
 <Relationship>
 	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
 	<trusted>
@@ -83,7 +84,7 @@
 	</trusted>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<topic rdf:resource="&subject;#email"/>
 			<rating>.8</rating>
 		</Item>
 	</about>
@@ -98,7 +99,7 @@
 	</trusted>
 	<about>
 		<Item>
-			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<topic rdf:resource="&subject;#email"/>
 			<rating>.8</rating>
 		</Item>
 	</about>
