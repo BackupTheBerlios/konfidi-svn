@@ -212,6 +212,7 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 		curl_easy_setopt(handle, CURLOPT_WRITEDATA, message);
 		char error_buffer[CURL_ERROR_SIZE];
 		curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, error_buffer);
+		curl_easy_setopt(handle, CURLOPT_FAILONERROR, 1);
 		res = curl_easy_perform(handle);
 		if (res != 0) {
 			cerr << "Error with trustserver: " << error_buffer << endl;
