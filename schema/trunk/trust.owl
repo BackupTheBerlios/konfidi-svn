@@ -91,8 +91,8 @@
 <!-- properties second -->
 <owl:ObjectProperty rdf:ID="trusts" rdfs:Label="trusts"
 	rdfs:comment="Relates people in trust relationships">
-	<rdfs:domain rdf:resource="&foaf:Person" />
-	<rdfs:range rdf:resource="&foaf:Person" />
+	<rdfs:domain rdf:resource="&foaf;Person" />
+	<rdfs:range rdf:resource="&foaf;Person" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 </owl:OjbectProperty>
 <owl:ObjectProperty rdf:ID="trustedAbout" rdfs:label="trustedAbout" 
