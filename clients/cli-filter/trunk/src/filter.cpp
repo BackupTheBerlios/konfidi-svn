@@ -75,21 +75,20 @@ string read_possible_From_line(istream &i) {
 	return mbox_from;
 }
 
+void delete_header(Header * header, string field_name) {
+    // header is a child of std::deque<Field>
+	deque<Field>::iterator it;
+	it = find_if(header->begin(), header->end(),
+			Header::find_by_name(field_name));
+	if (it != header->end()) {
+		header->erase(it);
+	}
+}
+
 void clean_headers(MimeEntity * message) {
-    // check headers
-    // TODO: search, iterate through headers and delete!
-    if (message->header().hasField(header_sig))
-    {
-	    message->header().field(header_sig).value();
-    }
-    if (message->header().hasField(header_sig_finger))
-    {
-	    message->header().field(header_sig_finger).value();
-    }
-    if (message->header().hasField(header_trust))
-    {
-        cerr << "warning: malformed email " + message->header().messageid().str() + ": already has a " + header_trust + " header!" << endl;
-    }
+    delete_header(&message->header(), header_sig);
+    delete_header(&message->header(), header_sig_finger);
+    delete_header(&message->header(), header_trust);
 }
 
 string parse_email_text(MimeEntity * message, string whole, string mbox_from) {
