@@ -23,7 +23,7 @@ X-Spam-Level:
 X-Spam-Status: No, score=0.0 required=4.0 tests=none autolearn=failed 
 	version=3.0.2
 X-PGP-Signature: valid
-X-PGP-Signature-Fingerprint: EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70
+X-PGP-Fingerprint: EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70
 
 I feel bad that we missed the programming contest last semester.  I do 
 have an alternative this semester; Taylor University holds a programming 

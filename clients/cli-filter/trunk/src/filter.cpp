@@ -11,7 +11,7 @@ using namespace std;
 using namespace mimetic;
 
 const char* header_sig = "X-PGP-Signature";
-const char* header_sig_finger = "X-PGP-Signature-Fingerprint";
+const char* header_sig_finger = "X-PGP-Fingerprint";
 const char* header_trust = "X-Trust-Email-Value";
 
 
