@@ -77,6 +77,11 @@ def index(req):
 	<h4>Querying</h4>
 	Just do a GET using to the url "query", defining the variables "source", "sink", and "subject"
 	<br>
+	<a href="query?source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
+	<a href="query?source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
+	<a href="query?source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
+	<a href="query?source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
+	<a href="query?source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
 	<a href="query?source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
 	<h4>Web interface</h4>
 	Or use <a href="form">this form</a><br>
