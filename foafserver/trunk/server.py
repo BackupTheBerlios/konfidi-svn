@@ -180,7 +180,7 @@ def form(req):
 
 # TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
 # TODO: what else to validate?
-def validate(content, uri_fingerprint):
+def validate(req, content, uri_fingerprint):
     FOAF = Namespace("http://xmlns.com/foaf/0.1/")
     TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
     WOT = Namespace("http://xmlns.com/wot/0.1/")
@@ -204,7 +204,7 @@ def validate(content, uri_fingerprint):
     
     fingerprint = fingerprint.replace(" ", "")
     fingerprint = fingerprint.replace(":", "")
-    if not(ishex(fingerprint)):
+    if req.get_options()['validate.wot'] == "1" and not(ishex(fingerprint)):
         raise FOAFServerError, "Invalid fingerprint format; must be hex"
     
     if uri_fingerprint and uri_fingerprint != fingerprint:
@@ -221,7 +221,7 @@ def savetofile(req, content, fingerprint):
 
 def storefoaf(req, content, uri_fingerprint=""):
     try:
-        fingerprint = validate(content, uri_fingerprint)
+        fingerprint = validate(req, content, uri_fingerprint)
     except FOAFServerError:
         return str(sys.exc_info()[1])
     filename = savetofile(req, content, fingerprint)

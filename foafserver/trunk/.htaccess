@@ -9,6 +9,9 @@ PythonOption storage.dir.sig /home/ams5/foafs
 PythonOption trustserver.hostname localhost
 PythonOption trustserver.port 20010
 
+# 0 or 1; do hex validation?
+PythonOption validate.wot 0
+
 # limit uploads to 100K
 # unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
 LimitRequestBody 102400
