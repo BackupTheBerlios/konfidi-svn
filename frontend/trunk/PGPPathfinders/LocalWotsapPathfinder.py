@@ -3,12 +3,22 @@ import os
 import locale
 import imp
 from StringIO import StringIO
+import re
+
+#local
+import xmlgen
 
 class LocalWotsapPathfinder(PGPPathfinder):
 	"""Uses wotsap from http://www.lysator.liu.se/~jc/wotsap/ and it's nightly-generated dump file"""
 	def graph(self, source, sink, limit=None):
 		(out, err) = self.runwotsap(source, sink, limit)
-		return out # + err
+		if not err:
+			out = re.sub('<', '&lt;', out)
+			out = re.sub('>', '&gt;', out)
+			f = xmlgen.Factory()
+			return f.pgp_result[f.connected("1"), f.path(out), f.error()] # + err
+		else:
+			return f.pgp_result[f.connected("0"), f.path(), f.error(err)]
 
 	def connected(self, source, sink, limit=None):
 		(out, err) = self.runwotsap(source, sink, limit)
@@ -19,16 +29,9 @@ class LocalWotsapPathfinder(PGPPathfinder):
 		file = None
 		mod = None
 		try:
-			#(file, pathname, description) = imp.find_module("Wot", self.config["path"])
-			#mod = imp.load_module("Wot", file, self.config["file"], description)
 			mod = imp.load_source("Wot", self.config["app"])
 		finally:
 			pass
-		#	file.close()
-		
-		#raise ImportError
-		#raise ImportError
-		#exec("from %s import Wot" % (self.config["app"]))
 		
 		# see also wotsapmain
 		wot = mod.Wot(self.config["data"])

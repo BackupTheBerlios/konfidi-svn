@@ -1,5 +1,8 @@
 # Configuration file for Trust server Apache module frontend
 
+# If debugging is turned on, modules will be reloaded.
+PythonOption debug 1
+
 # the host and port on which these servers run
 PythonOption trustserver.host 127.0.0.1
 PythonOption trustserver.port 20000

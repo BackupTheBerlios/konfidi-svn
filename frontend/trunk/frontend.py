@@ -1,5 +1,6 @@
 # local
 import dump
+import xmlgen
 
 # system
 import os
@@ -17,6 +18,7 @@ from mod_python import apache
 from mod_python import util
 import pickle
 import string
+from xml.dom import minidom
 
 frontend_version = "0.1"
 
@@ -42,10 +44,10 @@ class Frontend:
 		page = uniqueURI(self.req)
 		if (page == "test"):
 			return self.test(self.req)
-		if (page == "people"):
-			return self.people(self.req)
 		if (page == "query"):
 			return self.query(self.req)
+		if (page == "map"):
+			return self.map(self.req)
 		if (page == "form"):
 			return self.form(self.req)
 		if (page == "command"):
@@ -89,33 +91,14 @@ class Frontend:
 		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
-		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br>
+		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br/>
+		Or <a href="map">Map all trust relationships and inferences</a><br/>
 		<h4><a href="test">debug output</a></h4>""" +
 		str(self.config) + 
 		"""</body>
 		</html>
 		""")
 		return apache.OK
-	
-	def people(self, req):
-		try:
-			sockobj = socket(AF_INET, SOCK_STREAM)
-			sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-			sockobj.send("people")
-			result = ""
-			#while 1:
-			#	data = sockobj.recv(1024)
-			#	if not data: break
-			#	result += data 	
-			# maybe deal with errors somewhere in here...
-			#peops = pickle.loads(result)
-			#for p in peops:
-			#	print peops[p]
-			#peopstr = string.join(peops, "\n")
-			req.write("Result: %s\n\n" % (result))
-		except error, (errno, errstr):
-			req.write("Error(%s): %s" % (errno, errstr))
-		return apache.OK  
 	
 	def command(self, req):
 		if (req.method == "POST" or req.method == "GET"):
@@ -160,89 +143,144 @@ class Frontend:
 			strategy = form["strategy"]
 			source = form["source"]
 			sink = form["sink"]
-			#subject = form["subject"]
-			#req.write("Config: %s" % (self.config))
 			
 			if strategy == "": strategy = "Default"
-				
-			#handle the options here: 
-			opt = {}
-			try:
-				opt["pgpquery"] = int(form["pgpquery"])
-			except KeyError:
-				opt["pgpquery"] = int(self.config["pgpserver"]["query"])
-			try:
-				opt["trustquery"] = int(form["trustquery"])
-			except KeyError:
-				opt["trustquery"] = int(self.config["trustserver"]["query"])
-			try:
-				opt["trustoutput"] = form["trustoutput"]
-			except KeyError:
-				opt["trustoutput"] = self.config["trustserver"]["output"]
-			try:
-				opt["pgpoutput"] = form["pgpoutput"]
-			except KeyError:
-				opt["pgpoutput"] = self.config["pgpserver"]["output"]
-			
-			opt["subject"] = form["subject"]
-			
-			options = "|".join(["%s=%s" % (k, v) for k, v in opt.items()])
+		
+			opt = self.parse_options(form)
+			options = self.parse_options(form, True)
 			
 			pgpresult = None
+			if self.config["debug"] == "1":
+				reload(xmlgen)
+			f = xmlgen.Factory()
+			r = []
 			if opt["pgpquery"]:
 				# first, check the PGP server:
 				try:
 					exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
 					exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
+					#if self.config["debug"] == "1":
+					#	exec("reload(PGPPathfinders.%sPathfinder)" % (self.config["pgpserver"]["pathfinder"]))
 				except (ImportError):
 					# put the hardcoded one here
 					raise ImportError
 				pgptime = time.time()
-				if (opt["trustquery"] and opt["trustoutput"] == "short") or opt["pgpoutput"] == "short":
-					pgpresult = pathfinder.connected(source, sink)
-					if pgpresult:
-						pgpresult = 1
-					else:
-						pgpresult = 0
-				else:
-					pgpresult = pathfinder.graph(source, sink)
+				pgp_result = str(pathfinder.graph(source, sink))
 				pgptime = time.time() - pgptime
+				
+				pgp_result = minidom.parseString(pgp_result).documentElement
+				connected = pgp_result.getElementsByTagName("connected")[0]
+				pgp_path = pgp_result.getElementsByTagName("path")[0]
+				pgp_error = pgp_result.getElementsByTagName("error")[0]
+				
+				pgp_result = f.pgp_result(search_time=pgptime)[connected.toxml(), pgp_path.toxml(), pgp_error.toxml()]
+				
+				#r.append(pgp_result)
 			
-			if opt["trustoutput"] == "short" and not pgpresult:
-				req.write("-1")
-			elif opt["trustquery"]:
+			if opt["trustquery"]:
 				# then, check the TrustServer:
 				try:
-					sockobj = socket(AF_INET, SOCK_STREAM)
-					sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-					sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
-					trustresult = ""
-					while 1:
-						data = sockobj.recv(1024)
-						if not data: break
-						trustresult += data 	
-					# maybe deal with errors somewhere in here...
-					if opt["trustoutput"] == "short":
-						req.write(trustresult)
-					else:
-						req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
-						req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-						if opt["pgpquery"]:
-							req.write("PGP Result: %s\n" % (pgpresult))
-							req.write("PGP Query Execution Time: %.6f\n" % (pgptime))
-						req.write("Trust Result: %s\n\n" % (trustresult))
+					trustresult = self.send_query(strategy, source, sink, options)
+					trustresult = minidom.parseString(trustresult).documentElement
+					rating = trustresult.getElementsByTagName("rating")[0]
+					path = trustresult.getElementsByTagName("path")[0]
+					
+						#req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
+						#req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+						#req.write("Trust Result: %s\n\n" % (trustresult))			
+					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[rating.toxml(), path.toxml()]
+						#r.append(trust_result)
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
+			#else:
+			#	req.write("%s" % (pgpresult))
+			
+			
+			#if opt["trustoutput"] == "short" and not pgpresult:
+			#	req.write("-1")
+			#elif opt["trustquery"]:
+			#if (opt["trustquery"] and opt["trustoutput"] == "short") or opt["pgpoutput"] == "short":
+			# maybe deal with errors somewhere in here...
+			
+			if opt["trustoutput"] == "short":
+				if connected.firstChild.nodeValue == "0":
+					req.write("-1")
+				else:
+					req.write(rating.firstChild.nodeValue)
 			else:
-				req.write("%s" % (pgpresult))
+				r.extend([f.source(source), f.sink(sink), f.options(options)])
+				if opt["pgpquery"]:
+					r.append(pgp_result)
+				if opt["trustquery"]:
+					r.append(trust_result)
+			req.write(str(f.result[r]))
 			return apache.OK
 			
 				
 		else:
 			# hmm, something went horribly wrong.
-			req.write("Error 41093.");
+			eeq.write("Error 41093.");
 			return apache.OK
 	
+	def send_query(self, strategy, source="foo", sink="bar", options="baz"):
+		sockobj = socket(AF_INET, SOCK_STREAM)
+		sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+		sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
+		result = ""
+		while 1:
+			data = sockobj.recv(1024)
+			if not data: break
+			result += data
+		#sockobj.close()
+		return result
+	
+	def parse_options(self, form, retstr = False):
+		#handle the options here: 
+		opt = {}
+		try:
+			opt["pgpquery"] = int(form["pgpquery"])
+		except KeyError:
+			opt["pgpquery"] = int(self.config["pgpserver"]["query"])
+		try:
+			opt["trustquery"] = int(form["trustquery"])
+		except KeyError:
+			opt["trustquery"] = int(self.config["trustserver"]["query"])
+		try:
+			opt["trustoutput"] = form["trustoutput"]
+		except KeyError:
+			opt["trustoutput"] = self.config["trustserver"]["output"]
+		try:
+			opt["pgpoutput"] = form["pgpoutput"]
+		except KeyError:
+			opt["pgpoutput"] = self.config["pgpserver"]["output"]
+		try:
+			opt["subject"] = form["subject"]
+		except KeyError:
+			opt["subject"] = "default"
+		if retstr:
+			return "|".join(["%s=%s" % (k, v) for k, v in opt.items()])	
+		else:
+			return opt
+		
+	def map(self, req):
+		form = util.FieldStorage(req, 1)
+		strategy = form["strategy"]
+		options = self.parse_options(form,True)
+		req.content_type = "text/html"
+		peops = self.send_query("PeopleList").split("|")
+		req.write( "foo\n" )
+		req.write( "%s\n" % peops )
+		req.write( "%s\n" % options )
+		req.write("<table border=1><tr><td>Source:</td><td>Sink:</td><td>Query Time:</td><td>Lock Time:</td><td>Result:</td></tr>\n")
+		for source in peops:
+			for sink in peops:
+				if source == sink: continue
+				r = self.send_query(strategy, source, sink, options).split("|")
+				req.write( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, r[1], r[2], r[0]) )
+		
+		req.write("</table>\n")
+		return apache.OK
+
 	def form(self, req):
 		req.content_type = "text/html"
 		req.write("""
