@@ -105,10 +105,12 @@ def get(req):
 	sockobj.send("%s:%s:%s" % (source, sink, subject))
 	result = "krang"
 	result += "foo"
+	krang = "junk"
 	while 1:
 		data = sockobj.recv(1024)
 		if not data: break
 		result += data 	
+		krang += "ly"
 
     # maybe deal with errors somewhere in here...
     req.write("Junkly")
