@@ -1,7 +1,7 @@
 from mod_python import apache
 
 # local
-apache.import_module("dump")
+import dump
 
 # system
 import os
@@ -277,7 +277,9 @@ def test(req):
         req.write("mpm is NOT forked\n")
         
     req.write("\n")
-    req.write("POST form data:\n")    
+    req.write("sys.path: %s\n" % sys.path)
+    req.write("\n")
+    req.write("POST form data:\n")
     req.write("content length: " + dump.dump(req.clength))
     req.write(dump.dump(req.read()))
     #req.write(dump.dump(apache.config_tree()))
