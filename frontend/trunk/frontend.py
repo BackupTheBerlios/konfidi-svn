@@ -193,11 +193,15 @@ class Frontend:
 						trust_data = trustresult.getElementsByTagName("data")[0].toxml()
 					except IndexError:
 						trust_data = str(f.data("N/A"))
+					try:
+						trust_error = trustresult.getElementsByTagName("error")[0].toxml()
+					except IndexError:
+						trust_error = str(f.error("None"))
 					
 						#req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
 						#req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
 						#req.write("Trust Result: %s\n\n" % (trustresult))			
-					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[trust_rating, trust_path, trust_data]
+					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[trust_rating, trust_path, trust_data, trust_error]
 						#r.append(trust_result)
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
@@ -306,7 +310,7 @@ class Frontend:
 		Subject: <input type="text" name="subject"><br/>
 		Strategy: <select name="strategy">""")
 			
-		files = [f for f in os.listdir(os.path.dirname(__file__)+'/../trustserver/TrustStrategies/') if re.compile("TPF.py$").search(f, 1)]
+		files = [f for f in os.listdir(os.path.dirname(__file__)+'/../../trustserver/trunk/TrustStrategies/') if re.compile("TPF.py$").search(f, 1)]
 		for f in files:
 			req.write("<option value=\"%s\">%s</option>\n" % (f[:-6], f[:-6]))
 			
