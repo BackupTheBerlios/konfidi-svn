@@ -31,3 +31,5 @@ PythonHandler server
 
 PythonDebug On
 PythonAutoReload On
+# seperate interpreter for this app; otherwise mod_python shares a namespace for each apache virtual domain
+PythonInterpPerDirective On
