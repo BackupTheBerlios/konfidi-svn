@@ -75,11 +75,12 @@
 </Relationship>
 
 <Relationship>
-	<truster>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted>
 		<foaf:Person>
 			<wot:fingerprint>4FD63B17F6BCC90BA0E20C2D30663A7B407CDD8D</wot:fingerprint>
 		</foaf:Person>
-	</truster>
+	</trusted>
 	<about>
 		<Item>
 			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
@@ -89,11 +90,12 @@
 </Relationship>
 
 <Relationship>
-	<truster>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted>
 		<foaf:Person>
 			<wot:fingerprint>FDD97AAFBD311F3CFD9D7D34C00A22BBC0AFDFB2</wot:fingerprint>
 		</foaf:Person>
-	</truster>
+	</trusted>
 	<about>
 		<Item>
 			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
