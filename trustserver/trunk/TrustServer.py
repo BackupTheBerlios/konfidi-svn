@@ -45,28 +45,25 @@ def main():
 	c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
 	config = c.parse()
 
-	#os.mkfifo('/tmp/trustpipe')
-	#fin = open('/tmp/trustpipe', 'r')
-	
 	print "Server Started"	
 	t = TrustServer(config, {})
 	thread.start_new(t.startUpdateListener, ('',) )
 	thread.start_new(t.startQueryListener, ('',) )
 	# this is really just for output prettiness
 	time.sleep(3)
-	print "Server running.  Enter commands below: "
-	selectables = [sys.stdin]
-	while 1:
-		(input, output, exc) = select([sys.stdin], [], [sys.stdin], 60)
-		if input:
-			cmd = sys.stdin.readline()
-			if cmd.rstrip() == "quit": 
-				break
-			elif cmd.rstrip() == "people": 
-				for p in t.getPeople():
-					print t.people[p]
-			elif cmd.rstrip() == "help":
-				print "commands: \n\tpeople -- print the people dictionary\n\tquit -- exit the server."
+	#print "Server running.  Enter commands below: "
+	#selectables = [sys.stdin]
+	#while 1:
+	#	(input, output, exc) = select([sys.stdin], [], [sys.stdin], 60)
+	#	if input:
+	#		cmd = sys.stdin.readline()
+	#		if cmd.rstrip() == "quit": 
+	#			break
+	#		elif cmd.rstrip() == "people": 
+	#			for p in t.getPeople():
+	#				print t.people[p]
+	#		elif cmd.rstrip() == "help":
+	#			print "commands: \n\tpeople -- print the people dictionary\n\tquit -- exit the server."
 			#else:
 			#	print cmd
 	#os.unlink('/tmp/trustpipe')
