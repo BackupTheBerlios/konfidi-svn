@@ -5,8 +5,10 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <mimetic/mimetic.h>
 
 using namespace std;
+using namespace mimetic;
 
 
 #define fail_if_err(err)                                        \
@@ -24,52 +26,39 @@ using namespace std;
   while (0)
 
 
-/** from http://oopweb.com/CPP/Documents/CPPHOWTO/Volume/C++Programming-HOWTO-7.html */
-void Tokenize(const string& str,
-                      vector<string>& tokens,
-                      const string& delimiters = " ")
+void printMimeStructure(MimeEntity* pMe, int tabcount = 0)
 {
-    // Skip delimiters at beginning.
-    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
-    // Find first "non-delimiter".
-    string::size_type pos     = str.find_first_of(delimiters, lastPos);
-
-    while (string::npos != pos || string::npos != lastPos)
-    {
-        // Found a token, add it to the vector.
-        tokens.push_back(str.substr(lastPos, pos - lastPos));
-        // Skip delimiters.  Note the "not_of"
-        lastPos = str.find_first_not_of(delimiters, pos);
-        // Find next "non-delimiter"
-        pos = str.find_first_of(delimiters, lastPos);
-    }
+	Header& h = pMe->header();                   // get header object
+	for(int c = tabcount; c > 0; --c)            // indent nested entities
+		cout << "    ";                      //
+	cout << h.contentType() << endl;             // prints Content-Type
+	MimeEntityList& parts = pMe->body().parts(); // list of sub entities obj
+	// cycle on sub entities list and print info of every item
+	MimeEntityList::iterator mbit = parts.begin(), meit = parts.end();
+	for(; mbit != meit; ++mbit)
+		printMimeStructure(*mbit, 1 + tabcount);
 }
 
 int main(int argc, char* argv[]) {
-    // slurp stdin
-    char c;
-    string stdin;
-    while((c=cin.get())!=EOF) {
-        stdin += c;
+
+    ios_base::sync_with_stdio(false);        // optimization
+    MimeEntity message(cin);           // parse and load message
+    
+    //printMimeStructure(&message);
+    
+    cout << message.header().from() << endl;
+    cout << message.header().field("User-Agent") << endl;
+    cout << message.header().messageid().str() << endl;
+    if (message.header().hasField("X-Trust-Email"))
+    {
+        cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a X-Trust-Email header!" << endl;
     }
     
-    string headers;
-    string body;
-    unsigned int headers_end = stdin.find("\n\n");
-    if (headers_end == string::npos) {
-        cerr << "malformed email: no \\n\\n found" << endl;
-        exit(1);
-    }
-    headers = stdin.substr(0, headers_end);
-    body = stdin.substr(headers_end);
-    
-    
-    //vector<string> parts;
-    //Tokenize(s, tokens, "\n");
-    
-    if (headers.find("X-Trust-Email:") != string::npos) {
-        cerr << "malformed email: already has a X-Trust-Email header!" << endl;
-        exit(1);
+    MimeEntity last_part = *message.body().parts().back();
+    cout << last_part.header().contentType().type() << last_part.header().contentType().subtype() << endl;
+    ContentType type_pgpsig("application", "pgp-signature");
+    if (last_part.header().contentType() == type_pgpsig) {
+        cout << "equals!" << endl;
     }
     
     /*gpgme_error_t gpgme_op_verify (gpgme_ctx_t CTX,
@@ -101,9 +90,9 @@ int main(int argc, char* argv[]) {
     cout << "did ver" << endl;
     
     if (err == GPG_ERR_NO_ERROR) {
-        sig_header = "X-PGP-Signature: valid";
+        message.header().field("X-PGP-Signature").value("valid");
     } else {
-        sig_header = "X-PGP-Signature: invalid: " + err;
+        message.header().field("X-PGP-Signature").value("invalid, " + err);
     }
     gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
     cout << "did res" << endl;
@@ -113,7 +102,7 @@ int main(int argc, char* argv[]) {
     
     
     string ourheaders = "X-Trust-Email: **";
-    cout << headers << "\n" << sig_header + "\n" + ourheaders << body << flush;
+    //cout << headers << "\n" << sig_header + "\n" + ourheaders << body << flush;
     
     return 0;
 }
