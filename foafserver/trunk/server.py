@@ -241,7 +241,6 @@ def updatetrustserver(req, filename):
     sockobj.connect((hostname, port))
     sockobj.send(filename)
     sockobj.close()
-    apache.log_error("updated trustserver w/: " + filename, apache.APLOG_NOTICE)
 
 #
 # test stuff; delete sometime
