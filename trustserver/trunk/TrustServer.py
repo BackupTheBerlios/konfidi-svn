@@ -39,7 +39,7 @@ def main():
 	c.add_option('update_port', type='int', default='50010', keys='Server')
 	c.add_option('query_port', type='int', default='50000', keys='Server')
 	c.add_option('foaf_url', type='string', default='http://xmlns.com/foaf/0.1/', keys='Schema')
-	c.add_option('trust_url', type='string', default='http://www.abundantplunder.com/trust/owl/trust.owl#', keys='Schema')
+	c.add_option('trust_url', type='string', default='http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl', keys='Schema')
 	c.add_option('wot_url', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema#', keys='Schema')
 	c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
