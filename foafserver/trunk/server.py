@@ -23,6 +23,8 @@ def handler(req):
     
     if (uniqueURI(req) == "test"):
         return test(req)
+    if (uniqueURI(req) == "form"):
+        return form(req)
     if (uniqueURI(req) == ""):
         return index(req)
     elif (req.method == "GET"):
@@ -35,6 +37,8 @@ def handler(req):
 def index(req):
     req.content_type = "text/html"
     req.write('<a href="test">test output</a><br>')
+    req.write('<br>')
+    req.write('<a href="form">web form</a><br>')
     req.write('<br>')
     req.write('<a href="123">sample: andy schamp</a><br>')
     req.write('<a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>')
@@ -64,6 +68,42 @@ def get(req):
     else:
         apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
         return apache.HTTP_FORBIDDEN
+
+def storefoaf(content):
+    pass
+    
+def put(req):
+    return apache.HTTP_NOT_IMPLEMENTED
+
+# URL-unescape (from http://c2.com/cgi/wiki?QueryStringParserTranslations)
+def urldecode(astring):
+    return re.sub('%(..)', lambda mo: chr(int(mo.group(1), 16)), astring.replace('+', ' '))
+
+def form(req):
+    req.content_type = "text/html"
+    req.write("""
+    <html>
+    <head><title>FOAFServer upload form</title></head>
+    <body>""")
+    
+    if (req.method == "POST"):
+        # get just this argument
+        content = req.read()
+        content_start = len("foaf_content=")
+        content_end = content.find("&")
+        content = content[content_start:content_end]
+        
+        storefoaf(urldecode(content))
+        req.write("<p>FOAF succesfully uploaded</p>")
+    
+    req.write("""<form action="form" method="POST">
+    Submit an unsiqned FOAF record:<br/>
+    <textarea name="foaf_content" rows="20" cols="50" wrap="none"></textarea>
+    <br/>
+    <input type="submit" name="submit" value="submit">
+    </form>
+    </body></html>""")
+    return apache.OK
 
 def test(req):
     req.content_type = "text/plain"
@@ -108,6 +148,10 @@ def test(req):
     else:
         req.write("mpm is NOT forked\n")
         
+    req.write("\n")
+    req.write("POST form data:\n")    
+    req.write("content length: " + dump.dump(req.clength))
+    req.write(dump.dump(req.read()))
     #req.write(dump.dump(apache.config_tree()))
     
     return apache.OK
