@@ -55,7 +55,10 @@ class Frontend:
 		if (page == ""):
 			return self.index(self.req)
 		else:
-			return apache.HTTP_NOT_IMPLEMENTED
+			self.req.status = apache.HTTP_NOT_IMPLEMENTED
+			self.req.content_type = "text/html"
+			self.req.write("501: HTTP_NOT_IMPLEMENTED.  tried to access page=%s" % page)
+			return apache.OK
 			
 	#
 	# various handlers depending on the request
@@ -134,7 +137,10 @@ class Frontend:
 			return apache.OK
 		else:
 			# hmm, something went horribly wrong.
-			return apache.HTTP_METHOD_NOT_ALLOWED
+			req.status = apache.HTTP_METHOD_NOT_ALLOWED
+			req.content_type = "text/html"
+			req.write("405: HTTP_METHOD_NOT_ALLOWED: %s" % req.method)
+			return apache.OK
 	
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
@@ -220,7 +226,10 @@ class Frontend:
 				
 		else:
 			# hmm, something went horribly wrong.
-			return apache.HTTP_METHOD_NOT_ALLOWED
+			req.status = apache.HTTP_METHOD_NOT_ALLOWED
+			req.content_type = "text/html"
+			req.write("405: HTTP_METHOD_NOT_ALLOWED: %s" % req.method)
+			return apache.OK
 	
 	def xml_indenter(self, xml, indent=0):
 		if len(xml) == 0:
