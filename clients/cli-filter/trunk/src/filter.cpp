@@ -9,6 +9,10 @@
 using namespace std;
 using namespace mimetic;
 
+const char* header_sig = "X-PGP-Signature";
+const char* header_sig_finger = "X-PGP-Signature-Fingerprint";
+const char* header_trust = "X-Trust-Email-Value";
+
 
 #define fail_if_err(err)                                        \
   do                                                            \
@@ -31,33 +35,39 @@ int main(int argc, char* argv[]) {
 	// optimization
     ios_base::sync_with_stdio(false);  
     // parse and load message      
-    MimeEntity message(cin);           
+    MimeEntity message(cin);
     
     // check headers
     // TODO: search, iterate through headers and delete!
-    message.header().field("X-PGP-Signature-Fingerprint").value();
-    message.header().field("X-PGP-Signature").value();
-    if (message.header().hasField("X-Trust-Email"))
+    message.header().field(header_sig_finger).value();
+    message.header().field(header_sig).value();
+    if (message.header().hasField(header_trust))
     {
-        cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a X-Trust-Email header!" << endl;
+        cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a " + header_trust + " header!" << endl;
     }
     
     // parse text & sig
     if (message.header().contentType().type() != "multipart" ||
     	message.header().contentType().subtype() != "signed") {
         cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
-        exit(3);
+        message.header().field(header_sig).value("none");
+        cout << message;
+        return 0;
     }
 	if (message.body().parts().size() != 2) {
         cerr << "warning: email " + message.header().messageid().str() + " doesn't have 2 parts, it has " << message.body().parts().size() << endl;
-        exit(3);
+        message.header().field(header_sig).value("none");
+        cout << message;
+        return 0;
 	}
 	string text = message.body().parts().front()->body();
     MimeEntity last_part = *message.body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
     	last_part.header().contentType().subtype() != "pgp-signature") {
     	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
-        exit(2);
+        message.header().field(header_sig).value("none");
+        cout << message;
+        return 0;
     }
 	string sig = last_part.body();
     
@@ -94,13 +104,12 @@ int main(int argc, char* argv[]) {
     
     
     if (result->signatures->summary & GPGME_SIGSUM_VALID) {
-        message.header().field("X-PGP-Signature").value("valid");
+        message.header().field(header_sig).value("valid");
     } else {
-        message.header().field("X-PGP-Signature").value((string)"invalid, " + gpg_strerror(result->signatures->status));
+        message.header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
     }
-    message.header().field("X-PGP-Signature-Fingerprint").value(result->signatures->fpr);
+    message.header().field(header_sig_finger).value(result->signatures->fpr);
 
-    cout << message;
-    
-    return 0;
+	cout << message;
+	return 0;
 }
