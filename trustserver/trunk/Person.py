@@ -13,12 +13,12 @@ class Person:
 	def setFingerprint(self, fingerprint):
 		self.fingerprint = fingerprint
 	
-	def addTrustLink(self, sink, name, resource, value):
+	def addTrustLink(self, sink, name, value):
 		if sink in self.trusts:
 			t = self.trusts[sink]
 		else :
 			t = {}
-		t[name] = value
+		t[name] = float(value)
 		self.trusts[sink] = t
 	
 	def __repr__(self):
@@ -26,6 +26,6 @@ class Person:
 		for p in self.trusts:
 			str += "\n\t%s regarding:" % p 
 			for s in self.trusts[p]:
-				str += "\n\t\t%s at level %s (%s)" % (s, self.trusts[p][s], self.trusts[p][s].getNumericValue())
+				str += "\n\t\t%s at level %s" % (s, self.trusts[p][s])
 		return str
 		

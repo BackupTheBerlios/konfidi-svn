@@ -39,7 +39,6 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			f = xmlgen.Factory()
 			result = f.queryresult(r, executed="1", strategy=strategy, search_time=searchtime, lock_time=lockwait)
 			r = str(result)
-			
 			# check to see if we need to make this smarter/bigger
 			self.request.send("%s" % r)
 			

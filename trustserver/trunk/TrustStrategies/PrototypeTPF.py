@@ -66,9 +66,9 @@ class PrototypeTPF(TrustPathFinder):
 		ought to be established, though, in the findPath stage."""
 		#print "getRating: %s -> %s" % (source, sink)
 		if subject in self.people[source].trusts[sink]:
-			rating = self.people[source].trusts[sink][subject].getNumericValue()
+			rating = self.people[source].trusts[sink][subject]
 		else: 
-			rating = self.people[source].trusts[sink]["default"].getNumericValue()
+			rating = self.people[source].trusts[sink]["default"]
 		#print "\trating: %s" % rating
 		return rating
 	

@@ -30,12 +30,13 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 
 		# load trust values into list for later
-		trust = TripleStore()
+		#trust = TripleStore()
 		#trust.load(self.server.config.trust_url)
-		trust.load("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
-		self.trustValues = []
-		for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
-			self.trustValues.append(s)
+		
+		#trust.load("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
+		#self.trustValues = []
+		#for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
+		#	self.trustValues.append(s)
 			
 	def handle(self):
 		#print "update connection opened."
@@ -57,19 +58,30 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 	def load(self, source):	
 		print "Update Listener: parsing input: %s" % source
 		# this is the main object we're concerned with
-		store = TripleStore()
-		store.load(source)			
+		trust = TripleStore()
+		trust.load(source)	
+		#self.server.lock.acquire_write()
+		for (source, sink) in trust.subject_objects(self.TRUST["trusts"]):
+			#print "%s trusts %s" % (trust.objects(source, self.WOT["fingerprint"]).next(), trust.objects(sink, self.WOT["fingerprint"]).next())
+			truster = self.server.getPerson(trust.objects(source, self.WOT["fingerprint"]).next())
+			trustee = self.server.getPerson(trust.objects(sink, self.WOT["fingerprint"]).next())
+			for item in trust.objects(sink, self.TRUST["trustedAbout"]):
+				truster.addTrustLink(trustee.getFingerprint(), trust.objects(item, self.TRUST["subject"]).next().split("#")[1], trust.objects(item, self.TRUST["value"]).next())
+				#print "\tregarding %s at level %s\n" % (trust.objects(item, self.TRUST["subject"]).next(), trust.objects(item, self.TRUST["value"]).next())
+		#self.server.lock.release_write()
+		# old version
+		
 		# For each foaf:Person in the store print out its mbox property.
-		truster = store.subjects(self.TRUST["trusts"]).next()
-		f = store.objects(truster, self.WOT["fingerprint"]).next()
-		p = self.server.getPerson(f)
-		for trustee in store.objects(truster, self.TRUST["trusts"]):
-			f2 = store.objects(trustee, self.WOT["fingerprint"]).next()
-			# we do this to make sure they exist.
-			p2 = self.server.getPerson(f2)
-			for value, resource in store.predicate_objects(trustee):
-				if value in self.trustValues:
-					self.server.lock.acquire_write()
+	#	truster = store.subjects(self.TRUST["trusts"]).next()
+	#	f = store.objects(truster, self.WOT["fingerprint"]).next()
+	#	p = self.server.getPerson(f)
+	#	for trustee in store.objects(truster, self.TRUST["trusts"]):
+	#		f2 = store.objects(trustee, self.WOT["fingerprint"]).next()
+	#		# we do this to make sure they exist.
+	#		p2 = self.server.getPerson(f2)
+	#		for value, resource in store.predicate_objects(trustee):
+	#			if value in self.trustValues:
+	#				self.server.lock.acquire_write()
 					#time.sleep(15)
-					p.addTrustLink(f2, resource.split("#")[1], resource, BasicTrustValue(value.split("#")[1]))
-					self.server.lock.release_write()
+	#				p.addTrustLink(f2, resource.split("#")[1], resource, BasicTrustValue(value.split("#")[1]))
+	#				self.server.lock.release_write()
