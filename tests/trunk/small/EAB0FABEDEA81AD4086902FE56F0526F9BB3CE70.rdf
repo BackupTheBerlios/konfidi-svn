@@ -74,4 +74,32 @@
 	</about>
 </Relationship>
 
+<Relationship>
+	<truster>
+		<foaf:Person>
+			<wot:fingerprint>4FD63B17F6BCC90BA0E20C2D30663A7B407CDD8D</wot:fingerprint>
+		</foaf:Person>
+	</truster>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<rating>.8</rating>
+		</Item>
+	</about>
+</Relationship>
+
+<Relationship>
+	<truster>
+		<foaf:Person>
+			<wot:fingerprint>FDD97AAFBD311F3CFD9D7D34C00A22BBC0AFDFB2</wot:fingerprint>
+		</foaf:Person>
+	</truster>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<rating>.8</rating>
+		</Item>
+	</about>
+</Relationship>
+
 </rdf:RDF>
