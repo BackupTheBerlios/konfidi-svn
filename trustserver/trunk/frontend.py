@@ -96,6 +96,7 @@ def query(req):
 		pass    	
 		# then, check the TrustServer:
 		req.write("Source: %s, Sink: %s, Subject: %s" % (source, sink, subject))
+		req.write("Host: %s, Port: %i" % (req.get_options()['trustserver.host'], req.get_options()['trustserver.port'])
 		sockobj = socket(AF_INET, SOCK_STREAM)
 		sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
 		sockobj.send("%s:%s:%s" % (source, sink, subject))
