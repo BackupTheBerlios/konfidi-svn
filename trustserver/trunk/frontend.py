@@ -110,6 +110,7 @@ def get(req):
 		result += data 	
 
     # maybe deal with errors somewhere in here...
+    req.write("Junk");
     req.write(result)
     return apache.OK    
 
