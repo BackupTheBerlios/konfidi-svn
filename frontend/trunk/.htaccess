@@ -19,6 +19,8 @@ PythonOption pgpserver.pathfinder LocalWotsap
 # constructor, and it can expect to find what it's looking for:
 PythonOption LocalWotsap.app /home/dpb2/downloads/wotsap-0.6/wotsap
 PythonOption LocalWotsap.data /data/prg/data/keys/latest.wot
+PythonOption LocalWotsap.path /home/dpb2/downloads/wotsap-0.6/
+PythonOption LocalWotsap.file wotsap
 
 # this was for the foafserver, don't know if we need it for the trust server.
 # limit uploads to 100K
