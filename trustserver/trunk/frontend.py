@@ -115,8 +115,8 @@ def get(req):
     # maybe deal with errors somewhere in here...
     req.content_type = "text/html"
     req.write("Junkly")
-    req.write(krang)
-    req.write(result)
+    req.write("grak."+krang)
+    req.write("Krudd."+result)
     return apache.OK    
 
 def form(req):
