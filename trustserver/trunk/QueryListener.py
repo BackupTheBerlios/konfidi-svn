@@ -26,7 +26,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
 				tpf = DefaultTPF(self.people)
-				print "%s" % (i)
+				print "Caught ImportError: %s" % (i)
 			lockwait = time.time()
 			self.server.lock.acquire_read()	
 			lockwait = "%.6f" %  (time.time() - lockwait)
