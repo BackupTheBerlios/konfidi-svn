@@ -123,7 +123,9 @@ def put(req):
     
     if err:
         apache.log_error(err, apache.APLOG_NOTICE)
-        return apache.HTTP_NOT_ACCEPTABLE
+        req.status = apache.HTTP_NOT_ACCEPTABLE
+        req.write("Error: " + err)
+        return apache.OK
     else:
         return apache.OK
 
@@ -176,10 +178,10 @@ def form(req):
 # TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
 # TODO: what else to validate?
 def validate(content, uri_fingerprint):
-    FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl")
-    WOT = Namespace("http://xmlns.com/wot/0.1/")
-    RDF = Namespace("http://www.w3.org/2000/01/rdf-schema")
+    FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
+    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#")
+    WOT = Namespace("http://xmlns.com/wot/0.1/#")
+    RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
     store = TripleStore()
     
     try:
@@ -190,16 +192,20 @@ def validate(content, uri_fingerprint):
     try:
         truster = store.subjects(TRUST["trusts"]).next()
     except StopIteration:
-        raise FOAFServerError, "must have a trust:Truster"
+        raise FOAFServerError, "invalid xmlns:trust, or missing trust:Truster"
         
     try:
         fingerprint = store.objects(truster, WOT["fingerprint"]).next()
     except StopIteration:
-        raise FOAFServerError, "Truster must have a wot:fingerprint"
-        
+        raise FOAFServerError, "invalid xmlns:wot, or Truster missing a wot:fingerprint"
+    
+    fingerprint = fingerprint.replace(" ", "")
+    fingerprint = fingerprint.replace(":", "")
     if not(ishex(fingerprint)):
         raise FOAFServerError, "Invalid fingerprint format; must be hex"
-        
+    
+    # TODO: validate all wot:fingerprints?
+    
     # TODO: something with fingerprint
     try:
         mbox = store.objects(truster, FOAF["mbox"]).next()
