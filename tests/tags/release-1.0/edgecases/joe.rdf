@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:dc="http://purl.org/dc/elements/1.1/#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:wot="http://xmlns.com/wot/0.1/#"
+   xmlns:owl="http://www.w3.org/2002/07/owl#" 
+   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   >
+
+<trust:Truster> 
+	<foaf:name>joe</foaf:name>
+	<wot:fingerprint>joe</wot:fingerprint>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>scumbag</wot:fingerprint>
+			<trust:trustedAveragely rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>ghandi</wot:fingerprint>
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#wisdom"/>
+			<trust:trustedNeutrally rdf:resource="http://www.abundantplunder.com/trust/subjects/#economics"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>spammer</wot:fingerprint>
+			<trust:distrustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>joework</wot:fingerprint>
+			<trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>guywithoutfoaf</wot:fingerprint>
+			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<wot:fingerprint>joeswife</wot:fingerprint>
+			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+		</trust:Trustee>
+	</trust:trusts>
+</trust:Truster>
+
+</rdf:RDF>
