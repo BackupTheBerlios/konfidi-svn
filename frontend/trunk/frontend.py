@@ -174,11 +174,20 @@ class Frontend:
 				opt["trustquery"] = int(form["trustquery"])
 			except KeyError:
 				opt["trustquery"] = int(self.config["trustserver"]["query"])
-				
+			try:
+				opt["trustoutput"] = form["trustoutput"]
+			except KeyError:
+				opt["trustoutput"] = self.config["trustserver"]["output"]
+			try:
+				opt["pgpoutput"] = form["pgpoutput"]
+			except KeyError:
+				opt["pgpoutput"] = self.config["pgpserver"]["output"]
+			
 			opt["subject"] = form["subject"]
 			
 			options = "|".join(["%s=%s" % (k, v) for k, v in opt.items()])
 			
+			pgpresult = None
 			if opt["pgpquery"]:
 				# first, check the PGP server:
 				try:
@@ -187,28 +196,42 @@ class Frontend:
 				except (ImportError):
 					# put the hardcoded one here
 					raise ImportError
-				conn = pathfinder.connected(source, sink)
-				graph = pathfinder.graph(source, sink)
-				req.write("Graph: %s\nConnected: %s\n\n" % (graph, conn))
+				if (opt["trustquery"] and opt["trustoutput"] == "short") or opt["pgpoutput"] == "short":
+					pgpresult = pathfinder.connected(source, sink)
+					if pgpresult:
+						pgpresult = 1
+					else:
+						pgpresult = 0
+				else:
+					pgpresult = pathfinder.graph(source, sink)
 			
-			if opt["trustquery"]:
+			if opt["trustoutput"] == "short" and not pgpresult:
+				req.write("-1")
+			elif opt["trustquery"]:
 				# then, check the TrustServer:
-				req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
-				req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
 				try:
 					sockobj = socket(AF_INET, SOCK_STREAM)
 					sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
 					sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
-					result = ""
+					trustresult = ""
 					while 1:
 						data = sockobj.recv(1024)
 						if not data: break
-						result += data 	
+						trustresult += data 	
 					# maybe deal with errors somewhere in here...
-					req.write("Result: %s\n\n" % (result))
+					if opt["trustoutput"] == "short":
+						req.write(trustresult)
+					else:
+						req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
+						req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+						req.write("PGP Result: %s\n\n" % (pgpresult))
+						req.write("Trust Result: %s\n\n" % (trustresult))
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
-			return apache.OK    
+			else:
+				req.write("%s" % (pgpresult))
+			return apache.OK
+			
 				
 		else:
 			# hmm, something went horribly wrong.

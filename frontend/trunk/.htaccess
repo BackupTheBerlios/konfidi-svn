@@ -11,6 +11,19 @@ PythonOption pgpserver.port 50000
 PythonOption trustserver.query 1
 PythonOption pgpserver.query 1
 
+# full XML output, or short value
+# full = complete result
+# short = value (1 or 0 for PGP server, double from 0-1 for trustserver)
+# Note:  
+# If short is chosen for the trustserver:
+#	* If pgpserver.query is true, then if there is no pgp path, the frontend will return -1.  
+# 	* If there is a pgp path, then the frontend will return the trust score for that path.
+# If full is chosen for the trustserver:
+#	* The PGP section of the XML output will contain either the full or short pgp output.
+#
+PythonOption trustserver.output full
+PythonOption pgpserver.output full
+
 # PGP Pathfinding strategy
 # just use the name, not the full class name
 # e.g. LocalWotsap instead of LocalWotsapPathfinder
