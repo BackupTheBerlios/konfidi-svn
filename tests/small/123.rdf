@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:wot="http://xmlns.com/wot/0.1/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#" 
+   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl"
+   >
+
+<trust:Truster> 
+	<foaf:name>asdf32</foaf:name>
+	<wot:fingerprint>123</wot:fingerprint>
+	<foaf:mbox>dfadfsng@abc.def</foaf:mbox>
+	<trust:trusts>
+		<trust:Trustee>
+			<foaf:name>AGoforth</foaf:name>
+			<wot:fingerprint>Goforth</wot:fingerprint>
+			<trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#ohio"/>
+		</trust:Trustee>
+	</trust:trusts>
+	<trust:trusts>
+		<trust:Trustee>
+			<foaf:name>ASchamp</foaf:name>
+			<wot:fingerprint>Schamp</wot:fingerprint>
+			<trust:trustedAveragely rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+		</trust:Trustee>
+	</trust:trusts>
+</trust:Truster>
+
+
+<rdf:Description rdf:about="">
+	<wot:assurance rdf:resource="foaf.rdf.asc" />
+</rdf:Description>
+
+</rdf:RDF>
