@@ -13,6 +13,7 @@
 	<foaf:name>scum bag</foaf:name>
 	<wot:fingerprint>scumbag</wot:fingerprint>
 </foaf:Person>
+
 <foaf:Person rdf:nodeID="sp">
 	<foaf:name>spammer</foaf:name>
 	<wot:fingerprint>spammer</wot:fingerprint>
@@ -20,11 +21,13 @@
 	
 <Relationship>
 	<truster rdf:nodeID="sb"/>
-	<trusted rdf:nodeId="sp"/>
-	<about><Item>
+	<trusted rdf:nodeID="sp"/>
+	<about>
+		<Item>
 			<rating>1.0</rating>
 			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
 		</Item>
 	</about>
 </Relationship>
+
 </rdf:RDF>

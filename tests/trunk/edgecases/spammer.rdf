@@ -20,12 +20,12 @@
 </foaf:Person>
 
 <Relationship>
-	<truster rfd:nodeID="sp"/>
+	<truster rdf:nodeID="sp"/>
 	<trusted rdf:nodeID="g"/>
 	<about>
 		<Item>
 			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
-			<rating>0.9</rating>
+			<rating>0.90</rating>
 		</Item>
 	</about>
 </Relationship>

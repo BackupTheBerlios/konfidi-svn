@@ -6,22 +6,25 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
 <foaf:Person rdf:nodeID="jw"> 
 	<foaf:name>joeswife</foaf:name>
 	<wot:fingerprint>joeswife</wot:fingerprint>
 </foaf:Person>
+
 <foaf:Person rdf:nodeID="j">
+	<foaf:name>foo</foaf:name>
 	<wot:fingerprint>joe</wot:fingerprint>
 </foaf:Person>
+
 <Relationship>
 	<truster rdf:nodeID="jw"/>
 	<trusted rdf:nodeID="j"/>
 	<about>
 		<Item>
-			<rating>9.0</rating>
+			<rating>0.90</rating>
 			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
 		</Item>
 	</about>

@@ -6,14 +6,14 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
-<foaf:Person rdf:nodeId="jw">
+<foaf:Person rdf:nodeID="jw">
 	<foaf:name>joe at work</foaf:name>
 	<wot:fingerprint>joework</wot:fingerprint>
 </foaf:Person>
-<foaf:Person rdf:nodeId="j">
+<foaf:Person rdf:nodeID="j">
 	<wot:fingerprint>joe</wot:fingerprint>
 </foaf:Person>
 <Relationship>
