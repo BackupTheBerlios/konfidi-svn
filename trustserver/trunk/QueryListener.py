@@ -15,6 +15,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		str = ''
 		data = self.request.recv(1024)
 		if data == "people":
+			# if you re-implement this, you really ought to make it thread-safe
 			pass
 			#print "people: \n"
 			#for p in self.people:
@@ -37,9 +38,9 @@ class QueryListener(SocketServer.BaseRequestHandler):
 				except (ImportError):
 					from Strategies.DefaultTPF import DefaultTPF
 					tpf = DefaultTPF(self.people)
-					
+				self.server.lock.acquire_read()	
 				result = tpf.query(source, sink, options)
-				
+				self.server.lock.release_read()
 				#s = self.query(source, sink, subject)
 				# check to see if we need to make this smarter/bigger
 				self.request.send(result)

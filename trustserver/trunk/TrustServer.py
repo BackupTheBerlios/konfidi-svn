@@ -11,6 +11,7 @@ from select import select
 from UpdateListener import UpdateListener
 from QueryListener import QueryListener
 from RequestServer import RequestServer
+from ReadWriteLock import ReadWriteLock
 
 # configure these paths:
 LOGFILE = sys.path[0] + '/log/trustserver.log'
@@ -30,12 +31,13 @@ class TrustServer:
 	def __init__(self, config=None, people=None):
 		self.host = config.host
 		self.config = config
+		self.lock = ReadWriteLock()
 		self.updatePort = config.update_port
 		self.queryPort = config.query_port
 		# this people object should be the global object that is shared by both updateListener and queryListener
 		self.people = people
-		self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people, self.config)
-		self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people, self.config)
+		self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people, self.lock, self.config)
+		self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people, self.lock, self.config)
 		
 	def startUpdateListener(self, junk):
 		print "Starting Update Listener"

@@ -68,4 +68,6 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 			p2 = self.server.getPerson(f2)
 			for value, resource in store.predicate_objects(trustee):
 				if value in self.trustValues:
+					self.server.lock.acquire_write()
 					p.addTrustLink(f2, resource.split("#")[1], resource, BasicTrustValue(value.split("#")[1]))
+					self.server.lock.release_write()
