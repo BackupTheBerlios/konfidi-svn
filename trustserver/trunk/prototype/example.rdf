@@ -8,9 +8,11 @@
    xmlns:trust="http://www.abundantplunder.com/trust/owl/trust.owl"
 >
 <foaf:Person>
+	<foaf:name>Andy</foaf:name>
 	<wot:fingerprint>Schamp_Fingerprint</wot:fingerprint>
-	<trust:trusts>
+	<trust:trusts rdf:parseType="Collection">
 		<foaf:Person> 
+			<foaf:name>Dave</foaf:name>
 			<wot:fingerprint>Brondsema_fingerprint</wot:fingerprint>
 			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
@@ -18,6 +20,7 @@
 			<trust:distrustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#music"/>
 		</foaf:Person>
 		<foaf:Person>
+			<foaf:name>Jim</foaf:name>
 			<wot:fingerprint>Laing_fingerprint</wot:fingerprint>
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
 		</foaf:Person>
