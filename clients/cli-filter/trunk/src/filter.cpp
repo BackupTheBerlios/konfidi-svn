@@ -151,7 +151,8 @@ void validate_from_matches_signer(Email * email, gpgme_ctx_t ctx, gpgme_verify_r
 	fail_if_err(err);
 	err = gpgme_op_keylist_next (ctx2, &key);
 	if (gpg_err_code(err) == GPG_ERR_EOF) {
-		cerr << "Couldn't not find public key for: " << result->signatures->fpr << endl;
+		cerr << "Couldn't not find public key for: " << result->signatures->fpr
+			<< "  Perhaps you need to set 'keyserver-options auto-key-retrieve' in ~/.gnupg/gpg.conf" << endl;
 		email->message->header().field(header_sig).value("public key not available");
 		quit(email);
 	} else {
