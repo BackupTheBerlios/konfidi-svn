@@ -44,8 +44,8 @@ def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
     if re.search('^[A-F0-9]*$', uri):
-        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.xml')
-        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.pgp'], uri + '.xml')
+        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.rdf')
+        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.pgp'], uri + '.rdf')
         try:
             try:
                 req.content_type = "text/plain"
