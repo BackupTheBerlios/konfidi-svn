@@ -16,13 +16,14 @@ def uniqueURI(req):
 
 def handler(req):
     req.allow_methods(["GET", "PUT"])
-    apache.log_error("request!", apache.APLOG_NOTICE)
     
     if req.get_config().has_key('PythonDebug'):
         reload(dump)
     
     if (uniqueURI(req) == "test"):
         return test(req)
+    if (uniqueURI(req) == ""):
+        return index(req)
     elif (req.method == "GET"):
         return get(req)
     elif (req.method == "PUT"):
@@ -30,13 +31,23 @@ def handler(req):
     else:
         return apache.HTTP_NOT_IMPLEMENTED
 
+def index(req):
+    req.content_type = "text/html"
+    req.write('<a href="test">test output</a><br>')
+    req.write('<br>')
+    req.write('<a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample: dave brondsema</a><br>')
+    return apache.OK
+
 def get(req):
-    req.write(uniqueURI(req))
+    req.content_type = "text/plain"
+    file = open(os.path.dirname(__file__) + '/' + req.get_options()['storage.dir.xml'] + '/' + uniqueURI(req) + '.xml', 'r')
+    req.write(file.read())
     return apache.OK
 
 def test(req):
     req.content_type = "text/plain"
     
+    apache.log_error("request!", apache.APLOG_NOTICE)
     req.write("\nParsed URI:\n-------------\n")
     req.write(dump.dump(req.parsed_uri))
     req.write("\nModPython Options:\n-------------\n")

@@ -13,4 +13,5 @@ PythonAutoReload On
 # our own options
 PythonOption validate.xml 1
 PythonOption validate.pgp 0
+PythonOption storage.dir.xml ./storage
 
