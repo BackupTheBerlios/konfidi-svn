@@ -13,6 +13,9 @@ function namename()
   echo "${name0:-$name}"
 }
 
+PASS="    PASS"
+FAIL="    FAIL"
+
 ls *.txt | while read testcase
 do
 	testname=$(namename $testcase)
@@ -37,15 +40,15 @@ do
 				# compare that to "0"
 				if [ "0" -eq $($APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checknotfile - | wc -c) ]
 				then
-					echo "    PASS"
+					echo $PASS
 				else
-					echo "    FAIL"
+					echo $FAIL
 				fi
 			else
-				echo "    PASS"
+				echo $PASS
 			fi
 		else
-			echo "    FAIL"
+			echo $FAIL
 		fi
 	else
 		echo "    no check file ($checkfile)"
