@@ -86,6 +86,7 @@ def index(req):
 	return apache.OK
 
 def query(req):	
+	
 	if (req.method == "POST" or req.method == "GET"):
 		form = util.FieldStorage(req, 1)
 		source = form["source"]
@@ -99,6 +100,7 @@ def query(req):
 	# first, check the PGP server:
 	pass    	
 	# then, check the TrustServer:
+	req.write("Source: %s, Sink: %s, Subject: %s" % source, sink, subject)
 	sockobj = socket(AF_INET, SOCK_STREAM)
 	sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
 	sockobj.send("%s:%s:%s" % (source, sink, subject))
