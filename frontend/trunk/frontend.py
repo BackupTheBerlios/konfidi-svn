@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import traceback
+import time
 #import exceptionTools
 from socket import *
 #from rdflib.Namespace import Namespace
@@ -88,7 +89,7 @@ class Frontend:
 		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
-		Or <a href="people">show people</a><br>
+		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br>
 		<h4><a href="test">debug output</a></h4>""" +
 		str(self.config) + 
 		"""</body>
@@ -196,6 +197,7 @@ class Frontend:
 				except (ImportError):
 					# put the hardcoded one here
 					raise ImportError
+				pgptime = time.time()
 				if (opt["trustquery"] and opt["trustoutput"] == "short") or opt["pgpoutput"] == "short":
 					pgpresult = pathfinder.connected(source, sink)
 					if pgpresult:
@@ -204,6 +206,7 @@ class Frontend:
 						pgpresult = 0
 				else:
 					pgpresult = pathfinder.graph(source, sink)
+				pgptime = time.time() - pgptime
 			
 			if opt["trustoutput"] == "short" and not pgpresult:
 				req.write("-1")
@@ -224,7 +227,9 @@ class Frontend:
 					else:
 						req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
 						req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-						req.write("PGP Result: %s\n\n" % (pgpresult))
+						if opt["pgpquery"]:
+							req.write("PGP Result: %s\n" % (pgpresult))
+							req.write("PGP Query Execution Time: %.6f\n" % (pgptime))
 						req.write("Trust Result: %s\n\n" % (trustresult))
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
@@ -251,7 +256,7 @@ class Frontend:
 		Enter your query: <br>
 		<form action="query" method="POST">
 		Source: <input type="text" name="source"><br/>
-		Sink: <input type="text" name="sink"><br/>
+		Sink: <input type="text" name="sink"><br/><br/>
 		Subject: <input type="text" name="subject"><br/>
 		Strategy: <select name="strategy">""")
 			
@@ -260,13 +265,13 @@ class Frontend:
 			req.write("<option value=\"%s\">%s</option>\n" % (f[:-6], f[:-6]))
 			
 		req.write("""
-		</select>
-		<!--
-		Action:<br/>
-		<input type="radio" name="action" value="PGP"> PGP<br/>
-		<input type="radio" name="action" value="trust"> Trust<br/>
-		<input type="radio" name="action" value="both"> Both<br/>
-		(note: this is a temporary thing, used for testing)-->
+		</select><br/><br/>
+		Query:<br/>
+		PGP Server:<br/>
+		Yes: <input type="radio" name="pgpquery" value="1">  No: <input type="radio" name="pgpquery" value="0"><br/>
+		Trustserver: <br/>
+		Yes: <input type="radio" name="trustquery" value="1">  No: <input type="radio" name="trustquery" value="0"><br/><br/>
+		
 		<br/>
 		<input type="submit" name="submit" value="Submit">
 		</form>
