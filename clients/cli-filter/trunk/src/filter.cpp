@@ -134,10 +134,6 @@ string parse_email_sig(MimeEntity * message, string whole, string mbox_from) {
 gpgme_verify_result_t gpg_validate(gpgme_ctx_t ctx, string text, string sig) {
 	gpgme_error_t err;
     
-    // TODO: do a local lookup first?  how often to update those?
-//    err = gpgme_set_keylist_mode(ctx, GPGME_KEYLIST_MODE_EXTERN);
-//    fail_if_err(err);
-    
     gpgme_data_t sig_data;
     err = gpgme_data_new_from_mem(&sig_data, sig.c_str(), sig.length(), 1);
     fail_if_err(err);
