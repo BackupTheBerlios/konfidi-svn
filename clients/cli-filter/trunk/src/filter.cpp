@@ -9,6 +9,7 @@
 #include <curl/curl.h>
 
 #include "options.h"
+#include "email.h"
 
 using namespace std;
 using namespace mimetic;
@@ -19,7 +20,6 @@ const char* header_trust_num = "X-Trust-Email-Rating";
 const char* header_trust_level = "X-Trust-Email-Level";
 const char* header_this_app = "X-Dmail-Client";
 const char* header_this_app_value = "cli-filter 0.1";
-
 
 #define fail_if_err(err)                                        \
   do                                                            \
@@ -37,10 +37,8 @@ const char* header_this_app_value = "cli-filter 0.1";
 
 // TODO: handle this better
 // TODO: release gpg context
-int quit(string mbox_from, MimeEntity *message, int flag=0) {
-    cout << mbox_from << *message;
-    cout << endl << endl << endl;
-    cout << message->body() << endl;
+int quit(Email * email, int flag=0) {
+	email->printOn(&cout);
 	clog << endl;
 	exit(flag);
 }
@@ -79,32 +77,32 @@ void delete_header(Header * header, string field_name) {
 	}
 }
 
-void clean_headers(MimeEntity * message) {
-    delete_header(&message->header(), header_sig);
-    delete_header(&message->header(), header_sig_finger);
-    delete_header(&message->header(), header_trust_num);
-    delete_header(&message->header(), header_trust_level);
+void clean_headers(Email * email) {
+    delete_header(& email->message->header(), header_sig);
+    delete_header(& email->message->header(), header_sig_finger);
+    delete_header(& email->message->header(), header_trust_num);
+    delete_header(& email->message->header(), header_trust_level);
 }
 
-string parse_email_text(MimeEntity * message, string whole, string mbox_from) {
-    if (message->header().contentType().type() != "multipart" ||
-    	message->header().contentType().subtype() != "signed") {
-        cerr << "warning: email " + message->header().messageid().str() + " is not multipart/signed, it is: " << message->header().contentType().str() << endl;
-        message->header().field(header_sig).value("none");
-        quit(mbox_from, message);
+string parse_email_text(Email * email) {
+    if (email->message->header().contentType().type() != "multipart" ||
+    	email->message->header().contentType().subtype() != "signed") {
+        cerr << "warning: email " + email->message->header().messageid().str() + " is not multipart/signed, it is: " << email->message->header().contentType().str() << endl;
+        email->message->header().field(header_sig).value("none");
+        quit(email);
     }
-	if (message->body().parts().size() != 2) {
-        cerr << "warning: email " + message->header().messageid().str() + " doesn't have 2 parts, it has " << message->body().parts().size() << endl;
-        message->header().field(header_sig).value("none");
-        quit(mbox_from, message);
+	if (email->message->body().parts().size() != 2) {
+        cerr << "warning: email " + email->message->header().messageid().str() + " doesn't have 2 parts, it has " << email->message->body().parts().size() << endl;
+        email->message->header().field(header_sig).value("none");
+        quit(email);
 	}
 	
-	string boundary = "--" + message->header().contentType().param("boundary");
+	string boundary = "--" + email->message->header().contentType().param("boundary");
 	// start at 1st boundary
-	int text_start = whole.find(boundary)+boundary.length()+1;
+	int text_start = email->exact_text.find(boundary)+boundary.length()+1;
 	// end at 2nd boundary
-	int text_end = whole.find(boundary, text_start);
-	string text = whole.substr(text_start, text_end-text_start-1);
+	int text_end = email->exact_text.find(boundary, text_start);
+	string text = email->exact_text.substr(text_start, text_end-text_start-1);
 	// lf -> crlf
 	int p=-1;
 	while (std::string::npos != (p=text.find("\n",p+2)))
@@ -113,13 +111,13 @@ string parse_email_text(MimeEntity * message, string whole, string mbox_from) {
 	return text;
 }
 
-string parse_email_sig(MimeEntity * message, string whole, string mbox_from) {
-    MimeEntity last_part = *message->body().parts().back();
+string parse_email_sig(Email * email) {
+    MimeEntity last_part = *email->message->body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
     	last_part.header().contentType().subtype() != "pgp-signature") {
     	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
-        message->header().field(header_sig).value("none");
-        quit(mbox_from, message);
+        email->message->header().field(header_sig).value("none");
+        quit(email);
     }
 	return last_part.body();
 }
@@ -139,7 +137,7 @@ gpgme_verify_result_t gpg_validate(gpgme_ctx_t ctx, string text, string sig) {
     return gpgme_op_verify_result (ctx);
 }
 
-void validate_from_matches_signer(MimeEntity * message, string mbox_from, gpgme_ctx_t ctx, gpgme_verify_result_t result) {
+void validate_from_matches_signer(Email * email, gpgme_ctx_t ctx, gpgme_verify_result_t result) {
 	gpgme_error_t err;
     // TODO: this is blocking, probably want to change.
     gpgme_key_t key;
@@ -148,7 +146,7 @@ void validate_from_matches_signer(MimeEntity * message, string mbox_from, gpgme_
 	
 	
 	bool found_email = false;
-	string from_email = message->header().from().front().mailbox() + '@' + message->header().from().front().domain();
+	string from_email = email->message->header().from().front().mailbox() + '@' + email->message->header().from().front().domain();
 	gpgme_user_id_t uid = key->uids;
 	while (uid) {
 		if (from_email == uid->email) {
@@ -157,19 +155,19 @@ void validate_from_matches_signer(MimeEntity * message, string mbox_from, gpgme_
 		uid = uid->next;
 	}
 	if (!found_email) {
-		cerr << "no PGP uid email matched the 'From: ' on " << message->header().messageid().str() << endl;
-		message->header().field(header_sig).value("from mismatch");
-		quit(mbox_from, message);
+		cerr << "no PGP uid email matched the 'From: ' on " << email->message->header().messageid().str() << endl;
+		email->message->header().field(header_sig).value("from mismatch");
+		quit(email);
 	}
 }
 
-void add_gpg_headers(MimeEntity * message, string mbox_from, gpgme_verify_result_t result) {
+void add_gpg_headers(Email * email, gpgme_verify_result_t result) {
     if (result->signatures->status == GPG_ERR_NO_ERROR) {
-        message->header().field(header_sig).value("valid");
+        email->message->header().field(header_sig).value("valid");
     } else {
-        message->header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
+        email->message->header().field(header_sig).value((string)"invalid, " + gpg_strerror(result->signatures->status));
     }
-    message->header().field(header_sig_finger).value(result->signatures->fpr);
+    email->message->header().field(header_sig_finger).value(result->signatures->fpr);
 }
 
 string rating_to_starlevel(double rating) {
@@ -192,14 +190,14 @@ size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
 	ostringstream value_stream;
 	value_stream << value;
 	
-	MimeEntity * message = (MimeEntity *) userp;
-	message->header().field(header_trust_num).value(value_stream.str());
-	message->header().field(header_trust_level).value(rating_to_starlevel(value));
+	Email * email = (Email *) userp;
+	email->message->header().field(header_trust_num).value(value_stream.str());
+	email->message->header().field(header_trust_level).value(rating_to_starlevel(value));
 	// TODO: not sure what we're supposed to return
 	return nmemb;
 }
 
-void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
+void add_trust_headers(Email * email, string to) {
 	CURLcode res;
 	CURL *handle = curl_easy_init();
 	if(handle) {
@@ -209,7 +207,7 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 			clog << "fetching " << url << endl;
 		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_handle_data);
-		curl_easy_setopt(handle, CURLOPT_WRITEDATA, message);
+		curl_easy_setopt(handle, CURLOPT_WRITEDATA, email);
 		char error_buffer[CURL_ERROR_SIZE];
 		curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, error_buffer);
 		curl_easy_setopt(handle, CURLOPT_FAILONERROR, 1);
@@ -224,6 +222,8 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 }
 
 int main(int argc, char* argv[]) {
+	Email* email = new Email();
+	
 	// set up context
 	gpgme_error_t err;
     gpgme_ctx_t ctx;
@@ -238,34 +238,35 @@ int main(int argc, char* argv[]) {
 		return 5;	
 	}
 
-	string whole = slurp(cin);
+	email->exact_text = slurp(cin);
 	cin.seekg(0, ios::beg); // reset stream to beginning
 
-	string mbox_from = read_possible_From_line(cin);
+	email->mbox_from = read_possible_From_line(cin);
 	
 	// load data
 	// optimization
     ios_base::sync_with_stdio(false);
     // parse and load message
     MimeEntity message(cin);
+    email->message = &message;
     
-    clean_headers(&message);
-    message.header().field(header_this_app).value(header_this_app_value);
+    clean_headers(email);
+    email->message->header().field(header_this_app).value(header_this_app_value);
     
 
-	string text = parse_email_text(&message, whole, mbox_from);
-	string sig = parse_email_sig(&message, whole, mbox_from);
+	string text = parse_email_text(email);
+	string sig = parse_email_sig(email);
     
     
     if (Options::verbose)
-	    clog << "processing " << message.header().messageid().str() << endl;
+	    clog << "processing " << email->message->header().messageid().str() << endl;
 
 	gpgme_verify_result_t result = gpg_validate(ctx, text, sig);
     
     if (Options::verbose)
 	    clog << "did key " << result->signatures->fpr << endl;
     
-	validate_from_matches_signer(&message, mbox_from, ctx, result);
+	validate_from_matches_signer(email, ctx, result);
 	
 	
 	if (Options::verbose) {
@@ -295,9 +296,9 @@ int main(int argc, char* argv[]) {
 	    clog << "next ptr: " << result->signatures->next << endl;
 	}
     
-	add_gpg_headers(&message, mbox_from, result);
-	add_trust_headers(&message, mbox_from, result->signatures->fpr);
+	add_gpg_headers(email, result);
+	add_trust_headers(email, result->signatures->fpr);
 
 	gpgme_release(ctx);
-    quit(mbox_from, &message);
+    quit(email);
 }
