@@ -34,6 +34,9 @@ int main(int argc, char* argv[]) {
     MimeEntity message(cin);           
     
     // check headers
+    // TODO: search, iterate through headers and delete!
+    message.header().field("X-PGP-Signature-Fingerprint").value();
+    message.header().field("X-PGP-Signature").value();
     if (message.header().hasField("X-Trust-Email"))
     {
         cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a X-Trust-Email header!" << endl;
