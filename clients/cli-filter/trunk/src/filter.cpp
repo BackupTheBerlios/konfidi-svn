@@ -31,11 +31,19 @@ const char* header_trust = "X-Trust-Email-Value";
 
 int quit(string mbox_from, MimeEntity *message, int flag=0) {
     cout << mbox_from << *message;
+    cout << endl << endl << endl;
+    cout << message->body() << endl;
 	clog << endl;
 	return 0;
 }
 
 int main(int argc, char* argv[]) {
+
+	// read the whole message
+	string whole;
+	getline(cin, whole, '\0');
+	cin.seekg(0, ios::beg);
+
 
 	// load data
 	// possible "From " line in mbox format
@@ -84,7 +92,19 @@ int main(int argc, char* argv[]) {
         message.header().field(header_sig).value("none");
         return quit(mbox_from, &message);
 	}
-	string text = message.body().parts().front()->body();
+	
+//	string text = message.body().parts().front()->body();
+	string boundary = message.header().contentType().param("boundary");
+	// start at 2nd boundary
+	int text_start = whole.find(boundary);
+	text_start = whole.find(boundary, text_start+1);
+	// end at 3rd boundary
+	int text_end = whole.find(boundary, text_start+1);
+	cout << text_start << endl;
+	cout << text_end << endl;
+	string text = whole.substr(text_start, text_end-text_start);
+	cout << '!' << text << '!' << endl;
+
     MimeEntity last_part = *message.body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
     	last_part.header().contentType().subtype() != "pgp-signature") {
