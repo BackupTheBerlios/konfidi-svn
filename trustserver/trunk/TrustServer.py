@@ -53,7 +53,7 @@ def main():
 	# I don't know a better way to keep this from exiting, except maybe to fork 
 	# new processes of the above, and then exit.:
 	while 1:
-		time.sleep(120)
+		time.sleep(30)
 		#print "people: \n"
 		#for p in t.getPeople():
 		#	print "\t%s" % (t.people[p])

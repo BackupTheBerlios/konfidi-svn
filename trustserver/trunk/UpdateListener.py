@@ -27,10 +27,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/#")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-		print dump(self.FOAF)+"\n\n"
-		print dump(self.WOT)+"\n\n"
-		print dump(self.TRUST)+"\n\n"
-		print dump(self.RDF)+"\n\n"
+
 		# load trust values into list for later
 		trust = TripleStore()
 		#trust.load(self.server.config.trust_url)

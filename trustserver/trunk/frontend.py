@@ -86,9 +86,9 @@ def index(req):
 	<a href="query?source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
 	<a href="query?source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
 	<a href="query?source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
-	<a href="query?source=EAB0FABEDEA81AD4086902Fe56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C0ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
-	<a href="query?source=8A335B856C4AE39A0C36147F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C0ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
-	<a href="query?source=8A335B856C4AE39A0C36147F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902Fe56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+	<a href="query?source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
+	<a href="query?source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
+	<a href="query?source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
 	<h4>Web interface</h4>
 	Or use <a href="form">this form</a><br>
 	Or <a href="people">show people</a><br>

@@ -17,6 +17,9 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		str = ''
 		data = self.request.recv(1024)
 		if data == "people":
+			#print "people: \n"
+			#for p in self.people:
+			#	print "\t%s" % (t.people[p])
 			print "\tpeople:\n\t"
 			print dump(self.people)
 			print dump(self.server.people)
