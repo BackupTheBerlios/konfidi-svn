@@ -7,7 +7,7 @@ PythonOption storage.dir.sig ../tests/trunk/small
 
 # the trust server to which we communicate all new files
 PythonOption trustserver.hostname localhost
-PythonOption trustserver.port 20010
+PythonOption trustserver.port 30010
 
 # limit uploads to 100K
 # unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user

@@ -181,9 +181,9 @@ def form(req):
 # TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
 # TODO: what else to validate?
 def validate(content, uri_fingerprint):
-    FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
-    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.1/trust.owl#")
-    WOT = Namespace("http://xmlns.com/wot/0.1/#")
+    FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
+    WOT = Namespace("http://xmlns.com/wot/0.1/")
     RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
     store = TripleStore()
 
@@ -194,7 +194,14 @@ def validate(content, uri_fingerprint):
     except SAXParseException:
         raise FOAFServerError, "invalid XML: " + str(sys.exc_info()[1])
     
-    fingerprint = "EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"
+    fingerprint = last_fingerprint = None
+    for (relationship, truster) in store.subject_objects(TRUST["truster"]):
+        fingerprint = store.objects(truster, WOT["fingerprint"]).next()
+        if last_fingerprint:
+            if fingerprint != last_fingerprint:
+                raise FOAFServerError, "All 'wot:fingerprint's from 'trust:truster's must be the same.  Found '%s' and '%s'" % (fingerprint, last_fingerprint)
+        last_fingerprint = fingerprint
+    
     fingerprint = fingerprint.replace(" ", "")
     fingerprint = fingerprint.replace(":", "")
     if not(ishex(fingerprint)):
