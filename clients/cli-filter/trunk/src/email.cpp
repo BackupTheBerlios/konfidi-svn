@@ -27,6 +27,6 @@ void Email::printOn(ostream* out) {
 	for(; hbit != heit; ++hbit)
 		*out << *hbit << endl;
 	
-	int body_start = exact_text.find("\n\n")+2;
+	int body_start = exact_text.find("\n\n")+1;
 	*out << exact_text.substr(body_start);
 }
