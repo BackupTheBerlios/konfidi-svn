@@ -7,7 +7,7 @@
     <!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
     <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
   ]>
-<rdf:RDF xmlns="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#"
+<rdf:RDF xmlns="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
 xmlns:owl="http://www.w3.org/2002/07/owl#" 
 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
 xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
@@ -17,80 +17,80 @@ xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 </owl:Ontology>
 
 <owl:ObjectProperty rdf:ID="trustedCompletely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustedCompletely</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trustedHighly">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustedHighly</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trustedAveragely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustedAveragely</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trustedMinimally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustedMinimally</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trustedNeutrally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustedNeutrally</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="distrustedMinimally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>distrustedMinimally</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="distrustedAveragely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>distrustedAveragely</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="distrustedHighly">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>distrustedHighly</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="distrustedCompletely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>distrustedCompletely</rdfs:label>
 	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trustValue">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trustValue</rdfs:label>
 	<rdfs:domain rdf:resource="#Trustee"/>
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="trusts">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>trusts</rdfs:label>
 	<rdfs:domain rdf:resource="#Truster" />
 	<rdfs:range rdf:resource="#Trustee" />
 </owl:ObjectProperty>
 
 <owl:ObjectProperty rdf:ID="keyFingerprint">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>keyFingerprint</rdfs:label>
 	<rdfs:domain rdf:resource="&foaf;Agent" />
 </owl:ObjectProperty>
 
 <owl:Class rdf:ID="Truster">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>Truster</rdfs:label>
 	<rdfs:subClassOf rdf:resource="&foaf;Agent" /> 
 	<rdfs:subClassOf>
@@ -108,7 +108,7 @@ xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
 </owl:Class>
 
 <owl:Class rdf:ID="Trustee">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#" />
+	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#" />
 	<rdfs:label>Trustee</rdfs:label>
 	<rdfs:subClassOf rdf:resource="&foaf;Agent" />
 	<rdfs:subClassOf>
