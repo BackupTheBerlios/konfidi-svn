@@ -45,8 +45,8 @@
 <xsd:element xsd:name="percent" rdf:ID="percent">
 	<xsd:simpleType>
 		<xsd:restriction xsd:base="xsd:decimal">
-			<xsd:totalDigits xsd:value="4" />
-			<xsd:fractionDigits xsd:value="2" />
+			<xsd:totalDigits>4</xsd:totalDigits>
+			<xsd:fractionDigits>2</xsd:fractionDigits>
 			<xsd:minInclusive xsd:value="0.00" />
 			<xsd:maxInclusive xsd:value="1.00" />
 		</xsd:restriction>
