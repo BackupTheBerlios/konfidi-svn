@@ -2,6 +2,7 @@ import dump
 from mod_python import apache
 
 import os
+import re
 
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
@@ -39,10 +40,22 @@ def index(req):
     return apache.OK
 
 def get(req):
-    req.content_type = "text/plain"
-    file = open(os.path.dirname(__file__) + '/' + req.get_options()['storage.dir.xml'] + '/' + uniqueURI(req) + '.xml', 'r')
-    req.write(file.read())
-    return apache.OK
+    req.content_type = "text/xml"
+    uri = uniqueURI(req)
+    # security check, allow hex only
+    if re.search('^[A-F0-9]*$', uri):
+        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.xml')
+        try:
+            file = open(filename, 'r')
+            req.write(file.read())
+            file.close()
+            return apache.OK
+        except IOError:
+            apache.log_error("not found: requested " + uri, apache.APLOG_ERR)
+            return apache.HTTP_NOT_FOUND
+    else:
+        apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
+        return apache.HTTP_FORBIDDEN
 
 def test(req):
     req.content_type = "text/plain"
