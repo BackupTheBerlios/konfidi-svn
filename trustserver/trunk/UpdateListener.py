@@ -65,18 +65,21 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		# new version
 		count = 0
 		for (relationship, truster) in trust.subject_objects(self.TRUST["truster"]):
+			#print "r: %s, t: %s" % (relationship, truster)
 			# clean up the fingerprints
 			source_fingerprint = trust.objects(truster, self.WOT["fingerprint"]).next()
 			sink_fingerprint = trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["fingerprint"]).next()
-			# these don't work yet...
-			source_fingerprint = re.sub(r'[^0-9A-F]', r'', source_fingerprint.upper())
-			sink_fingerprint = re.sub(r'[^0-9A-F]', r'', sink_fingerprint.upper())
+			# turn these off for now, for our test cases.  figure a better solution later
+			#source_fingerprint = re.sub(r'[^0-9A-F]', r'', source_fingerprint.upper())
+			#sink_fingerprint = re.sub(r'[^0-9A-F]', r'', sink_fingerprint.upper())
 			source = self.server.getPerson(source_fingerprint)
 			sink = self.server.getPerson(sink_fingerprint)
+			#print "sf: %s, sif: %s" % (source_fingerprint, sink_fingerprint)
 			for item in trust.objects(relationship, self.TRUST["about"]):
+				#print "i: %s" % item
 				topic = trust.objects(item, self.TRUST["topic"]).next().split("#")[1]
 				rating = float(trust.objects(item, self.TRUST["rating"]).next())
-				if rating > 0.0 and rating < 1.0:
+				if rating >= 0.0 and rating <= 1.0:
 					source.addTrustLink(sink.getFingerprint(), topic, rating)
 					count += 1
 		print "Added %d trust links." % count

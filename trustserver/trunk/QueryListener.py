@@ -9,6 +9,13 @@ from xml.dom import minidom
 import xmlgen
 from TrustPath import PathNotFoundError
 
+class SourceSinkSameError(Exception):
+	def __init__(self, source):
+		self.source = source
+	
+	def __str__(self):
+		return repr("%s" % (self.source))
+
 class QueryListener(SocketServer.BaseRequestHandler):
 	def setup(self):
 		self.people = self.server.people
@@ -18,6 +25,8 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		data = self.request.recv(1024)
 		try:
 			[strategy,source,sink,options] = data.split(":")
+			if source == sink:
+				raise SourceSinkSameError(source)
 			print "\texecuting query: %s, %s, %s, %s" % (strategy, source, sink, options)
 			
 			try:
@@ -40,9 +49,11 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			
 			
 		except KeyError, k:
-			result = f.queryresult(f.error("Person %s not found in dataset"))
+			result = f.queryresult[f.error("Person %s not found in dataset" % (k))]
 		except PathNotFoundError, p:
-			result = f.queryresult(f.error("No path found from source to sink: %s" % (p))) 
+			result = f.queryresult[f.error("No path found from source to sink: %s" % (p))] 
+		except SourceSinkSameError, s:
+			result = f.queryresult[f.error("The source and the sink are the same: %s" % (s))]
 		#except (ValueError):
 		#	self.request.send("Invalid query")
 	
