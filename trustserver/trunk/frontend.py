@@ -50,7 +50,7 @@ def handler(req):
     if (uniqueURI(req) == "test"):
     	return test(req)
     if (uniqueURI(req) == "query"):
-        return get(req)
+        return query(req)
     if (uniqueURI(req) == "form"):
         return form(req)
     if (uniqueURI(req) == ""):
@@ -85,7 +85,7 @@ def index(req):
 	""")
 	return apache.OK
 
-def get(req):	
+def query(req):	
     if (req.method == "POST" or req.method == "GET"):
         form = util.FieldStorage(req, 1)
         source = form["source"]
