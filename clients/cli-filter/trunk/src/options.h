@@ -10,6 +10,8 @@ using namespace std;
 /** static class which aggregates commandline and file options **/
 class Options
 {
+private:
+	static string conf_file;
 protected:
 	Options();
 public:

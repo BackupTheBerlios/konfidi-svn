@@ -226,9 +226,9 @@ int main(int argc, char* argv[]) {
     fail_if_err(err);
     
 	// load options
+	Options::process_args(argc, argv);
 	Options::guess_source_fingerprint(ctx);
 	Options::load_config_file();
-	Options::process_args(argc, argv);
 	if (!Options::safety_check()) {
 		return 5;	
 	}

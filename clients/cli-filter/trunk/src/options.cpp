@@ -2,13 +2,17 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <cstdlib>
 using namespace std;
+
+#include <sys/types.h>
+#include <pwd.h>
 
 bool Options::verbose = false;
 string Options::source_fingerprint;
-string Options::trust_server_url = "http://brondsema.gotdns.com/~ams5/frontend/trunk/query";
-string Options::trust_server_params = "strategy=Prototype&subject=email&trustoutput=short&";
+string Options::trust_server_url;
+string Options::trust_server_params;
+string Options::conf_file = ".dmail/cli-filter.conf";
 
 void Options::process_args(int argc, char* argv[]) {
 	if (argc == 1) {
@@ -25,7 +29,50 @@ void Options::process_args(int argc, char* argv[]) {
 }
 
 void Options::load_config_file() {
-	
+    string home;
+    
+    //TODO: not linux-specific
+    uid_t uid;
+    struct passwd *info = getpwent();
+	uid = geteuid();
+	while(info != NULL) {
+	    if(info->pw_uid == uid) {
+	    	home = info->pw_dir;
+			break;
+		}
+        info = getpwent();
+    }
+    if (!home.size()) {
+    	cerr << "could not determine user home dir" << endl;
+    	return;
+    }
+    
+    string full_file = home + "/" + conf_file;
+    ifstream file(full_file.c_str(), ios::in);
+    if (!file) {
+    	if (verbose)
+    		clog << "no configuration file found at: " << full_file << endl;
+    	return;	
+    }
+    string word;
+    while (file >> word) {
+    	if (word == "trust_server_url") {
+    		file >> trust_server_url;
+    		if (verbose)
+    			clog << "read trust_server_url: " << trust_server_url << endl;
+    	} else if (word == "trust_server_params") {
+    		file >> trust_server_params;
+    		if (verbose)
+    			clog << "read trust_server_params: " << trust_server_params << endl;
+    	} else if (word == "source_fingerprint") {
+    		file >> source_fingerprint;
+    		if (verbose)
+    			clog << "read source_fingerprint: " << source_fingerprint << endl;
+    	} else {
+    		if (verbose)
+    			clog << "skipping config entry: " << word << endl;
+    	}
+    }
 }
 
 bool Options::guess_source_fingerprint(gpgme_ctx_t ctx) {
