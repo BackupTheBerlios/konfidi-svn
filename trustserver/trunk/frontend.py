@@ -104,13 +104,14 @@ def get(req):
 	sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
 	sockobj.send("%s:%s:%s" % (source, sink, subject))
 	result = "krang"
+	result += "foo"
 	while 1:
 		data = sockobj.recv(1024)
 		if not data: break
 		result += data 	
 
     # maybe deal with errors somewhere in here...
-    req.write("Junk");
+    req.write("Junk")
     req.write(result)
     return apache.OK    
 
