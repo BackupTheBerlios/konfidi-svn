@@ -50,7 +50,7 @@ def handler(req):
     if (uniqueURI(req) == "test"):
     	return test(req)
     if (uniqueURI(req) == "query"):
-        return query(req)
+        return get(req)
     if (uniqueURI(req) == "form"):
         return form(req)
     if (uniqueURI(req) == ""):
