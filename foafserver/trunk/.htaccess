@@ -1,0 +1,16 @@
+# .py requests handled by mod_python
+#AddHandler mod_python .py
+
+# ALL requests handled by mod_python
+SetHandler mod_python
+
+# all mod_python requests go to server.py
+PythonHandler server
+
+PythonDebug On
+PythonAutoReload On
+
+# our own options
+PythonOption validate.xml 1
+PythonOption validate.pgp 0
+
