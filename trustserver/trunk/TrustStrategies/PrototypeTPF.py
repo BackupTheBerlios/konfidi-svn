@@ -2,10 +2,13 @@ from TrustPath import TrustPath
 from TrustPath import PathNotFoundError
 from TrustPath import Fifo
 from TrustPathFinder import TrustPathFinder
+import xmlgen
 
 class PrototypeTPF(TrustPathFinder):
 	def query(self, source, sink, opts):
+		f = xmlgen.Factory()
 		options = {}
+		xmlopt = []
 		# split the list of options, and build a dictionary out of it
 		for o in opts.split("|"):
 			(k, v) = o.split("=")
@@ -13,11 +16,11 @@ class PrototypeTPF(TrustPathFinder):
 		
 		path = self.findPath(source, sink, options["subject"])
 		pathstr = "%s" % path
-		#print "final path to sink: %s" % path
 		rating = self.getPathRating(path, options["subject"])
-		#print "final rating: %s" % rating
-		return "%s|%s" % (rating, pathstr)
 		
+		trustresult = f.trustresult[f.rating("%s" % rating), f.path(pathstr)]
+		t = str(trustresult)
+		return "%s" % (t)
 	
 	def findPath(self, source, sink, subject):
 		#print "searching for: %s to %s regarding %s" % (source, sink, subject)
