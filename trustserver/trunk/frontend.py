@@ -81,14 +81,14 @@ def index(req):
 	<h4>Querying</h4>
 	Just do a GET using to the url "query", defining the variables "source", "sink", and "subject"
 	<br>
-	<a href="query?source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
-	<a href="query?source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
-	<a href="query?source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
-	<a href="query?source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
-	<a href="query?source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
-	<a href="query?source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
-	<a href="query?source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
-	<a href="query?source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+	<a href="query?strategy=Prototype&source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
+	<a href="query?strategy=Prototype&source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
+	<a href="query?strategy=Prototype&source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
+	<a href="query?strategy=Prototype&source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
+	<a href="query?strategy=Prototype&source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
+	<a href="query?strategy=Default&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
+	<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
+	<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
 	<h4>Web interface</h4>
 	Or use <a href="form">this form</a><br>
 	Or <a href="people">show people</a><br>
@@ -121,19 +121,28 @@ def people(req):
 def query(req):	
 	if (req.method == "POST" or req.method == "GET"):
 		form = util.FieldStorage(req, 1)
+		strategy = form["strategy"]
 		source = form["source"]
 		sink = form["sink"]
-		subject = form["subject"]
+		#subject = form["subject"]
+		
+		if strategy == "": strategy = "Default"
+			
+		#handle the options here: 
+		opt = {}
+		opt["subject"] = form["subject"]
+		
+		options = "|".join(["%s=%s" % (k, v) for k, v in opt.items()])
 		
 		# first, check the PGP server:
 		pass    	
 		# then, check the TrustServer:
-		req.write("Source: %s\n Sink: %s\n Subject: %s\n\n" % (source, sink, subject))
+		req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
 		req.write("Host: %s\n Port: %i\n\n" % (req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
 		try:
 			sockobj = socket(AF_INET, SOCK_STREAM)
 			sockobj.connect((req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
-			sockobj.send("%s:%s:%s" % (source, sink, subject))
+			sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
 			result = ""
 			while 1:
 				data = sockobj.recv(1024)
@@ -158,13 +167,21 @@ def form(req):
 	<body>
 	<a href="./">Back to index</a>
 	""")
-    
+	
 	req.write("""
 	Enter your query: <br>
 	<form action="query" method="POST">
 	Source: <input type="text" name="source"><br/>
 	Sink: <input type="text" name="sink"><br/>
 	Subject: <input type="text" name="subject"><br/>
+	Strategy: <select name="strategy">""")
+	
+	files = [f for f in os.listdir(os.path.dirname(__file__)+'/Strategies/') if re.compile("TPF.py$").search(f, 1)]
+	for f in files:
+		req.write("<option value=\"%s\">%s</option>\n" % (f[:-6], f[:-6]))
+		
+	req.write("""
+	</select>
 	<br/>
 	<input type="submit" name="submit" value="Submit">
 	</form>
