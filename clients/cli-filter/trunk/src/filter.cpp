@@ -33,6 +33,7 @@ const char* header_this_app_value = "cli-filter 0.1";
     }                                                           \
   while (0)
 
+// TODO: handle this better
 int quit(string mbox_from, MimeEntity *message, int flag=0) {
     cout << mbox_from << *message;
     cout << endl << endl << endl;
@@ -41,6 +42,8 @@ int quit(string mbox_from, MimeEntity *message, int flag=0) {
 	exit(flag);
 }
 
+// TODO: make verbose part of an options data structure
+// TODO: make options globally available
 void process_args(int argc, char* argv[], bool & verbose) {
 	if (argc == 1) {
 		// no args
@@ -182,9 +185,19 @@ void add_gpg_headers(MimeEntity * message, string mbox_from, gpgme_verify_result
     message->header().field(header_sig_finger).value(result->signatures->fpr);
 }
 
+string rating_to_starlevel(double rating) {
+	rating *= 10;
+	rating += 0.5;
+	string stars = "";
+	for (int i = 1; i <= 10 && i < rating; i++) {
+		stars += "*";
+	}
+	return stars;
+}
+
 size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
 	cout << (char*)buffer << endl;
-	istringstream buffer_stream((char*)buffer);
+	istringstream buffer_stream("000.77");
 	double value;
 	buffer_stream >> value;
 	clog << "got " << value << endl;
@@ -194,7 +207,7 @@ size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
 	
 	MimeEntity * message = (MimeEntity *) userp;
 	message->header().field(header_trust_num).value(value_stream.str());
-	message->header().field(header_trust_level).value("**********");
+	message->header().field(header_trust_level).value(rating_to_starlevel(value));
 	// TODO: not sure what we're supposed to return
 	return nmemb;
 }
@@ -205,9 +218,9 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string from, stri
 	CURL *handle = curl_easy_init();
 	if(handle) {
 		string trust_server_url = "http://brondsema.gotdns.com/~ams5/frontend/trunk/query";
-		string turst_server_params = "strategy=Prototype&subject=email&";
+		string trust_server_params = "strategy=Prototype&subject=email&trustoutput=short&";
 		string source_sink = "source=" + from + "&" + "sink=" + to + "&";
-		string url = trust_server_url + "?" + turst_server_params + source_sink;
+		string url = trust_server_url + "?" + trust_server_params + source_sink;
 		clog << "fetching " << url << endl;
 		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_handle_data);
