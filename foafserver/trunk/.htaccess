@@ -2,8 +2,8 @@
 # Configuration file for FOAF server
 
 # either a relative or absolute path
-PythonOption storage.dir.rdf storage
-PythonOption storage.dir.sig storage
+PythonOption storage.dir.rdf /home/dpb2/dev/dmail/tests/small
+PythonOption storage.dir.sig ../tests/small
 
 
 # limit uploads to 100K
