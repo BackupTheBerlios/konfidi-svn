@@ -13,7 +13,7 @@
 	xmlns:owl="&owl;" 
 	xmlns:rdf="&rdf;" 
 	xmlns:rdfs="&rdfs;"
-	xmlns:xs="&xsd;"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
@@ -79,8 +79,8 @@
 -->
 
 <!-- we want to use this for constraints -->
-<xs:simpleType name="percent">
-	<xs:restriction base="decimal">
+<xs:simpleType name="percent" id="percent">
+	<xs:restriction base="xs:decimal">
 		<xs:totalDigits value="4" />
 		<xs:fractionDigits value="2" />
 		<xs:minInclusive value="0.00" />
