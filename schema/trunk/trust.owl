@@ -28,7 +28,7 @@
 	> 
 	<owl:versionInfo>v1.0</owl:versionInfo>
 	<!--<owl:imports rdf:resource="&rdfs;"/>-->
-	<wot:assurance rdf:resource="../trustsig"/>
+	<wot:assurance rdf:resource="/trustsig"/>
 </owl:Ontology>
 
 <!-- classes first -->
