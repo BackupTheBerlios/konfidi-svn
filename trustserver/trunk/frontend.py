@@ -124,9 +124,9 @@ def form(req):
     req.write("""
     Enter your query: <br>
     <form action="query" method="POST">
-    <input type="text" name="source"><br/>
-    <input type="text" name="sink"><br/>
-    <input type="text" name="subject"><br/>
+    Source: <input type="text" name="source"><br/>
+    Sink: <input type="text" name="sink"><br/>
+    Subject: <input type="text" name="subject"><br/>
     <br/>
     <input type="submit" name="submit" value="Submit">
     </form>
