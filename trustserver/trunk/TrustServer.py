@@ -98,7 +98,11 @@ def main():
 if __name__ == "__main__":
 	# see if I'm already started
 	# if so, just exit.
-	pids = open(PIDFILE, 'r').read()
+	try:
+		os.mkdir(os.path.dirname(PIDFILE))
+	except OSError:
+		pass
+	#pids = open(PIDFILE, 'r').read()
 	(stdin, stdout, stderr) = os.popen3("ps aux | grep `cat %s` | grep -v grep" % PIDFILE)
 	stdin.close()
 	stderr.close()
@@ -137,6 +141,10 @@ if __name__ == "__main__":
 		sys.exit(1)
 
 	# start the daemon main loop
+	try:
+		os.mkdir(os.path.dirname(LOGFILE))
+	except OSError:
+		pass
 	sys.stdout = sys.stderr = Log(open(LOGFILE, 'a+'))
 	main()
 
