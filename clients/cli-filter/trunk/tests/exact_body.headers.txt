@@ -1,1 +1,6 @@
+ boundary="------------080505050201080003020000"
+ filename="test.txt"
+ name="test.txt"
+Content-Disposition: inline;
+Content-Type: text/plain;
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed

@@ -1,43 +1,71 @@
-Return-Path: <jdfrens@calvin.edu>
+Return-Path: <dave@brondsema.net>
 Delivered-To: user0009-dave@brondsema.net
-Received: (qmail 9050 invoked from network); 4 Mar 2005 03:11:03 -0000
-Received: from ursa.calvin.edu (153.106.4.1)
-  by 0 with SMTP; 4 Mar 2005 03:11:03 -0000
-Received: from [192.168.1.101] (c-24-11-111-167.client.comcast.net [24.11.111.167])
-	by ursa.calvin.edu (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id j243B0Li000450;
-	Thu, 3 Mar 2005 22:11:00 -0500
-Message-ID: <4227D254.5050904@calvin.edu>
-Date: Thu, 03 Mar 2005 22:13:24 -0500
-From: "Jeremy D. Frens" <jdfrens@calvin.edu>
-User-Agent: Mozilla Thunderbird 1.0 (X11/20041230)
+Received: (qmail 2158 invoked by uid 0); 21 Mar 2005 00:54:11 -0000
+Received: from unknown (HELO ?192.168.1.101?) (user0009@68.22.152.170)
+  by 0 with SMTP; 21 Mar 2005 00:54:11 -0000
+Message-ID: <423E1B07.6090600@brondsema.net>
+Date: Sun, 20 Mar 2005 19:53:27 -0500
+From: Dave Brondsema <dave@brondsema.net>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
 X-Accept-Language: en-us, en
 MIME-Version: 1.0
-To: Dave Brondsema <dave@brondsema.net>, Jason Roelofs <jgr2@calvin.edu>
-Subject: Programming contest
-X-Enigmail-Version: 0.89.5.0
+To: Dave Brondsema <dave@brondsema.net>
+Subject: simple att
+X-Enigmail-Version: 0.90.0.0
 X-Enigmail-Supports: pgp-inline, pgp-mime
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig228FB9AFCEA198874DF67B92"
 X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on ferrari
 X-Spam-Level: 
 X-Spam-Status: No, score=0.0 required=4.0 tests=none autolearn=failed 
 	version=3.0.2
 
-I feel bad that we missed the programming contest last semester.  I do 
-have an alternative this semester; Taylor University holds a programming 
-contest each spring, this year on April 9.  As a member of the CCCU, 
-Taylor will actually allow us to participate remotely; we don't even 
-have to leave Calvin's campus!
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig228FB9AFCEA198874DF67B92
+Content-Type: multipart/mixed;
+ boundary="------------080505050201080003020000"
 
-We can actually have as many as we want participate, but I wanted to get 
-your feedback first.  Let me know if you're interested and if you know 
-anyone else who might be.
+This is a multi-part message in MIME format.
+--------------080505050201080003020000
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-jdf
 
--- 
-* Jeremy D. Frens * Professor, Computer Science * jdfrens@calvin.edu *
-     ``Stick your fingers / in your mouth.
-       Squeeze your tongue / and wrench it out.''
-                   -- Sonic Youth, "Confusion is Next"
+some regular body here
+
+--
+Dave Brondsema : dave@brondsema.net
+http://www.splike.com : programming
+http://csx.calvin.edu : student org
+http://www.brondsema.net : personal
+
+--------------080505050201080003020000
+Content-Type: text/plain;
+ name="test.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="test.txt"
+
+line one
+line two
+line three
+
+--------------080505050201080003020000--
+
+--------------enig228FB9AFCEA198874DF67B92
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.0 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFCPhsJVvBSb5uzznARAjJPAKC+Tm6TEtW3HfxXWmuCGEsTrwJd1ACgtBr/
+074ApmZ4mPzkEXvrtP8Q/1s=
+=4/si
+-----END PGP SIGNATURE-----
+
+--------------enig228FB9AFCEA198874DF67B92--
 
