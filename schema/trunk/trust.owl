@@ -27,7 +27,7 @@
 	dc:date="$Date: 2005/03/19 11:38:02 $"
 	> 
 	<owl:versionInfo>v1.0</owl:versionInfo>
-	<owl:imports rdf:resource="&rdfs;"/>
+	<!--<owl:imports rdf:resource="&rdfs;"/>-->
 	<wot:assurance rdf:resource="../trustsig"/>
 </owl:Ontology>
 
