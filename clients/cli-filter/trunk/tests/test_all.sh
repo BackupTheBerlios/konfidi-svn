@@ -13,8 +13,20 @@ function namename()
   echo "${name0:-$name}"
 }
 
-ls plain.txt | while read testcase
+ls *.txt | while read testcase
 do
-	$APP $* < $testcase 2>/dev/null | sort | comm -1 -2 sort $(namename $testcase).headers -
-	
+	testname=$(namename $testcase)
+	checkfile=$testname.headers
+	echo $testname:
+	if [ -f $checkfile ]
+	then
+		if $APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checkfile - | cmp $checkfile - 2>/dev/null
+		then
+		  echo "    PASS"
+		else
+		  echo "    FAIL"
+		fi
+	else
+		echo "    no check file ($checkfile)"
+	fi
 done
