@@ -2,7 +2,9 @@ import dump
 from mod_python import apache
 
 import os
-#import sys
+
+# initialization code
+phase = 'init'
 
 def handler(req):
     req.allow_methods(["GET", "PUT"])
@@ -26,20 +28,56 @@ def get(req):
 
 def test(req):
     req.content_type = "text/plain"
+    
+    """
+    if phase == 'init':
+        init_var2 = 2
+        var3 = 1
+        phase = 'request'
+    var3 += 1
+    req.write("\n" + dump.dump(init_var) + dump.dump(init_var2) + dump.dump(var3))
+    """
+    
+    req.write("\nParsed URI:\n-------------\n")
     req.write(dump.dump(req.parsed_uri))
-    #req.write(dump.dump(req))
+    req.write("\nModPython Options:\n-------------\n")
     req.write(dump.dump(req.get_options()))
+    req.write("\nModPython Config:\n-------------\n")
     req.write(dump.dump(req.get_config()))
     
-    req.write("server_root=" + apache.server_root() + "<br>")
+    req.write("\nOS Env:\n-------------\n")
+    req.write(dump.dump(os.environ))
+    
+    req.write("\nProcess Env:\n-------------\n")
+    req.add_common_vars()
+    req.write(dump.dump(req.subprocess_env))
+    
+    req.write("\n")
+    req.write("server_root=" + apache.server_root() + "\n")
+    req.write("document_root=" + req.document_root() + "\n")
+    req.write("loglevel=" + dump.dump(req.server.loglevel))
+    req.write("is_virtual=" + dump.dump(req.server.is_virtual))
+    req.write("phase=" + dump.dump(req.phase))
+    req.write("handler=" + dump.dump(req.handler))
+    req.write("uri=" + dump.dump(req.uri))
+    req.write("filename=" + dump.dump(req.filename))
+    req.write("py interpreter=" + dump.dump(req.interpreter))
+    
+    req.write("\n")
+    req.write("__file__=" + __file__ + "\n")
+    req.write("dir=" + os.path.dirname(__file__) + "\n")
+    
+    req.write("\n")
     if apache.mpm_query(apache.AP_MPMQ_IS_THREADED):
-        req.write("mpm is threaded<br>")
+        req.write("mpm is threaded\n")
     else:
-        req.write("mpm is NOT threaded<br>")
+        req.write("mpm is NOT threaded\n")
     if apache.mpm_query(apache.AP_MPMQ_IS_FORKED):
-        req.write("mpm is forked<br>")
+        req.write("mpm is forked\n")
     else:
-        req.write("mpm is NOT forked<br>")
+        req.write("mpm is NOT forked\n")
+        
+    #req.write(dump.dump(apache.config_tree()))
     
     
     return apache.OK
