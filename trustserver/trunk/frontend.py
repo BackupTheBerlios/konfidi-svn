@@ -59,6 +59,8 @@ def handler(req):
 		return query(req)
 	if (uniqueURI(req) == "form"):
 		return form(req)
+	if (uniqueURI(req) == "command"):
+		return command(req)
 	if (uniqueURI(req) == ""):
 		return index(req)
     #elif (req.method == "GET"):
@@ -89,6 +91,11 @@ def index(req):
 	<a href="query?strategy=Default&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
 	<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
 	<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+	<h4>TrustServer commands</h4>
+	<a href="command?cmd=start">Start server</a><br>
+	<a href="command?cmd=stop">Stop server</a> NOTE: This will kill all python processes.<br>
+	<a href="command?cmd=load1">Load data set 1</a><br>
+	<a href="command?cmd=load2">Load data set 2</a><br>
 	<h4>Web interface</h4>
 	Or use <a href="form">this form</a><br>
 	Or <a href="people">show people</a><br>
@@ -117,6 +124,32 @@ def people(req):
 	except error, (errno, errstr):
 		req.write("Error(%s): %s" % (errno, errstr))
 	return apache.OK  
+
+def command(req):
+	if (req.method == "POST" or req.method == "GET"):
+		form = util.FieldStorage(req, 1)
+		cmd = form["cmd"]
+		if (cmd == "start"):
+			(stdin, stdout, stderr) = os.popen3("python /home/ams5/public_html/trunk/TrustServer.py &")
+			req.write("Did something.")
+		elif (cmd == "stop"):
+			(stdin, stdout, stderr) = os.popen3("kill -9 `pidof python`")
+			req.write("Did something.")
+		elif (cmd == "load1"):
+			(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/trunk && python load_rdf.py")
+			req.write("std out: %s\n" % stdout.read())
+			req.write("std err: %s\n" % stderr.read())
+		elif (cmd == "load2"):
+			(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/small/ && python ../../trunk/load_rdf.py")
+			req.write("std out: %s\n" % stdout.read())
+			req.write("std err: %s\n" % stderr.read())
+		else:
+			pass
+		return apache.OK
+	else:
+		# hmm, something went horribly wrong.
+		req.write("Error 41092.");
+		return apache.OK
 
 def query(req):	
 	if (req.method == "POST" or req.method == "GET"):
@@ -176,7 +209,7 @@ def form(req):
 	Subject: <input type="text" name="subject"><br/>
 	Strategy: <select name="strategy">""")
 	
-	files = [f for f in os.listdir(os.path.dirname(__file__)+'/Strategies/') if re.compile("TPF.py$").search(f, 1)]
+	files = [f for f in os.listdir(os.path.dirname(__file__)+'/TrustStrategies/') if re.compile("TPF.py$").search(f, 1)]
 	for f in files:
 		req.write("<option value=\"%s\">%s</option>\n" % (f[:-6], f[:-6]))
 		
