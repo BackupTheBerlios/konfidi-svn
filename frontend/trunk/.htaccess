@@ -32,6 +32,10 @@ PythonOption pgpserver.output full
 # e.g. LocalWotsap instead of LocalWotsapPathfinder
 PythonOption pgpserver.pathfinder LocalWotsap
 
+# TrustServer propagation strategy
+# The name of the strategy to be used by default, when none other is specified.
+# (e.g., for PrototypeTPF.py, use "Prototype")
+PythonOption trustserver.strategy Multiplicative
 
 # PGPServer Specific Directives:
 # These should be parsed into a 2-level dictionary as key.key2 = value

@@ -145,11 +145,14 @@ class Frontend:
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
-			strategy = form["strategy"]
+			try:
+				strategy = form["strategy"]
+			except KeyError:
+				strategy = self.config["trustserver"]["strategy"]
+				
 			source = form["source"]
 			sink = form["sink"]
 
-			if strategy == "": strategy = "Default"
 		
 			opt = self.parse_options(form)
 			options = self.parse_options(form, True)
@@ -183,8 +186,6 @@ class Frontend:
 				# then, check the TrustServer:
 				try:
 					trustresult = self.send_query(strategy, source, sink, options)
-					#req.write(trustresult)
-					#return apache.OK
 					trustresult = minidom.parseString(trustresult).documentElement
 					try:
 						trust_rating = trustresult.getElementsByTagName("rating")[0].toxml()
