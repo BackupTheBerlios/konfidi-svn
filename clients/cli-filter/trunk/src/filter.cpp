@@ -26,10 +26,11 @@ const char* header_this_app_value = "cli-filter 0.1";
     {                                                           \
       if (err)                                                  \
         {                                                       \
-          fprintf (stderr, "%s:%d: %s: %s (%d.%d)\n",           \
+          fprintf (stderr, "%s:%d: %s: %s (%d.%d) [%d]\n",           \
                    __FILE__, __LINE__, gpg_strsource (err),     \
                    gpg_strerror (err),                          \
-                   gpg_err_source (err), gpg_err_code (err));   \
+                   gpg_err_source (err), gpg_err_code (err),    \
+                   err);   \
           exit (1);                                             \
         }                                                       \
     }                                                           \
@@ -50,6 +51,7 @@ string slurp(istream &i) {
 	return whole;
 }
 
+// TODO: move this and some other functions into Email methods
 string read_possible_From_line(istream &i) {
 	// possible "From " line in mbox format
 	string mbox_from;
@@ -139,16 +141,31 @@ gpgme_verify_result_t gpg_validate(gpgme_ctx_t ctx, string text, string sig) {
 
 void validate_from_matches_signer(Email * email, gpgme_ctx_t ctx, gpgme_verify_result_t result) {
 	gpgme_error_t err;
-    // TODO: this is blocking, probably want to change.
     gpgme_key_t key;
-	err = gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
+    // need a new context otherwise 'result' stuff gets reset
+    gpgme_ctx_t ctx2;
+    err = gpgme_new(&ctx2);
+    fail_if_err(err);
+    
+	err = gpgme_op_keylist_start(ctx2, result->signatures->fpr, 0);
 	fail_if_err(err);
-	
+	err = gpgme_op_keylist_next (ctx2, &key);
+	if (gpg_err_code(err) == GPG_ERR_EOF) {
+		cerr << "Couldn't not find public key for: " << result->signatures->fpr << endl;
+		email->message->header().field(header_sig).value("public key not available");
+		quit(email);
+	} else {
+		fail_if_err(err);
+	}
+	err = gpgme_op_keylist_end(ctx2);
+	fail_if_err(err);
+	gpgme_release(ctx2);
 	
 	bool found_email = false;
 	string from_email = email->message->header().from().front().mailbox() + '@' + email->message->header().from().front().domain();
 	gpgme_user_id_t uid = key->uids;
 	while (uid) {
+		clog << "1" << endl;
 		if (from_email == uid->email) {
 			found_email = true;
 		}
@@ -186,6 +203,9 @@ size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
 	istringstream buffer_stream((char*)buffer);
 	double value;
 	buffer_stream >> value;
+	
+//	if (Options::verbose)
+//		clog << "streamed double value: " << value << endl;
 	
 	ostringstream value_stream;
 	value_stream << value;
@@ -235,7 +255,7 @@ int main(int argc, char* argv[]) {
 	Options::guess_source_fingerprint(ctx);
 	Options::load_config_file();
 	if (!Options::safety_check()) {
-		return 5;	
+		return 5;
 	}
 
 	email->exact_text = slurp(cin);
@@ -267,7 +287,6 @@ int main(int argc, char* argv[]) {
 	    clog << "did key " << result->signatures->fpr << endl;
     
 	validate_from_matches_signer(email, ctx, result);
-	
 	
 	if (Options::verbose) {
 	    clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
