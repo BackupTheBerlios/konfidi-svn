@@ -11,11 +11,11 @@
 
 <trust:Truster> 
 	<foaf:name>ASchamp</foaf:name>
-	<wot:fingerprint>Schamp_fingerprint</wot:fingerprint>
+	<wot:fingerprint>Schamp</wot:fingerprint>
 	<trust:trusts>
 		<trust:Trustee>
 			<foaf:name>DBrondsema</foaf:name>
-			<wot:fingerprint>Brondsema_fingerprint</wot:fingerprint>
+			<wot:fingerprint>Brondsema</wot:fingerprint>
 			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
 			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
@@ -25,7 +25,7 @@
 	<trust:trusts>
 		<trust:Trustee>
 			<foaf:name>JLaing</foaf:name>
-			<wot:fingerprint>Laing_fingerprint</wot:fingerprint>
+			<wot:fingerprint>Laing</wot:fingerprint>
 			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
 		</trust:Trustee>
 	</trust:trusts>
