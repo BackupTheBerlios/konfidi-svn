@@ -1,6 +1,8 @@
 import SocketServer
 from TrustPath import TrustPath	
-from TrustPath import Fifo		
+from TrustPath import Fifo
+#import pickle
+import string
 
 class QueryListener(SocketServer.BaseRequestHandler):
 	def setup(self):
@@ -10,16 +12,24 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		print "query connection opened."
 		str = ''
 		data = self.request.recv(1024)
-		try:
-			[source,sink,subject] = data.split(":")
-			print "\texecuting query: %s, %s, %s" % (source, sink, subject)
-			s = self.query(source, sink, subject)
-			self.request.send(s)
-			print "\tfinished: %s" % s 
-		except (ValueError):
-			self.request.send("Invalid query")
-#		except (TypeError):
-#			self.request.send("Connection closed")
+		if data == "people":
+			print "\tpeople:\n\t"
+			for p in self.people:
+				print self.people[p]
+	
+			#print string.join(self.people, "\n\t")
+			#self.request.send(string.join(self.people, "\n"))
+		else:
+			try:
+				[source,sink,subject] = data.split(":")
+				print "\texecuting query: %s, %s, %s" % (source, sink, subject)
+				s = self.query(source, sink, subject)
+				self.request.send(s)
+				print "\tfinished: %s" % s 
+			except (ValueError):
+				self.request.send("Invalid query")
+	#		except (TypeError):
+	#			self.request.send("Connection closed")
 		self.request.close()
 		print "query connection closed."
 		

@@ -14,6 +14,8 @@ from socket import *
 #from xml.sax import SAXParseException
 from mod_python import apache
 from mod_python import util
+import pickle
+import string
 
 frontend_version = "0.1"
 
@@ -51,6 +53,8 @@ def handler(req):
     
 	if (uniqueURI(req) == "test"):
 		return test(req)
+	if (uniqueURI(req) == "people"):
+		return people(req)
 	if (uniqueURI(req) == "query"):
 		return query(req)
 	if (uniqueURI(req) == "form"):
@@ -87,12 +91,32 @@ def index(req):
 	<a href="query?source=8A335B856C4AE39A0C36147F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902Fe56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
 	<h4>Web interface</h4>
 	Or use <a href="form">this form</a><br>
-    
+	Or <a href="people">show people</a><br>
 	<h4><a href="test">debug output</a></h4>
 	</body>
 	</html>
 	""")
 	return apache.OK
+
+def people(req):
+	try:
+		sockobj = socket(AF_INET, SOCK_STREAM)
+		sockobj.connect((req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
+		sockobj.send("people")
+		result = ""
+		#while 1:
+		#	data = sockobj.recv(1024)
+		#	if not data: break
+		#	result += data 	
+		# maybe deal with errors somewhere in here...
+		#peops = pickle.loads(result)
+		#for p in peops:
+		#	print peops[p]
+		#peopstr = string.join(peops, "\n")
+		req.write("Result: %s\n\n" % (result))
+	except error, (errno, errstr):
+		req.write("Error(%s): %s" % (errno, errstr))
+	return apache.OK  
 
 def query(req):	
 	if (req.method == "POST" or req.method == "GET"):
