@@ -11,12 +11,16 @@ from rdflib.StringInputSource import StringInputSource
 from xml.sax import SAXParseException
 from mod_python import apache
 
-
+# our own error class
 class FOAFServerError(Exception):
     def __init__(self, value):
         self.value = value
     def __str__(self):
         return repr(self.value)
+
+#
+# Simple utility functions
+#
 
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
@@ -28,7 +32,16 @@ def uniqueURI(req):
         uri += ""
     return uri
 
+# URL-unescape (from http://c2.com/cgi/wiki?QueryStringParserTranslations)
+def urldecode(astring):
+    return re.sub('%(..)', lambda mo: chr(int(mo.group(1), 16)), astring.replace('+', ' '))
+        
+def ishex(string):
+    return re.search('^[A-F0-9]+$', string)
 
+#
+# main handler; called by mod_python
+#
 def handler(req):
     req.allow_methods(["GET", "PUT"])
     
@@ -47,6 +60,10 @@ def handler(req):
         return put(req)
     else:
         return apache.HTTP_NOT_IMPLEMENTED
+
+#
+# various handlers depending on the request
+#
 
 def index(req):
     req.content_type = "text/html"
@@ -82,6 +99,42 @@ def get(req):
     else:
         apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
         return apache.HTTP_FORBIDDEN
+
+def put(req):
+    return apache.HTTP_NOT_IMPLEMENTED
+
+def form(req):
+    req.content_type = "text/html"
+    req.write("""
+    <html>
+    <head><title>FOAFServer upload form</title></head>
+    <body>""")
+    
+    if (req.method == "POST"):
+        # get just this argument
+        content = req.read()
+        content_start = len("foaf_content=")
+        content_end = content.find("&")
+        content = content[content_start:content_end]
+        
+        store_error = storefoaf(req, urldecode(content))
+        if store_error:
+            req.write("<p>Error: " + store_error + "</p>")
+        else:
+            req.write("<p>FOAF succesfully uploaded</p>")
+    
+    req.write("""<form action="form" method="POST">
+    Submit an unsiqned FOAF record:<br/>
+    <textarea name="foaf_content" rows="20" cols="50" wrap="none"></textarea>
+    <br/>
+    <input type="submit" name="submit" value="submit">
+    </form>
+    </body></html>""")
+    return apache.OK
+
+#
+# workhorse utilities
+#
 
 # TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
 # TODO: what else to validate?
@@ -128,44 +181,10 @@ def storefoaf(req, content):
         return err
     pass
     
-def put(req):
-    return apache.HTTP_NOT_IMPLEMENTED
 
-# URL-unescape (from http://c2.com/cgi/wiki?QueryStringParserTranslations)
-def urldecode(astring):
-    return re.sub('%(..)', lambda mo: chr(int(mo.group(1), 16)), astring.replace('+', ' '))
-        
-def ishex(string):
-    return re.search('^[A-F0-9]+$', string)
-
-def form(req):
-    req.content_type = "text/html"
-    req.write("""
-    <html>
-    <head><title>FOAFServer upload form</title></head>
-    <body>""")
-    
-    if (req.method == "POST"):
-        # get just this argument
-        content = req.read()
-        content_start = len("foaf_content=")
-        content_end = content.find("&")
-        content = content[content_start:content_end]
-        
-        store_error = storefoaf(req, urldecode(content))
-        if store_error:
-            req.write("<p>Error: " + store_error + "</p>")
-        else:
-            req.write("<p>FOAF succesfully uploaded</p>")
-    
-    req.write("""<form action="form" method="POST">
-    Submit an unsiqned FOAF record:<br/>
-    <textarea name="foaf_content" rows="20" cols="50" wrap="none"></textarea>
-    <br/>
-    <input type="submit" name="submit" value="submit">
-    </form>
-    </body></html>""")
-    return apache.OK
+#
+# test stuff; delete sometime
+#
 
 def test(req):
     req.content_type = "text/plain"
