@@ -23,12 +23,13 @@
             <wot:fingerprint>FB559CABDB811891B6D37E1439C06ED9D798EFD2</wot:fingerprint>
             <trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
             <trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#java"/>
+            <trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#wiki"/>
         </trust:Trustee>
     </trust:trusts>
     <trust:trusts>
         <trust:Trustee>
             <!-- andy schamp -->
-            <wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
+            <wot:fingerprint>8A335B856C4AE39A0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
             <trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
             <trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
         </trust:Trustee>
