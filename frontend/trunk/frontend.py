@@ -142,7 +142,11 @@ class Frontend:
 			strategy = form["strategy"]
 			source = form["source"]
 			sink = form["sink"]
-			
+
+			if source == sink:
+				req.write("Sorry, source and sink are the same.");
+				return apache.OK
+
 			if strategy == "": strategy = "Default"
 		
 			opt = self.parse_options(form)
@@ -158,8 +162,6 @@ class Frontend:
 				try:
 					exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
 					exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
-					#if self.config["debug"] == "1":
-					#	exec("reload(PGPPathfinders.%sPathfinder)" % (self.config["pgpserver"]["pathfinder"]))
 				except (ImportError):
 					# put the hardcoded one here
 					raise ImportError
@@ -174,7 +176,6 @@ class Frontend:
 				
 				pgp_result = f.pgp_result(search_time=pgptime)[connected.toxml(), pgp_path.toxml(), pgp_error.toxml()]
 				
-				#r.append(pgp_result)
 			
 			if opt["trustquery"]:
 				# then, check the TrustServer:
@@ -198,35 +199,24 @@ class Frontend:
 					except IndexError:
 						trust_error = str(f.error("None"))
 					
-						#req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
-						#req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-						#req.write("Trust Result: %s\n\n" % (trustresult))			
 					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[trust_rating, trust_path, trust_data, trust_error]
-						#r.append(trust_result)
 				except error, (errno, errstr):
 					req.write("Error(%s): %s" % (errno, errstr))
-			#else:
-			#	req.write("%s" % (pgpresult))
-			
-			
-			#if opt["trustoutput"] == "short" and not pgpresult:
-			#	req.write("-1")
-			#elif opt["trustquery"]:
-			#if (opt["trustquery"] and opt["trustoutput"] == "short") or opt["pgpoutput"] == "short":
-			# maybe deal with errors somewhere in here...
 			
 			if opt["trustoutput"] == "short":
-				if connected.firstChild.nodeValue == "0":
+				if opt["pgpquery"] and connected.firstChild.nodeValue == "0":
 					req.write("-1")
 				else:
-					req.write(rating.firstChild.nodeValue)
+					#trust_rating = minidom.parseString(trustresult).documentElement
+					#print trust_rating
+					req.write(trustresult.getElementsByTagName("rating")[0].firstChild.nodeValue)
 			else:
 				r.extend([f.source(source), f.sink(sink), f.options(options)])
 				if opt["pgpquery"]:
 					r.append(pgp_result)
 				if opt["trustquery"]:
 					r.append(trust_result)
-			req.write(self.xml_indenter(str(f.result[r])))
+				req.write(self.xml_indenter(str(f.result[r])))
 			return apache.OK
 			
 				
