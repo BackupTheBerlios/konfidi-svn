@@ -240,12 +240,6 @@ int main(int argc, char* argv[]) {
 
 	Email* email = new Email(slurp(cin));
 
-	clog << "//////////////" << endl;
-	clog << email->exact_text;
-	clog << "//////////////" << endl;
-	clog << *email->message << endl;
-	clog << "##############" << endl;
-    
     clean_headers(email);
     email->message->header().field(header_this_app).value(header_this_app_value);
     
