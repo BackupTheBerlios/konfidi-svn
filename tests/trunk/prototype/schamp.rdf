@@ -40,25 +40,25 @@
 </trust:Relationship>
 
 <trust:Item rdf:nodeID="jimtrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
-	<trust:value>0.70</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
+	<trust:rating>0.70</trust:rating>
 </trust:Item>
 
 <trust:Item rdf:nodeID="davetrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
-	<trust:value>0.90</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
+	<trust:rating>0.90</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust2">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking" />
-	<trust:value>0.60</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking" />
+	<trust:rating>0.60</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust3">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail" />
-	<trust:value>0.95</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail" />
+	<trust:rating>0.95</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="davetrust4">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#music" />
-	<trust:value>0.10</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#music" />
+	<trust:rating>0.10</trust:rating>
 </trust:Item>
 
 </rdf:RDF>

@@ -39,21 +39,21 @@
 </trust:Relationship>
 
 <trust:Item rdf:nodeID="crowetrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
-	<trust:value>0.50</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+	<trust:rating>0.50</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="crowetrust2">
 	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
-	<trust:value>0.90</trust:value>
+	<trust:rating>0.90</trust:rating>
 </trust:Item>
 
 <trust:Item rdf:nodeID="schamptrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-	<trust:value>0.90</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:rating>0.90</trust:rating>
 </trust:Item>
 <trust:Item rdf:nodeID="schamptrust2">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
-	<trust:value>1.00</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
+	<trust:rating>1.00</trust:rating>
 </trust:Item>
 
 </rdf:RDF>

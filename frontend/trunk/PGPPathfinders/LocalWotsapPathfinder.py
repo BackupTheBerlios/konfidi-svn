@@ -12,10 +12,10 @@ class LocalWotsapPathfinder(PGPPathfinder):
 	"""Uses wotsap from http://www.lysator.liu.se/~jc/wotsap/ and it's nightly-generated dump file"""
 	def graph(self, source, sink, limit=None):
 		(out, err) = self.runwotsap(source, sink, limit)
+		f = xmlgen.Factory()
 		if not err:
 			out = re.sub('<', '&lt;', out)
 			out = re.sub('>', '&gt;', out)
-			f = xmlgen.Factory()
 			return f.pgp_result[f.connected("1"), f.path(out), f.error()] # + err
 		else:
 			return f.pgp_result[f.connected("0"), f.path(), f.error(err)]

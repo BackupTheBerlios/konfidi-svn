@@ -38,18 +38,18 @@
 </trust:Relationship>
 
 <trust:Item rdf:nodeID="goforthtrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
-	<trust:value>1.00</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+	<trust:rating>1.00</trust:rating>
 </trust:Item>
 
 <trust:Item rdf:nodeID="goforthtrust2">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#ohio"/>
-	<trust:value>0.60</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#ohio"/>
+	<trust:rating>0.60</trust:rating>
 </trust:Item>
 
 <trust:Item rdf:nodeID="schamptrust1">
-	<trust:subject rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-	<trust:value>0.70</trust:value>
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:rating>0.70</trust:rating>
  </trust:Item>
 
 </rdf:RDF>
