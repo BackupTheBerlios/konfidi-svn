@@ -1,23 +1,32 @@
 <?xml version="1.0"?>
 <!DOCTYPE rdf:RDF [
+    <!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
     <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
     <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
     <!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
-         <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
-         <!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
+    <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
   ]>
-<!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
+<!--<!DOCTYPE rdf:RDF [
+	<!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+	<!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
+	<!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
+	<!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" > ]>
+ note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
 <rdf:RDF 
+	xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
 	xmlns:owl="&owl;" 
 	xmlns:rdf="&rdf;" 
 	xmlns:rdfs="&rdfs;"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema#"
 	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/#"
 >
 <!-- xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" -->
 
@@ -94,7 +103,7 @@
 	<rdfs:domain rdf:resource="&foaf;Person" />
 	<rdfs:range rdf:resource="&foaf;Person" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
-</owl:OjbectProperty>
+</owl:ObjectProperty>
 <owl:ObjectProperty rdf:ID="trustedAbout" rdfs:label="trustedAbout" 
 	rdfs:comment="Relates things to trust items.">
 	<!-- this domain allows anything to be trusted, even trust items themselves.  do we want to restrict this any further? -->
