@@ -113,6 +113,7 @@ def get(req):
 		krang += "ly"
 
     # maybe deal with errors somewhere in here...
+    req.content_type = "text/html"
     req.write("Junkly")
     req.write(krang)
     req.write(result)
