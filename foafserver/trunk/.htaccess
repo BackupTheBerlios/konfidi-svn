@@ -1,5 +1,21 @@
-# .py requests handled by mod_python
-#AddHandler mod_python .py
+
+# Configuration file for FOAF server
+
+# either a relative or absolute path
+PythonOption storage.dir.rdf storage
+PythonOption storage.dir.sig storage
+
+
+# limit uploads to 100K
+# unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
+LimitRequestBody 102400
+
+
+
+
+########################################
+#  Do not change any of these settings #
+########################################
 
 # ALL requests handled by mod_python
 SetHandler mod_python
@@ -9,15 +25,3 @@ PythonHandler server
 
 PythonDebug On
 PythonAutoReload On
-
-# our own options
-PythonOption validate.xml 1
-PythonOption validate.pgp 0
-# relative or absolute path
-PythonOption storage.dir.xml storage
-PythonOption storage.dir.pgp storage
-
-
-# limit uploads to 100K
-# unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
-LimitRequestBody 102400

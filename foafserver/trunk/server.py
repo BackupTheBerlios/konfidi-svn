@@ -90,12 +90,12 @@ def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
     if ishex(uri):
-        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.rdf')
-        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.pgp'], uri + '.rdf')
+        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.rdf'], uri + '.rdf')
+        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.sig'], uri + '.rdf.asc')
         try:
             try:
                 req.content_type = "text/plain"
-                sigfile = open(filename_asc + '.asc', 'r')
+                sigfile = open(filename_asc, 'r')
                 req.write(sigfile.read())
                 sigfile.close()
             except IOError:
@@ -190,7 +190,7 @@ def validate(content):
     return fingerprint
 
 def savetofile(req, content, fingerprint):
-    filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], fingerprint + '.rdf')
+    filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.rdf'], fingerprint + '.rdf')
     foaffile = open(filename, 'w')
     foaffile.write(content)
     foaffile.close()
