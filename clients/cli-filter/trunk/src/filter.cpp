@@ -8,6 +8,8 @@
 #include <gpgme.h>
 #include <curl/curl.h>
 
+#include "options.h"
+
 using namespace std;
 using namespace mimetic;
 
@@ -40,22 +42,6 @@ int quit(string mbox_from, MimeEntity *message, int flag=0) {
     cout << message->body() << endl;
 	clog << endl;
 	exit(flag);
-}
-
-// TODO: make verbose part of an options data structure
-// TODO: make options globally available
-void process_args(int argc, char* argv[], bool & verbose) {
-	if (argc == 1) {
-		// no args
-	} else if (argc == 2 && (string)argv[1] == "-v") {
-		verbose = true;
-	} else {
-		cerr << "Invalid argument." << endl << endl;
-		cerr << "Valid arguments: " << endl;
-		cerr << "\t-v\t\tverbose" << endl;
-		cerr << endl << "This program accepts a single RFC2822 message (optionally with an mbox-style 'From ' first line) on stdin" << endl;
-		exit(1);
-	}
 }
 
 string slurp(istream &i) {
@@ -212,16 +198,14 @@ size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
 	return nmemb;
 }
 
-void add_trust_headers(MimeEntity * message, string mbox_from, string from, string to) {
-	
+void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 	CURLcode res;
 	CURL *handle = curl_easy_init();
 	if(handle) {
-		string trust_server_url = "http://brondsema.gotdns.com/~ams5/frontend/trunk/query";
-		string trust_server_params = "strategy=Prototype&subject=email&trustoutput=short&";
-		string source_sink = "source=" + from + "&" + "sink=" + to + "&";
-		string url = trust_server_url + "?" + trust_server_params + source_sink;
-		clog << "fetching " << url << endl;
+		string source_sink = "source=" + Options::source_fingerprint + "&" + "sink=" + to + "&";
+		string url = Options::trust_server_url + "?" + Options::trust_server_params + source_sink;
+		if (Options::verbose)
+			clog << "fetching " << url << endl;
 		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_handle_data);
 		curl_easy_setopt(handle, CURLOPT_WRITEDATA, message);
@@ -234,8 +218,7 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string from, stri
 }
 
 int main(int argc, char* argv[]) {
-	bool verbose = false;
-	process_args(argc, argv, verbose);
+	Options::process_args(argc, argv);
 
 	string whole = slurp(cin);
 	cin.seekg(0, ios::beg); // reset stream to beginning
@@ -256,7 +239,7 @@ int main(int argc, char* argv[]) {
 	string sig = parse_email_sig(&message, whole, mbox_from);
     
     
-    if (verbose)
+    if (Options::verbose)
 	    clog << "processing " << message.header().messageid().str() << endl;
 
 	// set up context
@@ -267,13 +250,13 @@ int main(int argc, char* argv[]) {
     
 	gpgme_verify_result_t result = gpg_validate(ctx, text, sig);
     
-    if (verbose)
+    if (Options::verbose)
 	    clog << "did key " << result->signatures->fpr << endl;
     
 	validate_from_matches_signer(&message, mbox_from, ctx, result);
 	
 	
-	if (verbose) {
+	if (Options::verbose) {
 	    clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
 	    clog << "GREEN: " << (result->signatures->summary & GPGME_SIGSUM_GREEN) << endl;
 	    clog << "RED: " << (result->signatures->summary & GPGME_SIGSUM_RED) << endl;
@@ -301,7 +284,7 @@ int main(int argc, char* argv[]) {
 	}
     
 	add_gpg_headers(&message, mbox_from, result);
-	add_trust_headers(&message, mbox_from, result->signatures->fpr, "EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70");
+	add_trust_headers(&message, mbox_from, result->signatures->fpr);
 
     quit(mbox_from, &message);
 }
