@@ -134,8 +134,7 @@ class Frontend:
 			return apache.OK
 		else:
 			# hmm, something went horribly wrong.
-			req.write("Error 41092.");
-			return apache.OK
+			return apache.HTTP_METHOD_NOT_ALLOWED
 	
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
@@ -229,8 +228,7 @@ class Frontend:
 				
 		else:
 			# hmm, something went horribly wrong.
-			eeq.write("Error 41093.");
-			return apache.OK
+			return apache.HTTP_METHOD_NOT_ALLOWED
 	
 	def send_query(self, strategy, source="foo", sink="bar", options="baz"):
 		sockobj = socket(AF_INET, SOCK_STREAM)
