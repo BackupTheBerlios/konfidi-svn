@@ -52,9 +52,9 @@ def handler(req):
         return form(req)
     if (uniqueURI(req) == ""):
         return index(req)
-    elif (req.method == "GET"):
+    if (req.method == "GET"):
         return get(req)
-    elif (req.method == "PUT"):
+    if (req.method == "PUT"):
         return put(req)
     else:
         return apache.HTTP_NOT_IMPLEMENTED
@@ -115,7 +115,6 @@ def get(req):
 def put(req):
     fingerprint = uniqueURI(req)
     content = req.read()
-    apache.log_error("!!" + content + "!!", apache.APLOG_NOTICE)
     err = storefoaf(req, content, fingerprint)
     
     if err:
