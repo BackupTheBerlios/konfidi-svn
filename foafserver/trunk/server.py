@@ -38,10 +38,9 @@ def uniqueURI(req):
 def ishex(string):
     return re.search('^[A-F0-9]+$', string)
 
-#
-# main handler; called by mod_python
-#
+
 def handler(req):
+    """main handler; called by mod_python"""
     req.allow_methods(["GET", "PUT"])
     
     if req.get_config().has_key('PythonDebug'):
@@ -117,12 +116,8 @@ def put(req):
     fingerprint = uniqueURI(req)
     content = req.read()
     apache.log_error("!!" + content + "!!", apache.APLOG_NOTICE)
-    err = storefoaf(content, fingerprint)
+    err = storefoaf(req, content, fingerprint)
     
-    tmp = open("/tmp/foafserver.1", 'w')
-    tmp.write(content)
-    tmp.close()
-
     if err:
         apache.log_error(err, apache.APLOG_NOTICE)
         return apache.HTTP_NOT_ACCEPTABLE
