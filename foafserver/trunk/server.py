@@ -64,12 +64,26 @@ def handler(req):
 
 def index(req):
     req.content_type = "text/html"
-    req.write('<a href="test">test output</a><br>')
-    req.write('<br>')
-    req.write('<a href="form">web form</a><br>')
-    req.write('<br>')
-    req.write('<a href="123">sample: andy schamp</a><br>')
-    req.write('<a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>')
+    req.write("""
+    <html>
+    <head><title>FOAFServer</title></head>
+    <body>
+    <h2>FOAFServer</h2>
+    
+    <h4>Retrieving</h4>
+    Just do a GET using a URL of the PGP fingerprint
+    <br>
+    <a href="123">sample: andy schamp</a><br>
+    <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>
+    
+    <h4>Uploading</h4>
+    Human web interface: <a href="form">web form</a><br>
+    Programmatic interface: Just do a PUT using a URL of the PGP fingerprint (much like retrieving)
+    
+    <h4><a href="test">debug output</a></h4>
+    </body>
+    </html>
+    """)
     return apache.OK
 
 def get(req):
@@ -105,7 +119,9 @@ def form(req):
     req.write("""
     <html>
     <head><title>FOAFServer upload form</title></head>
-    <body>""")
+    <body>
+    <a href="./">Back to index</a>
+    """)
     
     if (req.method == "POST"):
         
