@@ -30,7 +30,7 @@ const char* header_trust = "X-Trust-Email-Value";
   while (0)
 
 int quit(string mbox_from, MimeEntity *message, int flag=0) {
-    cout << mbox_from << &message;
+    cout << mbox_from << *message;
 	clog << endl;
 	return 0;
 }
