@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF
+    xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
     xmlns:foaf="http://xmlns.com/foaf/0.1/#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:wot="http://xmlns.com/wot/0.1/#"
@@ -22,28 +23,28 @@
     <wot:fingerprint>8a335b856C4AE39a0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
-<trust:Relationship>
-	<trust:truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
-	<trust:trusted rdf:nodeID="andy"/>
-	<trust:about>
-		<trust:Item>
-			<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
-			<trust:rating>0.80</trust:rating>
-		</trust:Item>
-	</trust:about>
-	<trust:about>
-		<trust:Item>
-			<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#java"/>
-			<trust:rating>0.90</trust:rating>
-		</trust:Item>
-	</trust:about>
-	<trust:about>
-		<trust:Item>
-			<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#wiki"/>
-			<trust:rating>0.60</trust:rating>
-		</trust:Item>
-	</trust:about>
-</trust:Relationship>
+<Relationship>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted rdf:nodeID="andy"/>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<rating>0.80</rating>
+		</Item>
+	</about>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#java"/>
+			<rating>0.90</rating>
+		</Item>
+	</about>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#wiki"/>
+			<rating>0.60</rating>
+		</Item>
+	</about>
+</Relationship>
 
 
 <foaf:Person rdf:nodeID="FB559CABDB811891B6D37E1439C06ED9D798EFD2">
@@ -51,26 +52,26 @@
     <wot:fingerprint>FB559CABDB811891B6D37E1439C06ED9D798EFD2</wot:fingerprint>
 </foaf:Person>
 
-<trust:Relationship>
-	<trust:truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
-	<trust:trusted>
+<Relationship>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted>
 		<foaf:Person rdf:nodeID="FB559CABDB811891B6D37E1439C06ED9D798EFD2">
 			<!-- jeremy frens -->
 			<wot:fingerprint>FB559CABDB811891B6D37E1439C06ED9D798EFD2</wot:fingerprint>
 		</foaf:Person>
-	</trust:trusted>
-	<trust:about>
-		<trust:Item>
-			<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-			<trust:rating>0.75999932</trust:rating>
-		</trust:Item>
-	</trust:about>
-	<trust:about>
-		<trust:Item>
-			<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
-			<trust:rating>1.0000</trust:rating>
-		</trust:Item>
-	</trust:about>
-</trust:Relationship>
+	</trusted>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+			<rating>0.75999932</rating>
+		</Item>
+	</about>
+	<about>
+		<Item>
+			<topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#email"/>
+			<rating>1.0000</rating>
+		</Item>
+	</about>
+</Relationship>
 
 </rdf:RDF>
