@@ -12,6 +12,12 @@ from xml.sax import SAXParseException
 from mod_python import apache
 
 
+class FOAFServerError(Exception):
+    def __init__(self, value):
+        self.value = value
+    def __str__(self):
+        return repr(self.value)
+
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
     req.add_common_vars()
@@ -55,7 +61,7 @@ def index(req):
 def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
-    if re.search('^[A-F0-9]*$', uri):
+    if ishex(uri):
         filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.rdf')
         filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.pgp'], uri + '.rdf')
         try:
@@ -88,33 +94,39 @@ def validate(content):
     try:
         store.parse(StringInputSource(content))
     except SAXParseException:
-        return "invalid XML: " + str(sys.exc_info()[1])
+        raise FOAFServerError, "invalid XML: " + str(sys.exc_info()[1])
     try:
         truster = store.subjects(TRUST["trusts"]).next()
     except StopIteration:
-        return "must have a trust:Truster"
+        raise FOAFServerError, "must have a trust:Truster"
     try:
         fingerprint = store.objects(truster, WOT["fingerprint"]).next()
     except StopIteration:
-        return "Truster must have a wot:fingerprint"
+        raise FOAFServerError, "Truster must have a wot:fingerprint"
+    if not(ishex(fingerprint)):
+        raise FOAFServerError, "Invalid fingerprint format; must be hex"
     # TODO: something with fingerprint
     try:
         mbox = store.objects(truster, FOAF["mbox"]).next()
     except StopIteration:
-        return "Truster must have a foaf:mbox"
-    return "xx" + fingerprint
+        raise FOAFServerError, "Truster must have a foaf:mbox"
+    return fingerprint
 
-def savetofile(content):
+def savetofile(req, content, fingerprint):
+    filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], fingerprint + '.rdf')
+    foaffile = open(filename, 'w')
+    foaffile.write(content)
+    foaffile.close()
+
+def storefoaf(req, content):
+    try:
+        fingerprint = validate(content)
+    except FOAFServerError:
+        return str(sys.exc_info()[1])
+    err = savetofile(req, content, fingerprint)
+    if err:
+        return err
     pass
-
-def storefoaf(content):
-    err = validate(content)
-    if err:
-        return err
-    err = savetofile(content)
-    if err:
-        return err
-    return "success"
     
 def put(req):
     return apache.HTTP_NOT_IMPLEMENTED
@@ -122,6 +134,9 @@ def put(req):
 # URL-unescape (from http://c2.com/cgi/wiki?QueryStringParserTranslations)
 def urldecode(astring):
     return re.sub('%(..)', lambda mo: chr(int(mo.group(1), 16)), astring.replace('+', ' '))
+        
+def ishex(string):
+    return re.search('^[A-F0-9]+$', string)
 
 def form(req):
     req.content_type = "text/html"
@@ -137,7 +152,7 @@ def form(req):
         content_end = content.find("&")
         content = content[content_start:content_end]
         
-        store_error = storefoaf(urldecode(content))
+        store_error = storefoaf(req, urldecode(content))
         if store_error:
             req.write("<p>Error: " + store_error + "</p>")
         else:
