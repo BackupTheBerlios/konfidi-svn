@@ -12,6 +12,8 @@ from xml.sax import SAXParseException
 from mod_python import apache
 from mod_python import util
 
+foafserver_version = "0.1"
+
 # our own error class
 class FOAFServerError(Exception):
     def __init__(self, value):
@@ -68,7 +70,7 @@ def index(req):
     <html>
     <head><title>FOAFServer</title></head>
     <body>
-    <h2>FOAFServer</h2>
+    <h2>FOAFServer v""" + foafserver_version + """</h2>
     
     <h4>Retrieving</h4>
     Just do a GET using a URL of the PGP fingerprint
