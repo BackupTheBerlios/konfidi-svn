@@ -38,7 +38,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 			self.trustValues.append(s)
 			
 	def handle(self):
-		print "update connection opened."
+		#print "update connection opened."
 		#print "FOAF: %s" % (self.FOAF)
 		#print "TRUST: %s" % (self.TRUST)
 		#print "WOT: %s" % (self.WOT)
@@ -52,7 +52,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.request.close()
 		self.load(str)
 		#self.load(openAnything(str))
-		print "update connection closed."
+		#print "update connection closed."
 		
 	def load(self, source):	
 		print "Update Listener: parsing input: %s" % source

@@ -12,10 +12,11 @@ class PrototypeTPF(TrustPathFinder):
 			options[k] = v
 		
 		path = self.findPath(source, sink, options["subject"])
+		pathstr = "%s" % path
 		#print "final path to sink: %s" % path
 		rating = self.getPathRating(path, options["subject"])
 		#print "final rating: %s" % rating
-		return "%s" % rating
+		return "%s|%s" % (rating, pathstr)
 		
 	
 	def findPath(self, source, sink, subject):
@@ -70,10 +71,11 @@ class PrototypeTPF(TrustPathFinder):
 	
 	def getPathRating(self, path, subject):
 		source = path.pop(0)
-		rating = 1
+		sink = path.pop(0)
+		rating = self.getRating(source, sink, subject)
 		while (len(path) > 0):
+			source = sink
 			sink = path.pop(0)
 			rating = .5-(.5-rating)*self.getRating(source, sink, subject)
-			source = sink
 		#print "total rating: %s" % rating
 		return rating

@@ -3,6 +3,7 @@ import SocketServer
 #import pickle
 import string
 import time
+import imp
 
 #local
 #from dump import dump
@@ -13,7 +14,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		self.people = self.server.people
 		
 	def handle(self):
-		print "query connection opened."
+		#print "query connection opened."
 		str = ''
 		data = self.request.recv(1024)
 		try:
@@ -23,10 +24,15 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			try:
 				exec("from TrustStrategies.%sTPF import %sTPF" % (strategy, strategy))
 				exec("tpf = %sTPF(self.people)" % (strategy))
-			except (ImportError):
-				from Strategies.DefaultTPF import DefaultTPF
-				tpf = DefaultTPF(self.people)
+				#(file, pathname, description) = imp.find_module("%sTPF" % (strategy))
+				#strat = imp.load_module("%sTPF" % (strategy), file, pathname, decsription)
 				
+				#strat = imp.load_source("%sTPF" % (strategy), "TrustStrategies.%sTPF" % (strategy))
+				#exec("tpf = %sTPF.%sTPF(self.people)" % (strategy, strategy))
+			except (ImportError), i:
+				from TrustStrategies.DefaultTPF import DefaultTPF
+				tpf = DefaultTPF(self.people)
+				print "%s" % (i)
 			lockwait = time.time()
 			self.server.lock.acquire_read()	
 			lockwait = time.time() - lockwait
@@ -47,4 +53,4 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			self.request.send("Invalid query")
 	
 		self.request.close()
-		print "query connection closed."
+		#print "query connection closed."
