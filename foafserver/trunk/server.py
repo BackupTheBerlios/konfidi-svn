@@ -3,9 +3,6 @@ from mod_python import apache
 
 import os
 
-# initialization code
-phase = 'init'
-
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
     req.add_common_vars()
@@ -39,14 +36,6 @@ def get(req):
 
 def test(req):
     req.content_type = "text/plain"
-    """
-    if phase == 'init':
-        init_var2 = 2
-        var3 = 1
-        phase = 'request'
-    var3 += 1
-    req.write("\n" + dump.dump(init_var) + dump.dump(init_var2) + dump.dump(var3))
-    """
     
     req.write("\nParsed URI:\n-------------\n")
     req.write(dump.dump(req.parsed_uri))
@@ -88,6 +77,5 @@ def test(req):
         req.write("mpm is NOT forked\n")
         
     #req.write(dump.dump(apache.config_tree()))
-    
     
     return apache.OK
