@@ -180,7 +180,7 @@ def form(req):
 # TODO: what else to validate?
 def validate(content, uri_fingerprint):
     FOAF = Namespace("http://xmlns.com/foaf/0.1/#")
-    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl#")
+    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#")
     WOT = Namespace("http://xmlns.com/wot/0.1/#")
     RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
     store = TripleStore()
