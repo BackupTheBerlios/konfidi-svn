@@ -9,30 +9,56 @@
    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
    >
 
-<trust:Truster> 
+<foaf:Person rdf:nodeID="ams5"> 
 	<foaf:name>Andrew Schamp</foaf:name>
 	<wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>DBrondsema</foaf:name>
-			<wot:fingerprint>EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70</wot:fingerprint>
-			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
-			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
-			<trust:trustedHighly rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
-			<trust:distrustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#music"/>
-		</trust:Trustee>
-	</trust:trusts>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>JLaing</foaf:name>
-			<wot:fingerprint>Laing</wot:fingerprint>
-			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-		</trust:Trustee>
-	</trust:trusts>
-</trust:Truster>
+</foaf:Person>
 
-<rdf:Description rdf:about="">
-	<wot:assurance rdf:resource="8A335B856C4AE39A0C36A47F152C15A0F2454727.rdf.asc" />
-</rdf:Description>
+<foaf:Person rdf:nodeID="dbp2">
+	<foaf:name>DBrondsema</foaf:name>
+	<wot:fingerprint>EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70</wot:fingerprint>	
+</foaf:Person>
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="ams5" />
+	<trust:trusted rdf:nodeID="dbp2" />
+	<trust:about rdf:nodeID="dt1" />
+	<trust:about rdf:nodeID="dt2" />
+	<trust:about rdf:nodeID="dt3" />
+	<trust:about rdf:nodeID="dt4" />
+</trust:Relationship>
+
+<trust:Item rdf:nodeID="dt1">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:rating>0.90</trust:rating>
+</trust:Item>
+<trust:Item rdf:nodeID="dt2">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#cooking"/>
+	<trust:rating>0.60</trust:rating>
+</trust:Item>
+<trust:Item rdf:nodeID="dt3">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#dmail"/>
+	<trust:rating>0.95</trust:rating>
+</trust:Item>
+<trust:Item rdf:nodeID="dt4">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#music"/>
+	<trust:rating>0.40</trust:rating>
+</trust:Item>
+
+
+<foaf:Person>
+	<foaf:name>JLaing</foaf:name>
+	<wot:fingerprint>Laing</wot:fingerprint>		
+</foaf:Person>
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="ams5"/>
+	<trust:trusted rdf:nodeID="jhl2"/>
+	<trust:about rdf:nodeID="jt1" />
+</trust:Relationship>
+<trust:Item rdf:nodeID="jt1" />
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default" />
+	<trust:rating>0.70</trust:rating>
+</trust:Item>
 
 </rdf:RDF>
