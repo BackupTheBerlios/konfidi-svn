@@ -36,6 +36,7 @@ const char* header_this_app_value = "cli-filter 0.1";
   while (0)
 
 // TODO: handle this better
+// TODO: release gpg context
 int quit(string mbox_from, MimeEntity *message, int flag=0) {
     cout << mbox_from << *message;
     cout << endl << endl << endl;
@@ -218,7 +219,19 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 }
 
 int main(int argc, char* argv[]) {
+	// set up context
+	gpgme_error_t err;
+    gpgme_ctx_t ctx;
+    err = gpgme_new(&ctx);
+    fail_if_err(err);
+    
+	// load options
+	Options::guess_source_fingerprint(ctx);
+	Options::load_config_file();
 	Options::process_args(argc, argv);
+	if (!Options::safety_check()) {
+		return 5;	
+	}
 
 	string whole = slurp(cin);
 	cin.seekg(0, ios::beg); // reset stream to beginning
@@ -242,12 +255,6 @@ int main(int argc, char* argv[]) {
     if (Options::verbose)
 	    clog << "processing " << message.header().messageid().str() << endl;
 
-	// set up context
-	gpgme_error_t err;
-    gpgme_ctx_t ctx;
-    err = gpgme_new(&ctx);
-    fail_if_err(err);
-    
 	gpgme_verify_result_t result = gpg_validate(ctx, text, sig);
     
     if (Options::verbose)
@@ -286,5 +293,6 @@ int main(int argc, char* argv[]) {
 	add_gpg_headers(&message, mbox_from, result);
 	add_trust_headers(&message, mbox_from, result->signatures->fpr);
 
+	gpgme_release(ctx);
     quit(mbox_from, &message);
 }
