@@ -79,7 +79,7 @@ class Frontend:
 		<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
 		<h4>TrustServer commands</h4>
 		<a href="command?cmd=start">Start server</a><br>
-		<a href="command?cmd=stop">Stop server</a> NOTE: This will kill all python processes.<br>
+		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.--><br>
 		<a href="command?cmd=load1">Load data set 1</a><br>
 		<a href="command?cmd=load2">Load data set 2</a><br>
 		<h4>Web interface</h4>
@@ -117,10 +117,16 @@ class Frontend:
 			form = util.FieldStorage(req, 1)
 			cmd = form["cmd"]
 			if (cmd == "start"):
-				(stdin, stdout, stderr) = os.popen3("python /home/ams5/public_html/trustserver/TrustServer.py &")
+				(stdin, stdout, stderr) = os.popen3("/home/ams5/public_html/trustserver/trustserver.sh start")
+				#req.write("std out: %s\n" % stdout.read())
+				#req.write("std err: %s\n" % stderr.read())
 				req.write("Did something.")
 			elif (cmd == "stop"):
-				(stdin, stdout, stderr) = os.popen3("kill -9 `pidof python`")
+				(stdin, stdout, stderr) = os.popen3("kill -9 1456 1459 ")
+				#(stdin, stdout, stderr) = os.popen3("kill -9 `pidof python`")
+				#(stdin, stdout, stderr) = os.popen3("/home/ams5/public_html/trustserver/trustserver.sh stop")
+				#req.write("std out: %s\n" % stdout.read())
+				#req.write("std err: %s\n" % stderr.read())
 				req.write("Did something.")
 			elif (cmd == "load1"):
 				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/trustserver && python load_rdf.py")
@@ -167,7 +173,7 @@ class Frontend:
 			conn = pathfinder.connected(source, sink)
 			graph = pathfinder.graph(source, sink)
 
-			req.write("Graph: %s\nConnected: %s" % (graph, conn))
+			req.write("Graph: %s\nConnected: %s\n\n" % (graph, conn))
 			
 			# then, check the TrustServer:
 			req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
