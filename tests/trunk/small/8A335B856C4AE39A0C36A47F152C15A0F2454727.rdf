@@ -6,7 +6,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/#"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
 <foaf:Person rdf:nodeID="ams5"> 
@@ -14,14 +14,14 @@
 	<wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
-<foaf:Person rdf:nodeID="dbp2">
+<foaf:Person rdf:nodeID="dpb2">
 	<foaf:name>DBrondsema</foaf:name>
 	<wot:fingerprint>EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70</wot:fingerprint>	
 </foaf:Person>
 
 <trust:Relationship>
 	<trust:truster rdf:nodeID="ams5" />
-	<trust:trusted rdf:nodeID="dbp2" />
+	<trust:trusted rdf:nodeID="dpb2" />
 	<trust:about rdf:nodeID="dt1" />
 	<trust:about rdf:nodeID="dt2" />
 	<trust:about rdf:nodeID="dt3" />
@@ -46,9 +46,9 @@
 </trust:Item>
 
 
-<foaf:Person>
-	<foaf:name>JLaing</foaf:name>
-	<wot:fingerprint>Laing</wot:fingerprint>		
+<foaf:Person rdf:nodeID="jhl2">
+	<foaf:name>Jim Laing</foaf:name>
+	<wot:fingerprint>4135692DA2Ad1F1EB9B27F22FBA13B553109E447</wot:fingerprint>		
 </foaf:Person>
 
 <trust:Relationship>

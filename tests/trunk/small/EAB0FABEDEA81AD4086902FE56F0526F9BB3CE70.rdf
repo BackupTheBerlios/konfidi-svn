@@ -3,7 +3,7 @@
     xmlns:foaf="http://xmlns.com/foaf/0.1/#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:wot="http://xmlns.com/wot/0.1/#"
-    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.1/trust.owl#"
+    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
     >
 
 <foaf:Person rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"> 
@@ -19,7 +19,7 @@
 
 <foaf:Person rdf:nodeID="andy">
     <!-- andy schamp -->
-    <wot:fingerprint>8A335B856C4AE39A0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
+    <wot:fingerprint>8a335b856C4AE39a0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
 <trust:Relationship>

@@ -6,31 +6,51 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/#"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.0/trust.owl#"
+   xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
    >
 
-<trust:Truster> 
-	<foaf:name>JLaing</foaf:name>
-	<wot:fingerprint>Laing</wot:fingerprint>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>AGoforth</foaf:name>
-			<wot:fingerprint>Goforth</wot:fingerprint>
-			<trust:trustedCompletely rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
-			<trust:trustedMinimally rdf:resource="http://www.abundantplunder.com/trust/subjects/#ohio"/>
-		</trust:Trustee>
-	</trust:trusts>
-	<trust:trusts>
-		<trust:Trustee>
-			<foaf:name>ASchamp</foaf:name>
-			<wot:fingerprint>Schamp</wot:fingerprint>
-			<trust:trustedAveragely rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
-		</trust:Trustee>
-	</trust:trusts>
-</trust:Truster>
+<foaf:Person rdf:nodeID="jhl"> 
+	<foaf:name>Jim Laing</foaf:name>
+	<wot:fingerprint>4135692DA2Ad1F1EB9B27F22FBA13B553109E447</wot:fingerprint>
+</foaf:Person>
 
-<rdf:Description rdf:about="">
-	<wot:assurance rdf:resource="foaf.rdf.asc" />
-</rdf:Description>
+<foaf:Person rdf:nodeID="agofor">
+	<foaf:name>AGoforth</foaf:name>
+	<wot:fingerprint>Goforth</wot:fingerprint>
+</foaf:Person>
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="jhl" />
+	<trust:trusted rdf:nodeID="agofor" />
+	<trust:about rdf:nodeID="g1" />
+	<trust:about rdf:nodeID="g2" />
+</trust:Relationship>
+
+<trust:Item rdf:nodeID="g1">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>  
+	<trust:rating>1.0</trust:rating>
+</trust:Item>
+
+<trust:Item rdf:nodeID="g2">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#ohio"/>
+	<trust:rating>0.55</trust:rating>
+</trust:Item>
+
+<foaf:Person rdf:nodeID="ams5">
+	<foaf:name>Andy Schamp</foaf:name>
+	<wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
+</foaf:Person>
+
+
+<trust:Relationship>
+	<trust:truster rdf:nodeID="jhl" />
+	<trust:trusted rdf:nodeID="ams5" />
+	<trust:about rdf:nodeID="a1" />
+</trust:Relationship>
+
+<trust:Item rdf:nodeID="a1">
+	<trust:topic rdf:resource="http://www.abundantplunder.com/trust/subjects/#default"/>
+	<trust:rating>0.75</trust:rating>
+</trust:Item>
 
 </rdf:RDF>
