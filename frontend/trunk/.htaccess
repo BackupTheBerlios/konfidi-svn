@@ -53,6 +53,9 @@ LimitRequestBody 102400
 #  Do not change any of these settings #
 ########################################
 
+# don't try to use mod_negotiation at all, it can mess up URI handling
+Options -MultiViews
+
 # ALL requests handled by mod_python
 SetHandler mod_python
 
