@@ -26,45 +26,33 @@ using namespace mimetic;
   while (0)
 
 
-void printMimeStructure(MimeEntity* pMe, int tabcount = 0)
-{
-	Header& h = pMe->header();                   // get header object
-	for(int c = tabcount; c > 0; --c)            // indent nested entities
-		cout << "    ";                      //
-	cout << h.contentType() << endl;             // prints Content-Type
-	MimeEntityList& parts = pMe->body().parts(); // list of sub entities obj
-	// cycle on sub entities list and print info of every item
-	MimeEntityList::iterator mbit = parts.begin(), meit = parts.end();
-	for(; mbit != meit; ++mbit)
-		printMimeStructure(*mbit, 1 + tabcount);
-}
-
 int main(int argc, char* argv[]) {
 
     ios_base::sync_with_stdio(false);        // optimization
     MimeEntity message(cin);           // parse and load message
     
-    //printMimeStructure(&message);
-    
-    cout << message.header().from() << endl;
-    cout << message.header().field("User-Agent") << endl;
-    cout << message.header().messageid().str() << endl;
     if (message.header().hasField("X-Trust-Email"))
     {
         cerr << "warning: malformed email " + message.header().messageid().str() + ": already has a X-Trust-Email header!" << endl;
     }
     
-    MimeEntity last_part = *message.body().parts().back();
-    cout << last_part.header().contentType().type() << last_part.header().contentType().subtype() << endl;
-    ContentType type_pgpsig("application", "pgp-signature");
-    if (last_part.header().contentType() == type_pgpsig) {
-        cout << "equals!" << endl;
+    if (message.header().contentType() 1= "multipart/signed") {
+        cerr << "warning: email " + message.header().messageid().str() + " is not multipart/signed, it is: " << message.header().contentType().str() << endl;
+        exit(3);
     }
+	if (message.body().parts().size() != 2) {
+        cerr << "warning: email " + message.header().messageid().str() + " doesn't have 2 parts, it has " << message.body().parts().size() << endl;
+        exit(3);
+	}
+	string text = message.body().parts().front()->body();
+    MimeEntity last_part = *message.body().parts().back();
+    if (last_part.header().contentType().type() != "application" ||
+    	last_part.header().contentType().subtype() != "pgp-signature") {
+    	cerr << "2nd part of message isn't application/pgp-signature, it is: " << last_part.header().contentType().str() << endl;
+        exit(2);
+    }
+	string sig = last_part.body();
     
-    /*gpgme_error_t gpgme_op_verify (gpgme_ctx_t CTX,
-           gpgme_data_t SIG, gpgme_data_t SIGNED_TEXT,
-           gpgme_data_t PLAIN)
-    */
     
     gpgme_error_t err;
     gpgme_ctx_t ctx;
@@ -72,20 +60,17 @@ int main(int argc, char* argv[]) {
     fail_if_err(err);
     cout << "did ctx" << endl;
     
-    string sig_buffer("sig_buffersig_buffersig_buffersig_buffersig_buffersig_buffersig_buffersig_buffersig_buffer");
-    string text_buffer("text_buffertext_buffertext_buffertext_buffertext_buffertext_buffer");
-    
-    gpgme_data_t sig;
-    err = gpgme_data_new_from_mem(&sig, sig_buffer.c_str(), sig_buffer.length(), 1);
+    gpgme_data_t sig_data;
+    err = gpgme_data_new_from_mem(&sig_data, sig.c_str(), sig.length(), 1);
     fail_if_err(err);
-    gpgme_data_t text;
-    err = gpgme_data_new_from_mem(&text, text_buffer.c_str(), text_buffer.length(), 1);
+    gpgme_data_t text_data;
+    err = gpgme_data_new_from_mem(&text_data, text.c_str(), text.length(), 1);
     fail_if_err(err);
     cout << "did data" << endl;
 
     
     string sig_header = "";
-    err = gpgme_op_verify(ctx, sig, text, NULL);
+    err = gpgme_op_verify(ctx, sig_data, text_data, NULL);
     fail_if_err(err);
     cout << "did ver" << endl;
     
@@ -98,7 +83,7 @@ int main(int argc, char* argv[]) {
     cout << "did res" << endl;
     gpgme_key_t r_key;
     gpgme_get_key(ctx, result->signatures->fpr, &r_key, 0);
-    cout << "did key" << endl;
+    cout << "did key " << result->signatures->fpr << endl;
     
     
     string ourheaders = "X-Trust-Email: **";
