@@ -9,7 +9,7 @@ from RequestServer import RequestServer
 
 class TrustServer:
 	def __init__(self, config=None, people=None):
-		self.host = host
+		self.host = config.host
 		self.config = config
 		self.updatePort = config.update_port
 		self.queryPort = config.query_port
