@@ -1,0 +1,173 @@
+Message-ID: <4228B9C7.5090207@brondsema.net>
+Date: Fri, 04 Mar 2005 14:40:55 -0500
+From: Dave Brondsema <dave@brondsema.net>
+User-Agent: Mozilla Thunderbird 1.0 (X11/20041206)
+X-Accept-Language: en-us, en
+MIME-Version: 1.0
+To: "Chris Crowe" <ctc2@calvin.edu>
+Subject: [Fwd: psyc301]
+X-Enigmail-Version: 0.90.0.0
+X-Enigmail-Supports: pgp-inline, pgp-mime
+Content-Type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig41DC2DA92719171DD01284AF"
+
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig41DC2DA92719171DD01284AF
+Content-Type: multipart/mixed;
+ boundary="------------060501060207060906040605"
+
+This is a multi-part message in MIME format.
+--------------060501060207060906040605
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+
+
+-------- Original Message --------
+Subject: psyc301
+Date: Thu,  3 Mar 2005 22:14:30 -0500
+From: Dave Brondsema <dave@brondsema.net>
+To: dave@brondsema.net
+
+
+
+--
+Dave Brondsema : dave@brondsema.net
+http://www.brondsema.net : personal
+http://www.splike.com : programming
+http://csx.calvin.edu : student org
+
+--
+Dave Brondsema : dave@brondsema.net
+http://www.splike.com : programming
+http://csx.calvin.edu : student org
+http://www.brondsema.net : personal
+
+--------------060501060207060906040605
+Content-Type: text/html;
+ name="dave - psyc301a.htm"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="dave - psyc301a.htm"
+
+<HTML><HEAD><TITLE>Class Directory - psyc301a</TITLE></HEAD><body bgcolor=#FFFFFF>
+<DIV ALIGN=CENTER>
+
+	<table width=600 cellpadding=5 cellspacing=0 border=0 bgcolor=#CCCCCC>
+	<tr><td align=center>
+<font size=+2 face=arial,helvetica,sans-serif><b>psyc301a</font></b><br><font face=arial,helvetica,sans-serif size=-1>Professor: Stacy Jackson
+	</td></tr></table>
+	<TABLE CELLPADDING=4 BORDER=1 cellspacing=0 width=600><TR>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=kjd2><IMG SRC="getpic.pl?userid=kjd2" WIDTH=84 height=100 border=0></a><br>
+Kevin Dekkinga<br>
+<a href="mailto:kjd2@calvin.edu">kjd2@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=mmf3><IMG SRC="getpic.pl?userid=mmf3" WIDTH=84 height=100 border=0></a><br>
+Matt Ferner<br>
+
+<a href="mailto:mmf3@calvin.edu">mmf3@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=bef2><IMG SRC="getpic.pl?userid=bef2" WIDTH=84 height=100 border=0></a><br>
+Ben Fiet<br>
+<a href="mailto:bef2@calvin.edu">bef2@calvin.edu</a><br></center></td>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=lak3><IMG SRC="getpic.pl?userid=lak3" WIDTH=84 height=100 border=0></a><br>
+Lynae Kooiker<br>
+<a href="mailto:lak3@calvin.edu">lak3@calvin.edu</a><br></center></td></TR>
+
+<TR>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+
+<a href=people.pl?uidd=dek2><IMG SRC="getpic.pl?userid=dek2" WIDTH=84 height=100 border=0></a><br>
+Dana Kratt<br>
+<a href="mailto:dek2@calvin.edu">dek2@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=tmay65><IMG SRC="getpic.pl?userid=tmay65" WIDTH=84 height=100 border=0></a><br>
+Tianna May<br>
+
+<a href="mailto:tmay65@calvin.edu">tmay65@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=jrm6><IMG SRC="getpic.pl?userid=jrm6" WIDTH=84 height=100 border=0></a><br>
+Johanna Meyerhoff<br>
+<a href="mailto:jrm6@calvin.edu">jrm6@calvin.edu</a><br></center></td>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=dbo2><IMG SRC="getpic.pl?userid=dbo2" WIDTH=84 height=100 border=0></a><br>
+Dirk Olson<br>
+<a href="mailto:dbo2@calvin.edu">dbo2@calvin.edu</a><br></center></td></TR>
+
+<TR>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+
+<a href=people.pl?uidd=tjp3><IMG SRC="getpic.pl?userid=tjp3" WIDTH=84 height=100 border=0></a><br>
+Tom Paauw<br>
+<a href="mailto:tjp3@calvin.edu">tjp3@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=sjr3><IMG SRC="getpic.pl?userid=sjr3" WIDTH=84 height=100 border=0></a><br>
+Sara Ridder<br>
+
+<a href="mailto:sjr3@calvin.edu">sjr3@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=pms3><IMG SRC="getpic.pl?userid=pms3" WIDTH=84 height=100 border=0></a><br>
+Paul Shim<br>
+<a href="mailto:pms3@calvin.edu">pms3@calvin.edu</a><br></center></td>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=eev4><IMG SRC="getpic.pl?userid=eev4" WIDTH=84 height=100 border=0></a><br>
+Emily VanderSchel<br>
+<a href="mailto:eev4@calvin.edu">eev4@calvin.edu</a><br></center></td></TR>
+
+<TR>
+
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+
+<a href=people.pl?uidd=ksv3><IMG SRC="getpic.pl?userid=ksv3" WIDTH=84 height=100 border=0></a><br>
+Kari VanRandwyk<br>
+<a href="mailto:ksv3@calvin.edu">ksv3@calvin.edu</a><br></center></td>
+<TD VALIGN=MIDDLE width=150>
+<font size=-1 face=arial,helvetica,sans-serif><center>
+<a href=people.pl?uidd=mdw2><IMG SRC="getpic.pl?userid=mdw2" WIDTH=84 height=100 border=0></a><br>
+Mike Wolf<br>
+
+<a href="mailto:mdw2@calvin.edu">mdw2@calvin.edu</a><br></center></td></TR></TABLE><p><a href=/cgi-bin/classpic.pl>Another Search</a>
+</DIV>
+
+<BODY>
+</HTML>
+--------------060501060207060906040605--
+
+--------------enig41DC2DA92719171DD01284AF
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.0 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://enigmail.mozdev.org
+
+iD8DBQFCKLnKVvBSb5uzznARAgG1AKCf6NNX8t+Agd1fIfjF2WVH+YIffwCeJ7uZ
+dWYAis3zOBlGWwIt2XH8wk8=
+=y4Cd
+-----END PGP SIGNATURE-----
+
+--------------enig41DC2DA92719171DD01284AF--
+
