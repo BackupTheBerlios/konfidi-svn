@@ -99,6 +99,7 @@ int main(int argc, char* argv[]) {
 	// end at 2nd boundary
 	int text_end = whole.find(boundary, text_start);
 	string text = whole.substr(text_start, text_end-text_start-1);
+	cout << '$' << text << '$' << endl;
 
     MimeEntity last_part = *message.body().parts().back();
     if (last_part.header().contentType().type() != "application" ||
@@ -118,8 +119,8 @@ int main(int argc, char* argv[]) {
     fail_if_err(err);
     
     // TODO: do a local lookup first?  how often to update those?
-    err = gpgme_set_keylist_mode(ctx, GPGME_KEYLIST_MODE_EXTERN);
-    fail_if_err(err);
+//    err = gpgme_set_keylist_mode(ctx, GPGME_KEYLIST_MODE_EXTERN);
+//    fail_if_err(err);
     
     gpgme_data_t sig_data;
     err = gpgme_data_new_from_mem(&sig_data, sig.c_str(), sig.length(), 1);
