@@ -86,15 +86,16 @@ def index(req):
 	return apache.OK
 
 def query(req):	
-    if (req.method == "POST" or req.method == "GET"):
-        form = util.FieldStorage(req, 1)
-        source = form["source"]
-        sink = form["sink"]
-        subject = form["subject"]
-    else:
+	if (req.method == "POST" or req.method == "GET"):
+		form = util.FieldStorage(req, 1)
+		source = form["source"]
+		sink = form["sink"]
+		subject = form["subject"]
+	else:
 		# hmm, something went wrong.
-        req.write("Error 41093.");
-    	 	  
+		req.write("Error 41093.");
+		return apache.OK
+
 	# first, check the PGP server:
 	pass    	
 	# then, check the TrustServer:
@@ -110,12 +111,12 @@ def query(req):
 		result += data 	
 		krang += "ly"
 
-    # maybe deal with errors somewhere in here...
-    req.content_type = "text/html"
-    req.write("Junkly")
-    req.write("grak."+krang)
-    req.write("Krudd."+result)
-    return apache.OK    
+	# maybe deal with errors somewhere in here...
+	req.content_type = "text/html"
+	req.write("Junkly")
+	req.write("grak."+krang)
+	req.write("Krudd."+result)
+	return apache.OK    
 
 def form(req):
     req.content_type = "text/html"
