@@ -5,6 +5,7 @@
 #include <cstdlib>
 using namespace std;
 
+// for getting user home dir; POSIX
 #include <sys/types.h>
 #include <pwd.h>
 

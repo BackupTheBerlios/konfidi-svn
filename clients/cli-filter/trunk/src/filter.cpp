@@ -183,11 +183,11 @@ string rating_to_starlevel(double rating) {
 }
 
 size_t curl_handle_data(void *buffer, size_t size, size_t nmemb, void *userp) {
-	cout << (char*)buffer << endl;
-	istringstream buffer_stream("000.77");
+	if (Options::verbose)
+		clog << (char*)buffer << endl;
+	istringstream buffer_stream((char*)buffer);
 	double value;
 	buffer_stream >> value;
-	clog << "got " << value << endl;
 	
 	ostringstream value_stream;
 	value_stream << value;
@@ -210,11 +210,15 @@ void add_trust_headers(MimeEntity * message, string mbox_from, string to) {
 		curl_easy_setopt(handle, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, curl_handle_data);
 		curl_easy_setopt(handle, CURLOPT_WRITEDATA, message);
+		char error_buffer[CURL_ERROR_SIZE];
+		curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, error_buffer);
 		res = curl_easy_perform(handle);
+		if (res != 0) {
+			cerr << "Error with trustserver: " << error_buffer << endl;
+		}
 		curl_easy_cleanup(handle);
 	} else { 
 		cerr << "couldn't init curl" << endl;
-		quit(mbox_from, message);
 	}
 }
 
