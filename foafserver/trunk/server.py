@@ -36,19 +36,26 @@ def index(req):
     req.content_type = "text/html"
     req.write('<a href="test">test output</a><br>')
     req.write('<br>')
-    req.write('<a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample: dave brondsema</a><br>')
+    req.write('<a href="123">sample: andy schamp</a><br>')
+    req.write('<a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>')
     return apache.OK
 
 def get(req):
-    req.content_type = "text/xml"
     uri = uniqueURI(req)
     # security check, allow hex only
     if re.search('^[A-F0-9]*$', uri):
         filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.xml'], uri + '.xml')
         try:
-            file = open(filename, 'r')
-            req.write(file.read())
-            file.close()
+            try:
+                req.content_type = "text/plain"
+                sigfile = open(filename + '.asc', 'r')
+                req.write(sigfile.read())
+                sigfile.close()
+            except IOError:
+                req.content_type = "text/xml"
+            xmlfile = open(filename, 'r')
+            req.write(xmlfile.read())
+            xmlfile.close()
             return apache.OK
         except IOError:
             apache.log_error("not found: requested " + uri, apache.APLOG_ERR)
