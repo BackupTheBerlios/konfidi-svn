@@ -16,10 +16,10 @@ function namename()
 PASS="    PASS"
 FAIL="    FAIL"
 
-ls *.txt | while read testcase
+ls *.test.txt | while read testcase
 do
-	testname=$(namename $testcase)
-	checkfile=$testname.headers
+	testname=$(namename $(namename $testcase))
+	checkfile=$testname.headers.txt
 	echo $testname:
 	if [ -f $checkfile ]
 	then
@@ -30,7 +30,7 @@ do
 		# if-stmt on result of that bytewise comparison
 		if $APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checkfile - | cmp $checkfile - 2>/dev/null
 		then
-			checknotfile=$testname.notheaders
+			checknotfile=$testname.notheaders.txt
 			if [ -f $checknotfile ]
 			then
 				# run app (ignore stderr)
