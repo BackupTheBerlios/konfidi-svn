@@ -183,8 +183,8 @@ class Frontend:
 				# then, check the TrustServer:
 				try:
 					trustresult = self.send_query(strategy, source, sink, options)
-					req.write(trustresult)
-					return apache.OK
+					#req.write(trustresult)
+					#return apache.OK
 					trustresult = minidom.parseString(trustresult).documentElement
 					try:
 						trust_rating = trustresult.getElementsByTagName("rating")[0].toxml()
@@ -290,6 +290,11 @@ class Frontend:
 			opt["subject"] = form["subject"]
 		except KeyError:
 			opt["subject"] = "default"
+		try:
+			opt["map_errors"] = form["map_errors"]
+		except KeyError:
+			opt["map_errors"] = 0
+			
 		if retstr:
 			return "|".join(["%s=%s" % (k, v) for k, v in opt.items()])	
 		else:
@@ -299,17 +304,22 @@ class Frontend:
 		form = util.FieldStorage(req, 1)
 		strategy = form["strategy"]
 		options = self.parse_options(form,True)
+		opts = self.parse_options(form)
 		req.content_type = "text/html"
-		peops = self.send_query("PeopleList").split("|")
-		req.write( "foo\n" )
+		peops = self.send_query("PeopleList")
+		peops = minidom.parseString(peops).documentElement.getElementsByTagName("data")[0].firstChild.nodeValue.split('|')
+		peops[0] = string.strip(peops[0])
+		#req.write( "foo\n" )
 		req.write( "%s\n" % peops )
 		req.write( "%s\n" % options )
 		req.write("<table border=1><tr><td>Source:</td><td>Sink:</td><td>Query Time:</td><td>Lock Time:</td><td>Result:</td></tr>\n")
 		for source in peops:
 			for sink in peops:
 				if source == sink: continue
-				r = self.send_query(strategy, source, sink, options).split("|")
-				req.write( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, r[1], r[2], r[0]) )
+				r = self.send_query(strategy, source, sink, options)
+				rating = float(minidom.parseString(r).documentElement.getElementsByTagName("rating")[0].firstChild.nodeValue)
+				if rating >= 0 and opts["map_errors"] != 1:
+					req.write( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, r) )
 		
 		req.write("</table>\n")
 		return apache.OK

@@ -14,15 +14,15 @@ class RequestServer(SocketServer.ThreadingTCPServer):
 		"""Get a person for a given fingerprint 
 		if one exists, otherwise, create one."""
 		# the lock stuff should make it thread safe
-		self.lock.acquire_read()
+		#self.lock.acquire_read()
 		if fingerprint in self.people:
 			p = self.people[fingerprint]
 		else:
 			p = Person.Person(fingerprint)
-			self.lock.release_read()
-			self.lock.acquire_write()
+			#self.lock.release_read()
+			#self.lock.acquire_write()
 			self.people[fingerprint] = p
-			self.lock.release_write()
-			self.lock.acquire_read()
-		self.lock.release_read()
+			#self.lock.release_write()
+			#self.lock.acquire_read()
+		#self.lock.release_read()
 		return p

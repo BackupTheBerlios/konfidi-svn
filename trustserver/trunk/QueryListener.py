@@ -49,11 +49,11 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			
 			
 		except KeyError, k:
-			result = f.queryresult[f.error("Person %s not found in dataset" % (k))]
+			result = f.queryresult[f.rating(str(-1)), f.error("Person %s not found in dataset" % (k))]
 		except PathNotFoundError, p:
-			result = f.queryresult[f.error("No path found from source to sink: %s" % (p))] 
+			result = f.queryresult[f.rating(str(-1)), f.error("No path found from source to sink: %s" % (p))] 
 		except SourceSinkSameError, s:
-			result = f.queryresult[f.error("The source and the sink are the same: %s" % (s))]
+			result = f.queryresult[f.rating(str(1)), f.error("The source and the sink are the same: %s" % (s))]
 		#except (ValueError):
 		#	self.request.send("Invalid query")
 	
