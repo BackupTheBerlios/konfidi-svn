@@ -102,6 +102,10 @@ int main(int argc, char* argv[]) {
     err = gpgme_new(&ctx);
     fail_if_err(err);
     
+    // TODO: do a local lookup first?  how often to update those?
+    err = gpgme_set_keylist_mode(ctx, GPGME_KEYLIST_MODE_EXTERN);
+    fail_if_err(err);
+    
     gpgme_data_t sig_data;
     err = gpgme_data_new_from_mem(&sig_data, sig.c_str(), sig.length(), 1);
     fail_if_err(err);
@@ -114,10 +118,29 @@ int main(int argc, char* argv[]) {
     err = gpgme_op_verify(ctx, sig_data, text_data, NULL);
     fail_if_err(err);
     gpgme_verify_result_t result = gpgme_op_verify_result (ctx);
-    gpgme_key_t key;
-    // this is blocking, probably want to change.
-    gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
     clog << "did key " << result->signatures->fpr << endl;
+    
+    // this is blocking, probably want to change.
+    gpgme_key_t key;
+	err = gpgme_get_key(ctx, result->signatures->fpr, &key, 0);
+	fail_if_err(err);
+	
+	bool found_email = false;
+	string from_email = message.header().from().front().mailbox() + '@' + message.header().from().front().domain();
+	gpgme_user_id_t uid = key->uids;
+	while (uid) {
+		if (from_email == uid->email) {
+			found_email = true;
+		}
+		uid = uid->next;
+	}
+	if (!found_email) {
+		cerr << "no PGP uid email matched the 'From: ' on " << message.header().messageid().str() << endl;
+		message.header().field(header_sig).value("from mismatch");
+		return quit(mbox_from, &message);
+	}
+	
+	
 //    gpgme_key_sig_t key_sig;
 //    cout << "key: " << key_sig->keyid << " " << key_sig->name << endl;
     clog << "valid: " << (result->signatures->summary & GPGME_SIGSUM_VALID) << endl;
