@@ -5,6 +5,7 @@ import dump
 import os
 import re
 import sys
+from socket import *
 from rdflib.Namespace import Namespace
 from rdflib.TripleStore import TripleStore
 from rdflib.StringInputSource import StringInputSource
@@ -222,17 +223,25 @@ def savetofile(req, content, fingerprint):
     foaffile = open(filename, 'w')
     foaffile.write(content)
     foaffile.close()
+    return filename
 
 def storefoaf(req, content, uri_fingerprint=""):
     try:
         fingerprint = validate(content, uri_fingerprint)
     except FOAFServerError:
         return str(sys.exc_info()[1])
-    err = savetofile(req, content, fingerprint)
-    if err:
-        return err
-    pass
+    filename = savetofile(req, content, fingerprint)
+    updatetrustserver(req, filename)
+
+def updatetrustserver(req, filename):
+    hostname = req.get_options()['trustserver.hostname']
+    port = int(req.get_options()['trustserver.port'])
     
+    sockobj = socket(AF_INET, SOCK_STREAM)
+    sockobj.connect((hostname, port))
+    sockobj.send(filename)
+    sockobj.close()
+    apache.log_error("updated trustserver w/: " + filename, apache.APLOG_NOTICE)
 
 #
 # test stuff; delete sometime
