@@ -8,21 +8,13 @@
     <!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
     <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
   ]>
-<!--<!DOCTYPE rdf:RDF [
-	<!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
-	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
-	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-	<!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
-	<!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
-	<!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" > ]>
- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
+<!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
 <rdf:RDF 
 	xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
 	xmlns:owl="&owl;" 
 	xmlns:rdf="&rdf;" 
 	xmlns:rdfs="&rdfs;"
-	xmlns:xs="http://www.w3.org/2001/XMLSchema#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
@@ -37,7 +29,6 @@
 	dc:date="$Date: 2005/03/19 11:38:02 $"
 	> 
 	<owl:versionInfo>v1.0</owl:versionInfo>
-	<!--<owl:imports rdf:resource="&rdfs;"/>-->
 	<wot:assurance rdf:resource="../trustsig"/>
 </owl:Ontology>
 
@@ -49,65 +40,29 @@
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 	<rdfs:subClassOf rdf:resource="&rdfs;Resource" />
 </owl:Class>
-<!-- old stuff
-<owl:Class rdf:ID="Truster">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>Truster</rdfs:label>
-	<rdfs:subClassOf rdf:resource="&foaf;Agent" /> 
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#keyFingerprint" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#trusts" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-</owl:Class>
-
-<owl:Class rdf:ID="Trustee">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>Trustee</rdfs:label>
-	<rdfs:subClassOf rdf:resource="&foaf;Agent" />
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#keyFingerprint" />
-			<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-	<rdfs:subClassOf>
-		<owl:Restriction>
-			<owl:onProperty rdf:resource="#trustValue" />
-			<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-		</owl:Restriction>
-	</rdfs:subClassOf>
-</owl:Class>
--->
 
 <!-- we want to use this for constraints -->
-<xs:simpleType name="percent" id="percent">
-	<xs:restriction base="xs:decimal">
-		<xs:totalDigits value="4" />
-		<xs:fractionDigits value="2" />
-		<xs:minInclusive value="0.00" />
-		<xs:maxInclusive value="1.00" />
-	</xs:restriction>
-</xs:simpleType>
+<xsd:element xsd:name="percent" rdf:ID="percent">
+	<xsd:simpleType>
+		<xsd:restriction xsd:base="xsd:decimal">
+			<xsd:totalDigits xsd:value="4" />
+			<xsd:fractionDigits xsd:value="2" />
+			<xsd:minInclusive xsd:value="0.00" />
+			<xsd:maxInclusive xsd:value="1.00" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:element>
 
 <!-- properties second -->
 <owl:ObjectProperty rdf:ID="trusts" rdfs:Label="trusts"
 	rdfs:comment="Relates people in trust relationships">
-	<rdfs:domain rdf:resource="&foaf;Person" />
-	<rdfs:range rdf:resource="&foaf;Person" />
+	<rdfs:domain rdf:resource="&foaf;Agent" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 </owl:ObjectProperty>
 <owl:ObjectProperty rdf:ID="trustedAbout" rdfs:label="trustedAbout" 
 	rdfs:comment="Relates things to trust items.">
-	<!-- this domain allows anything to be trusted, even trust items themselves.  do we want to restrict this any further? -->
-	<rdfs:domain rdf:resource="&owl;Thing" />
+	<rdfs:domain rdf:resource="&foaf;Agent" />
 	<rdfs:range rdf:resource="#Item" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 </owl:ObjectProperty>
@@ -124,79 +79,5 @@
 	<rdfs:range rdf:resource="&owl;Thing" />
 </owl:ObjectProperty>
 
-<!-- old stuff
-<owl:ObjectProperty rdf:ID="trustedCompletely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustedCompletely</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trustedHighly">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustedHighly</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trustedAveragely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustedAveragely</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trustedMinimally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustedMinimally</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trustedNeutrally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustedNeutrally</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="distrustedMinimally">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>distrustedMinimally</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="distrustedAveragely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>distrustedAveragely</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="distrustedHighly">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>distrustedHighly</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="distrustedCompletely">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>distrustedCompletely</rdfs:label>
-	<rdfs:subPropertyOf rdf:resource="#trustValue"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trustValue">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trustValue</rdfs:label>
-	<rdfs:domain rdf:resource="#Trustee"/>
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trusts">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>trusts</rdfs:label>
-	<rdfs:domain rdf:resource="#Truster" />
-	<rdfs:range rdf:resource="#Trustee" />
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="keyFingerprint">
-	<rdfs:isDefinedBy rdf:resource="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" />
-	<rdfs:label>keyFingerprint</rdfs:label>
-	<rdfs:domain rdf:resource="&foaf;Agent" />
-</owl:ObjectProperty>
--->
 
 </rdf:RDF>
