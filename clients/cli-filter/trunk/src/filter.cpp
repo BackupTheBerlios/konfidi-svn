@@ -39,6 +39,7 @@ int main(int argc, char* argv[]) {
 
 	// load data
 	// possible "From " line in mbox format
+	// TODO: is this really necessary?
 	string mbox_from;
 	getline(cin, mbox_from);
 	if (mbox_from.substr(0, 5) != "From ") {

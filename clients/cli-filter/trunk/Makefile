@@ -9,7 +9,7 @@ SRCS = $(shell ls $(SRC)/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 
 CFLAGS = -Wall `gpgme-config --cflags`
-LFLAGS = `gpgme-config --libs` -lmimetic
+LFLAGS = -static `gpgme-config --libs` -lmimetic
 
 
 all: $(EXE)
