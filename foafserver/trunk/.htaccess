@@ -18,3 +18,6 @@ PythonOption storage.dir.xml storage
 PythonOption storage.dir.pgp storage
 
 
+# limit uploads to 100K
+# unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
+LimitRequestBody 102400
