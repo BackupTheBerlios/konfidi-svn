@@ -42,7 +42,7 @@ def main():
 	c.add_option('trust_url', type='string', default='http://www.abundantplunder.com/trust/owl/trust.owl#', keys='Schema')
 	c.add_option('woturl', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema#', keys='Schema')
-	c.add_file('/home/ams5/public_html/trunk/trustserver.cfg', None, 'ini')
+	c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
 	config = c.parse()
 
 	#os.mkfifo('/tmp/trustpipe')

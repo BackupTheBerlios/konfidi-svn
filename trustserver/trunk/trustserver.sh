@@ -6,7 +6,7 @@
 # place the daemon scripts in a folder accessible by root. /usr/local/sbin is a good idea
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-BASEDIR=/home/ams5/public_html/trunk
+BASEDIR=`dirname $0`
 DAEMON=$BASEDIR/daemon.py
 NAME=trustserver
 DESC="TrustServer"
@@ -18,6 +18,7 @@ set -e
 case "$1" in
   start)
 	echo -n "Starting $DESC: "
+	mkdir -p $BASEDIR/run
 	start-stop-daemon --start --quiet --pidfile $BASEDIR/run/$NAME.pid \
 		--exec $DAEMON --startas $DAEMON --make-pidfile
 	echo "$NAME."

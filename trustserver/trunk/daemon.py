@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
+import sys, os
+
 ###########################################################################
 # configure these paths:
-LOGFILE = '/home/ams5/public_html/trunk/log/trustserver.log'
-PIDFILE = '/home/ams5/public_html/trunk/run/trustserver.pid'
+LOGFILE = sys.path[0] + '/log/trustserver.log'
+PIDFILE = sys.path[0] + '/run/trustserver.pid'
 
 # and let USERPROG be the main function of your project
 import TrustServer 
@@ -11,7 +13,6 @@ USERPROG = TrustServer.main
 ###########################################################################
 
 #based on Jürgen Hermanns http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66012
-import sys, os
 
 class Log:
     """file like for writes with auto flush after each write
@@ -25,7 +26,7 @@ class Log:
 
 def main():
     #change to data directory if needed
-    os.chdir("/home/ams5/public_html/trunk")
+    #os.chdir("/home/ams5/public_html/trunk")
     #redirect outputs to a logfile
     sys.stdout = sys.stderr = Log(open(LOGFILE, 'a+'))
     # redirect input from a named pipe
@@ -33,7 +34,7 @@ def main():
     #sys.stdin = open('/tmp/trustpipe', 'r')
     #ensure the that the daemon runs a normal user
     os.setegid(100)     #set group first "pydaemon"
-    os.seteuid(1008)     #set user "pydaemon"
+#not allowed    os.seteuid(1008)     #set user "pydaemon"
     #start the user program here:
     USERPROG()
 
