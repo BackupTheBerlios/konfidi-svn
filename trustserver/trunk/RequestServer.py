@@ -4,8 +4,9 @@ import Person
 class RequestServer(SocketServer.ThreadingTCPServer):
 	"""This class allow everyone to have access to the 
 	people lookup table"""
-	def __init__(self, server_address, RequestHandlerClass, people=None):
+	def __init__(self, server_address, RequestHandlerClass, people=None, config=None):
 		self.people = people
+		self.config = config
 		SocketServer.ThreadingTCPServer.__init__(self, server_address, RequestHandlerClass)
 		
 	def getPerson(self, fingerprint):

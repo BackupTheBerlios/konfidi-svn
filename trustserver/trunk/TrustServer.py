@@ -17,15 +17,15 @@ class TrustServer:
 		self.updatePort = config.update_port
 		self.queryPort = config.query_port
 		self.people = people
-		self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people)
-		self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people)
+		self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people, self.config)
+		self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people, self.config)
 		
 	def startUpdateListener(self, junk):
 		print "Starting Update Listener"
 		self.updateListener.serve_forever()
 		
 	def startQueryListener(self, junk):
-		print "Starting Update Listener"
+		print "Starting Query Listener"
 		self.queryListener.serve_forever()
 		
 	def getPeople(self):
@@ -49,8 +49,12 @@ def main():
 	t = TrustServer(config, {})
 	thread.start_new(t.startUpdateListener, ('',) )
 	thread.start_new(t.startQueryListener, ('',) )
+	# I don't know a better way to keep this from exiting, except maybe to fork 
+	# new processes of the above, and then exit.:
+	while 1:
+		time.sleep(120)
 	# this is really just for output prettiness
-	time.sleep(3)
+	#time.sleep(3)
 	#print "Server running.  Enter commands below: "
 	#selectables = [sys.stdin]
 	#while 1:

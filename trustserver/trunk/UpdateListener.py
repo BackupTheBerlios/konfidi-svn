@@ -8,6 +8,7 @@ from rdflib.constants import DATATYPE
 import SocketServer
 from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
+#from pickle import dumps
 
 class UpdateListener(SocketServer.BaseRequestHandler):
 	def setup(self):
@@ -24,6 +25,10 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 			self.trustValues.append(s)
 	def handle(self):
 		print "update connection opened."
+		#print "FOAF: %s" % (dumps(self.FOAF))
+		#print "TRUST: %s" % (dumps(self.TRUST))
+		#print "WOT: %s" % (dumps(self.WOT))
+		#print "RDF: %s" % (dumps(self.RDF))
 		str = ''
 		while 1:
 			data = self.request.recv(1024)
