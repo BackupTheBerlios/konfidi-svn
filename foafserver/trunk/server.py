@@ -78,8 +78,8 @@ def index(req):
     <h4>Retrieving</h4>
     Just do a GET using a URL of the PGP fingerprint
     <br>
-    <a href="123">sample: andy schamp</a><br>
-    <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">sample w/ sig: dave brondsema</a><br>
+    <a href="8A335B856C4AE39A0C36A47F152C15A0F2454727">andy schamp</a><br>
+    <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">dave brondsema</a><br>
     
     <h4>Uploading</h4>
     Human web interface: <a href="form">web form</a><br>
