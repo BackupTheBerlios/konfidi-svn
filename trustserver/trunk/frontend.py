@@ -95,25 +95,19 @@ def query(req):
 		# first, check the PGP server:
 		pass    	
 		# then, check the TrustServer:
-		req.write("Source: %s, Sink: %s, Subject: %s" % (source, sink, subject))
-		req.write("Host: %s, Port: %i" % (req.get_options()['trustserver.host'], req.get_options()['trustserver.port'])
+		req.write("Source: %s\n Sink: %s\n Subject: %s\n\n" % (source, sink, subject))
+		req.write("Host: %s\n Port: %i\n\n" % (req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
 		sockobj = socket(AF_INET, SOCK_STREAM)
-		sockobj.connect((req.get_options()['trustserver.host'], req.get_options()['trustserver.port']))
+		sockobj.connect((req.get_options()['trustserver.host'], int(req.get_options()['trustserver.port'])))
 		sockobj.send("%s:%s:%s" % (source, sink, subject))
-		result = "krang"
-		result += "foo"
-		krang = "junk"
+		result = ""
 		while 1:
 			data = sockobj.recv(1024)
 			if not data: break
 			result += data 	
-			krang += "ly"
 	
 		# maybe deal with errors somewhere in here...
-		req.content_type = "text/html"
-		req.write("Junkly")
-		req.write("grak."+krang)
-		req.write("Krudd."+result)
+		req.write(result+"\n\n")
 		return apache.OK    
 	else:
 		# hmm, something went horribly wrong.
