@@ -13,6 +13,8 @@ using namespace mimetic;
 const char* header_sig = "X-PGP-Signature";
 const char* header_sig_finger = "X-PGP-Fingerprint";
 const char* header_trust = "X-Trust-Email-Value";
+const char* header_this_app = "X-Dmail-Client";
+const char* header_this_app_value = "cli-filter 0.1";
 
 
 #define fail_if_err(err)                                        \
@@ -197,6 +199,8 @@ int main(int argc, char* argv[]) {
     MimeEntity message(cin);
     
     clean_headers(&message);
+    message.header().field(header_this_app).value(header_this_app_value);
+    
 
 	string text = parse_email_text(&message, whole, mbox_from);
 	string sig = parse_email_sig(&message, whole, mbox_from);
