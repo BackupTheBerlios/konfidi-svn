@@ -13,12 +13,12 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 	def setup(self):
 		# Create a namespace object for the Friend of a friend namespace.
 		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-		self.TRUST = Namespace("http://www.abundantplunder.com/trust/owl/trust.owl#")
+		self.TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 		# load trust values into list for later
 		trust = TripleStore()
-		trust.load("http://www.abundantplunder.com/trust/owl/trust.owl#")
+		trust.load("http://brondsema.gotdns.com/svn/dmail/foafserver/trunk/schema/trust.owl")
 		self.trustValues = []
 		for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
 			self.trustValues.append(s)
