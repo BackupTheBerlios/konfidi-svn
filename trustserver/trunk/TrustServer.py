@@ -41,7 +41,6 @@ if __name__ == "__main__":
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema#', keys='Schema')
 	c.add_file('trustserver.cfg', None, 'ini')
 	config = c.parse()
-	print 'Number of retries:',config.retries
 
 	print "Server Started"	
 	t = TrustServer(config, {})
