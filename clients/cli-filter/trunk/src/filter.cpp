@@ -99,6 +99,10 @@ int main(int argc, char* argv[]) {
 	// end at 2nd boundary
 	int text_end = whole.find(boundary, text_start);
 	string text = whole.substr(text_start, text_end-text_start-1);
+	// lf -> crlf
+	int p=-1;
+	while (std::string::npos != (p=text.find("\n",p+2)))
+		text.replace(p,1,"\r\n");
 	cout << '$' << text << '$' << endl;
 
     MimeEntity last_part = *message.body().parts().back();
