@@ -12,7 +12,7 @@ class LocalWotsapPathfinder(PGPPathfinder):
 
 	def connected(self, source, sink, limit=None):
 		(out, err) = self.runwotsap(source, sink, limit)
-		return len(out) != 0 # and len(err) == 0
+		return out != None # and len(err) == 0
 
 	def runwotsap(self, source, sink, limit=None):
 		"""note how wotsap doesn't support a long fingerprint, so we just take the last 8 chars"""

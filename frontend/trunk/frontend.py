@@ -166,40 +166,48 @@ class Frontend:
 				
 			#handle the options here: 
 			opt = {}
+			try:
+				opt["pgpquery"] = int(form["pgpquery"])
+			except KeyError:
+				opt["pgpquery"] = int(self.config["pgpserver"]["query"])
+			try:
+				opt["trustquery"] = int(form["trustquery"])
+			except KeyError:
+				opt["trustquery"] = int(self.config["trustserver"]["query"])
+				
 			opt["subject"] = form["subject"]
 			
 			options = "|".join(["%s=%s" % (k, v) for k, v in opt.items()])
 			
-			# first, check the PGP server:
-			try:
-				exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
-				exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
-			except (ImportError):
-				# put the hardcoded one here
-				raise ImportError
+			if opt["pgpquery"]:
+				# first, check the PGP server:
+				try:
+					exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
+					exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
+				except (ImportError):
+					# put the hardcoded one here
+					raise ImportError
+				conn = pathfinder.connected(source, sink)
+				graph = pathfinder.graph(source, sink)
+				req.write("Graph: %s\nConnected: %s\n\n" % (graph, conn))
 			
-			
-			conn = pathfinder.connected(source, sink)
-			graph = pathfinder.graph(source, sink)
-
-			req.write("Graph: %s\nConnected: %s\n\n" % (graph, conn))
-			
-			# then, check the TrustServer:
-			req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
-			req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-			try:
-				sockobj = socket(AF_INET, SOCK_STREAM)
-				sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-				sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
-				result = ""
-				while 1:
-					data = sockobj.recv(1024)
-					if not data: break
-					result += data 	
-				# maybe deal with errors somewhere in here...
-				req.write("Result: %s\n\n" % (result))
-			except error, (errno, errstr):
-				req.write("Error(%s): %s" % (errno, errstr))
+			if opt["trustquery"]:
+				# then, check the TrustServer:
+				req.write("Source: %s\n Sink: %s\n Options: %s\n\n" % (source, sink, options))
+				req.write("Host: %s\n Port: %i\n\n" % (self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+				try:
+					sockobj = socket(AF_INET, SOCK_STREAM)
+					sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+					sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
+					result = ""
+					while 1:
+						data = sockobj.recv(1024)
+						if not data: break
+						result += data 	
+					# maybe deal with errors somewhere in here...
+					req.write("Result: %s\n\n" % (result))
+				except error, (errno, errstr):
+					req.write("Error(%s): %s" % (errno, errstr))
 			return apache.OK    
 				
 		else:

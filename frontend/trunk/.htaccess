@@ -6,6 +6,11 @@ PythonOption trustserver.port 20000
 PythonOption pgpserver.host localhost
 PythonOption pgpserver.port 50000
 
+# the default querying behavior, if nothing is specified
+# (1 = query, 0 = do not query)
+PythonOption trustserver.query 1
+PythonOption pgpserver.query 1
+
 # PGP Pathfinding strategy
 # just use the name, not the full class name
 # e.g. LocalWotsap instead of LocalWotsapPathfinder
