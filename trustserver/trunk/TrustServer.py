@@ -33,6 +33,7 @@ if __name__ == "__main__":
 	# load the configuration data
 	c = cfgparse.ConfigParser()
 	# default values
+	c.add_option('host', type='string', default='localhost', keys='Server')
 	c.add_option('update_port', type='int', default='50010', keys='Server')
 	c.add_option('query_port', type='int', default='50000', keys='Server')
 	c.add_option('foaf_url', type='string', default='http://xmlns.com/foaf/0.1/', keys='Schema')
