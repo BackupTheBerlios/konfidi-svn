@@ -143,10 +143,6 @@ class Frontend:
 			source = form["source"]
 			sink = form["sink"]
 
-			if source == sink:
-				req.write("Sorry, source and sink are the same.");
-				return apache.OK
-
 			if strategy == "": strategy = "Default"
 		
 			opt = self.parse_options(form)
@@ -181,6 +177,8 @@ class Frontend:
 				# then, check the TrustServer:
 				try:
 					trustresult = self.send_query(strategy, source, sink, options)
+					req.write(trustresult)
+					return apache.OK
 					trustresult = minidom.parseString(trustresult).documentElement
 					try:
 						trust_rating = trustresult.getElementsByTagName("rating")[0].toxml()
