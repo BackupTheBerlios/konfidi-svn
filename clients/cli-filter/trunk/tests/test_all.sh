@@ -28,7 +28,7 @@ do
 		# get lines which are common to it and checkfile
 		# bytewise comparison of that with the checkfile (ignore stderr)
 		# if-stmt on result of that bytewise comparison
-		if $APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checkfile - | cmp $checkfile - 2>/dev/null
+		if $APP $* < $testcase 2>/dev/null | sort | comm -1 -2 $checkfile - | cmp -s $checkfile -
 		then
 			checknotfile=$testname.notheaders.txt
 			if [ -f $checknotfile ]
