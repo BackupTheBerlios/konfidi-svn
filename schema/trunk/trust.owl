@@ -1,26 +1,35 @@
 <?xml version="1.0"?>
 <!DOCTYPE rdf:RDF [
-    <!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
-    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
-    <!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
+	<!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
+	<!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+	<!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
+	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+	<!ENTITY foaf "http://xmlns.com/foaf/0.1/#" >
+	<!ENTITY wot  "http://xmlns.com/wot/0.1/#" >
+	<!ENTITY rel "http://vocab.org/relationship/#" >
   ]>
 <!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
 <rdf:RDF 
-	xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#"
+	xmlns="&trust;"
 	xmlns:owl="&owl;" 
 	xmlns:rdf="&rdf;" 
 	xmlns:rdfs="&rdfs;"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+	xmlns:xsd="&xsd;"
+	xmlns:rel="&rel;"
 	xmlns:foaf="&foaf;"
 	xmlns:wot="&wot;"
 	xmlns:dc="http://purl.org/dc/elements/1.1/#"
+	xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
 >
-<!-- xmlns="http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" -->
+
+<rdf:Description rdf:about="">
+	<dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
+	<dc:date>2005-03-20</dc:date>
+	<dc:description xml:lang="en">This is the description</dc:description>
+	<dc:contributor>Andrew Schamp</dc:contributor>
+	<dc:contributor>Dave Brondsema</dc:contributor>
+</rdf:Description>
 
 <owl:Ontology 
 	rdf:about="&trust;" 
@@ -41,6 +50,10 @@
 	<rdfs:subClassOf rdf:resource="&rdfs;Resource" />
 </owl:Class>
 
+<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship" rdfs:comment="A relationship between two agents">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:subClassOf rdf:resource="&rel;Relationship" />
+</owl:Class>
 <!-- we want to use this for constraints -->
 <xsd:element xsd:name="percent" rdf:ID="percent">
 	<xsd:simpleType>
@@ -54,26 +67,42 @@
 </xsd:element>
 
 <!-- properties second -->
+<!--
 <owl:ObjectProperty rdf:ID="trusts" rdfs:Label="trusts"
 	rdfs:comment="Relates people in trust relationships">
 	<rdfs:domain rdf:resource="&foaf;Agent" />
 	<rdfs:range rdf:resource="&foaf;Agent" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 </owl:ObjectProperty>
-<owl:ObjectProperty rdf:ID="trustedAbout" rdfs:label="trustedAbout" 
+-->
+<owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
+	rdfs:comment="The agent doing the trusting.">
+	<rdfs:domain rdf:resource="&trust;Relationship" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="trusted" rdfs:label="trusted"
+	rdfs:comment="The agent being trusted.">
+	<rdfs:domain rdf:resource="&trust;Relationship" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="about" rdfs:label="about" 
 	rdfs:comment="Relates things to trust items.">
-	<rdfs:domain rdf:resource="&foaf;Agent" />
+	<rdfs:domain rdf:resource="&trust;Relationship" />
 	<rdfs:range rdf:resource="#Item" />
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 </owl:ObjectProperty>
 
-<owl:ObjectProperty rdf:ID="value" rdfs:label="value">
+<owl:ObjectProperty rdf:ID="rating" rdfs:label="rating">
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 	<rdfs:domain rdf:resource="#Item" />
 	<rdfs:range rdf:resource="&rdfs;Literal" rdf:type="#percent" />
 </owl:ObjectProperty>
 
-<owl:ObjectProperty rdf:ID="subject" rdfs:label="subject">
+<owl:ObjectProperty rdf:ID="topic" rdfs:label="topic">
 	<rdfs:isDefinedBy rdf:resource="&trust;" />
 	<rdfs:domain rdf:resource="#Item" />
 	<rdfs:range rdf:resource="&owl;Thing" />
