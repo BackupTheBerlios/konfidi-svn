@@ -52,22 +52,27 @@ We should write this second to last.
 
 \section{Related Work}
 
-\subsection{Representing Trust Relationship}
+\subsection{Representing Trust Relationships}
 There seems to be a general lack of psychological research on trust inference and representing trust relationships. In fact, most works in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
 
 Konfidi likewise has chosen a somewhat arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
-There are a number of
+There are a number of mathematical papers discussing propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
+
+Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\footnote{See "Trust and Reputation in Web-based Social Networks" at http://trust.mindswap.org/} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\footnote{For more information about TrustMail, and to download a demonstration, see http://trust.mindswap.org/trustMail.shtml}, an email client that uses the trust network that she is building.  She is more concerned with the academic side of things, since this field is still growing rapidly, and less in the pragmatic side of things, as she prefers to help determine a good system of standards in the area.
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
-\subsubsection{Friend-of-a-Friend}
+\subsubsection{Friend of a Friend (FOAF)}
+The FOAF project\footnote{See http://www.foaf-project.org/ for more information about FOAF} is an RDF vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users created RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  
 
 \subsubsection{FOAF Whitelisting}
+Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\footnote{See http://www.w3.org/2001/12/rubyrdf/util/foafwhite/intro.html for more information about the whitelisting experiments}.
 
 \subsection{Email Filtering by Inferred Trust}
+Boykin and Roychowdhury discuss ways to infer relationships based on existing data (From:, To:, Cc: headers)\cite{boykin04email}. This seems to work fairly well but there is often not enough data to make the spam/not-spam decision. They clearly state a cryptographic solution would be ideal.
 
 \subsubsection{Spam Filtering}
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which dmail does, is not very common. Challenge-response to build a whitelist is tedious for sender and reciever and does not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
@@ -77,11 +82,35 @@ This project began as an exploration of whether we might use the PGP web-of-trus
 
 A more serious flaw in this thick-client approach is that, given the key-centric nature of the web-of-trust, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
 
-So, for our idea to be viable, it must first deal with these two issues, namely, storing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
+So, for our idea to be viable, it must first deal with these two issues, namely, representing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
 
 \section{Design}
+Say something here.
+
+\subsection{Representation}
+Our schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, we felt that a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
+
+This is closely related to another important concern, that our representation give some account of distrust.  If our trust network contained trust values ranging from neutral to complete, then everyone in the network is trusted, explicitly, or by inference on some level at or above this.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
+
+One of the difficulties of using explicit distrust in an inference network, however, is that it is unclear how inferences should proceed once a link of distrust has been encountered.  Suppose Alice distrusts Bob, and Bob distrusts Clara.  As Guha points out\cite{guha04propagation}, there are at least two interpretations of this situation.  On the one hand, Alice might think something like "the enemy of my enemy is my friend" and so decide to put trust in Clara.  On the other hand, she might realize that if someone as scheming as Bob distrusts Clara, then Clara must really be an unreliable character, and so decide to distrust Clara.  Further, suppose Bob expressed trust for Dave.  At first consideration, it might seem reasonable to simply distrust everyone that Bob distrusts, including Dave.  But suppose there were another path through different nodes indicating some minimal level of trust for Dave.  Which path should be chosen as one which provides the correct inference?
+
+One solution to this problem is simply to traverse one link of distrust, and then record that distrust and stop, seeking an alternate path.  To overcome the problem of chosing the correct path for the inference, some kind of weighted average can be taken of all of the paths between Alice and Dave, thereby producing an answer according to whether the majority of people in the neighborhood Dave trust him or not.
+
+We explored a method similar to this one, 
+
+Subject-based trust
+
+Two members, rating, subject, other attributes (date, etc)
+\subsection{Infrastructure}
+As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store FOAF data specifying trust relationships.  Second, we needed a way to represent the network specified in the FOAF data, and traverse it to calculate trust values.
 
 \section{Implementation}
+\subsection{OWL Schema}
+\subsection{FOAF Server}
+\subsection{Trust Server}
+\subsubsection{Frontend}
+\subsubsection{Trust Backend}
+\subsubsection{PGP Backend}
 
 \section{Future Work}
 
