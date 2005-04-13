@@ -1,0 +1,115 @@
+
+\documentclass{acm_proc_article-sp}
+
+\begin{document}
+%
+% --- Author Metadata here ---
+%\conferenceinfo{WOODSTOCK}{'97 El Paso, Texas USA}
+\setpagenumber{50}
+%\CopyrightYear{2002} % Allows default copyright year (2002) to be over-ridden - IF NEED BE.
+%\crdata{0-12345-67-8/90/01}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
+% --- End of Author Metadata ---
+
+\title{Konfidi: Trust Networks Using PGP and RDF}
+
+\numberofauthors{2}
+
+\author{
+\alignauthor Andrew Schamp
+%\titlenote{Mr. Schamp is first because he is primarily responsible for this document, while Mr. Brondsema is primarily responsible for the presentation.}
+\\
+       \affaddr{Calvin College}\\
+       \affaddr{3201 Burton SE}\\
+       \affaddr{Grand Rapids, MI  49546}\\
+       \email{ams5@calvin.edu}
+\alignauthor David Brondsema\\
+       \affaddr{Calvin College}\\
+       \affaddr{3201 Burton SE}\\
+       \affaddr{Grand Rapids, MI 49546}\\
+       \email{dpb2@calvin.edu}
+}
+
+\date{12 April 2005}
+
+\maketitle
+\begin{abstract}
+We ought to write this last.
+\end{abstract}
+
+% what do we put for these? - ams5
+
+% A category with the (minimum) three required fields
+%\category{H.4}{Information Systems Applications}{Miscellaneous}
+%A category including the fourth, optional field follows...
+%\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
+
+\terms{source, sink, concatenation, aggregation}
+
+\keywords{Semantic Web, Trust Network, FOAF, RDF, PGP} % NOT required for Proceedings
+
+\section{Introduction}
+We should write this second to last.
+
+\section{Related Work}
+
+\subsection{Representing Trust Relationship}
+There seems to be a general lack of psychological research on trust inference and representing trust relationships. In fact, most works in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
+
+Konfidi likewise has chosen a somewhat arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
+
+\subsection{Trust Networks and Inferences}
+There are a number of
+
+\subsection{The Semantic Web}
+In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
+
+\subsubsection{Friend-of-a-Friend}
+
+\subsubsection{FOAF Whitelisting}
+
+\subsection{Email Filtering by Inferred Trust}
+
+\subsubsection{Spam Filtering}
+Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which dmail does, is not very common. Challenge-response to build a whitelist is tedious for sender and reciever and does not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
+
+\section{Motivation}
+This project began as an exploration of whether we might use the PGP web-of-trust to filter email spam at the client's end. A mail client plugin would filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, it soon became clear that the recommended PGP keysigning practices require only the careful verification of the key-holder's identity. Thus, any information about whether a user was trusted to send good email, and not spam, was information over and above the information expressed in the PGP web-of-trust itself, so any attempt to encode such information in the web-of-trust would be inadequate.
+
+A more serious flaw in this thick-client approach is that, given the key-centric nature of the web-of-trust, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
+
+So, for our idea to be viable, it must first deal with these two issues, namely, storing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
+
+\section{Design}
+
+\section{Implementation}
+
+\section{Future Work}
+
+\section{Conclusions}
+
+%\end{document}  % This is where a 'short' article might terminate
+
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgments}
+We would like to thank the following people:  Jim Laing for assisting with test data, Prof. Vander Linden for advising us on this project, Profs. Fife, Frens and Plantinga for their advice on specific matters.
+
+%
+% The following two commands are all you need in the
+% initial runs of your .tex file to
+% produce the bibliography for the citations in your paper.
+\bibliographystyle{abbrv}
+\bibliography{termpaper}  
+% Bibliography in this case
+% You must have a proper ".bib" file
+%  and remember to run:
+% latex bibtex latex latex
+% to resolve all references
+%
+% ACM needs 'a single self-contained file'!
+%
+%APPENDICES are optional
+
+\balancecolumns
+
+% That's all folks!
+\end{document}
