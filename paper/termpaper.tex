@@ -89,6 +89,7 @@ Say something here.
 
 \subsection{Representation}
 Our schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, we felt that a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
+
 \subsubsection{Distrust}
 This is closely related to another important concern, that our representation give some account of distrust.  If our trust network contained trust values ranging from neutral to complete, then everyone in the network is trusted, explicitly, or by inference on some level at or above this.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
 
@@ -113,16 +114,17 @@ With these considerations in mind, we decided that a relationship-based system w
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
 
 \subsection{Infrastructure}
-As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store FOAF data specifying trust relationships.  Second, we needed a way to represent the network specified in the FOAF data, and traverse it to calculate trust values\footnote{should we leave the FOAF stuff to "implementation", and just discuss "data" here?}
+As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values\footnote{should we leave the FOAF stuff to "implementation", and just discuss "data" here?  I think so.}
+
 \subsubsection{Data Management}
-One need was for a system to store FOAF data, verify FOAF signatures, and allow for updates of existing FOAF files and their signatures.
+One need was for a system to store trust network data, verify signatures on that data, and allow for updates of existing files and their signatures.
 
-Importance of signing and verifying data files.
-
-Discussion of coupling with trustserver here?
+If Konfidi were to be useful as a system of trust management, then the operations it performs and the results it returns must be trusted by the users.  Thus, to prevent malicious users from submitting faulty or incorrect trust data for others, Konfidi will require every file submitted to be digitally signed by the key of the user who is indicated as the trusting party.  Konfidi will then verify the signature before accepting the data as legitimate and passing it along to the trust management system.
 
 \subsubsection{Trust Management}
-This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it. 
+This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, this part would handle requests for trust ratings, traverse the internal representation to find a path, and provide a response.  
+
+We should say more about this.  Why did we choose the design we did?  I can barely remember...
 
 \section{Implementation}
 put a shiny diagram in here
@@ -141,6 +143,7 @@ communications with trust server
 generic interface
 
 short introduction about coupling for the following subsections
+reasons for it (scalability)
 
 \subsubsection{Trust Backend}
 this does the dirty work
@@ -151,8 +154,12 @@ bit about the different strategies
 bit about the importance of verifying a PGP link (identity is good)
 
 \section{Future Work}
+\subsection{Psychological Research}
+\subsection{Additional Features}
+multipart signing of the results query, and signature checking between components
 \subsection{Other Clients}
 \subsubsection{Firefox + Mime}
+\subsubseciton{MTA Integration}
 \subsection{Topic Hierarchy}
 \section{Other Issues}
 \subsection{Privacy}
