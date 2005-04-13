@@ -58,9 +58,9 @@ There seems to be a general lack of psychological research on trust inference an
 Konfidi likewise has chosen a somewhat arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
-There are a number of mathematical papers discussing propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
+There are a number of mathematical papers discussing a number of propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
 
-Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\footnote{See "Trust and Reputation in Web-based Social Networks" at http://trust.mindswap.org/} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\footnote{For more information about TrustMail, and to download a demonstration, see http://trust.mindswap.org/trustMail.shtml}, an email client that uses the trust network that she is building.  She is more concerned with the academic side of things, since this field is still growing rapidly, and less in the pragmatic side of things, as she prefers to help determine a good system of standards in the area.
+Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\footnote{See "Trust and Reputation in Web-based Social Networks" at http://trust.mindswap.org/} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\footnote{For more information about TrustMail, and to download a demonstration, visit the website at http://trust.mindswap.org/trustMail.shtml}, an email client that uses the trust network that she is building.  She is more concerned with the academic side of things, since this field is still growing rapidly, and less in the pragmatic side of things, as she prefers to help determine a good system of standards in the area.
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
@@ -69,7 +69,7 @@ In addition to Golbeck's work, a number of others have explored the usefulness a
 The FOAF project\footnote{See http://www.foaf-project.org/ for more information about FOAF} is an RDF vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users created RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  
 
 \subsubsection{FOAF Whitelisting}
-Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\footnote{See http://www.w3.org/2001/12/rubyrdf/util/foafwhite/intro.html for more information about the whitelisting experiments}.
+Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox\_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\footnote{See http://www.w3.org/2001/12/rubyrdf/util/foafwhite/intro.html for more information about the whitelisting experiments}.
 
 \subsection{Email Filtering by Inferred Trust}
 Boykin and Roychowdhury discuss ways to infer relationships based on existing data (From:, To:, Cc: headers)\cite{boykin04email}. This seems to work fairly well but there is often not enough data to make the spam/not-spam decision. They clearly state a cryptographic solution would be ideal.
@@ -89,30 +89,78 @@ Say something here.
 
 \subsection{Representation}
 Our schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, we felt that a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
-
+\subsubsection{Distrust}
 This is closely related to another important concern, that our representation give some account of distrust.  If our trust network contained trust values ranging from neutral to complete, then everyone in the network is trusted, explicitly, or by inference on some level at or above this.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
 
 One of the difficulties of using explicit distrust in an inference network, however, is that it is unclear how inferences should proceed once a link of distrust has been encountered.  Suppose Alice distrusts Bob, and Bob distrusts Clara.  As Guha points out\cite{guha04propagation}, there are at least two interpretations of this situation.  On the one hand, Alice might think something like "the enemy of my enemy is my friend" and so decide to put trust in Clara.  On the other hand, she might realize that if someone as scheming as Bob distrusts Clara, then Clara must really be an unreliable character, and so decide to distrust Clara.  Further, suppose Bob expressed trust for Dave.  At first consideration, it might seem reasonable to simply distrust everyone that Bob distrusts, including Dave.  But suppose there were another path through different nodes indicating some minimal level of trust for Dave.  Which path should be chosen as one which provides the correct inference?
 
 One solution to this problem is simply to traverse one link of distrust, and then record that distrust and stop, seeking an alternate path.  To overcome the problem of chosing the correct path for the inference, some kind of weighted average can be taken of all of the paths between Alice and Dave, thereby producing an answer according to whether the majority of people in the neighborhood Dave trust him or not.
 
-We explored a method similar to this one, 
+We explored a method similar to this one, but in the absence of sufficient psychological research affirming a model of this type, we sought a simpler solution.  In the end, we decided on a model that corresponds to another intuition about how trust works between people, that it is more of a continuum of both trust and distrust than a measure of just one or the other.  For example, if Alice trusts Bob at some moderate level (say, .75 of a scale of 0 to 1), then it seems that she also \textit{distrusts} him at some minimal level (say, .25).  If Alice trusts Bob neutrally, then she trusts him about as much as she distrusts him.  If she distrusts him completely, then she doesn't trust him at all.  But in all of these cases, there is a trade-off between trust and distrust.  Only in the extremes is either of them eliminated completely.  So, we decided that our trust model should represent a range of values from 0 to 1, treating 0 as complete distrust, 1 as complete trust, and 0.5 as neutral, and calculate trust inferences accordingly\footnote{This also makes many propagation algorithms simpler, as we'll discuss later.}.
 
-Subject-based trust
+\subsubsection{Trust Topics}
+We thought that if other attributes about a trust relationship could be expressed, in addition to the rating system, then a system like Konfidi would be useful in many wider scopes than email spam prevention.  The most important of these is the trust topic, or in other words, what the trust is about.  A natural feature of interpersonal trust relationships is that there can be many different aspects of the same trust relationship.  
 
-Two members, rating, subject, other attributes (date, etc)
+(you can make an Alice-Bob-Clara-Dave diagram for this business)
+
+For example, suppose Bob is a master chef, but is terribly gullible about the weather forecast.  Alice, of course, knows this, and so wants to express that she trusts Bob very highly when he gives advice for making souffle, but she does not trust him at all when he volunteers information about the likelihood of the next tornado.  Suppose she only knows Bob in these two capacities.  Any trust inference system should not average the two trust values and get a somewhat neutral rating for Bob, for that would lose important information about each of those two trust ratings\footnote{In fact, it would lose the only information that made these ratings useful in the first place.}.
+
+Suppose also that, given only the above trust ratings, the system tried to make an inference on a subject that was not specified.  Perhaps Alice has some general level of trust for Bob that should be used when there is no specific rating for the topic in question.  See the discussion in Future Work for our proposal for a system of topics that might account for this situation.
+
+\subsubsection{Rating System}
+With these considerations in mind, we decided that a relationship-based system would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting party and the trusted party are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships are related to objects representing trust items.  Each of these items has a topic and a rating associated with that topic.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
+
+Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
+
 \subsection{Infrastructure}
-As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store FOAF data specifying trust relationships.  Second, we needed a way to represent the network specified in the FOAF data, and traverse it to calculate trust values.
+As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store FOAF data specifying trust relationships.  Second, we needed a way to represent the network specified in the FOAF data, and traverse it to calculate trust values\footnote{should we leave the FOAF stuff to "implementation", and just discuss "data" here?}
+\subsubsection{Data Management}
+One need was for a system to store FOAF data, verify FOAF signatures, and allow for updates of existing FOAF files and their signatures.
+
+Importance of signing and verifying data files.
+
+Discussion of coupling with trustserver here?
+
+\subsubsection{Trust Management}
+This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it. 
 
 \section{Implementation}
+put a shiny diagram in here
+
 \subsection{OWL Schema}
+Explain OWL, RDF, and how it fits into FOAF as needed.
+
 \subsection{FOAF Server}
+URI based lookup
+
+communications with trust server
+
 \subsection{Trust Server}
+
 \subsubsection{Frontend}
+generic interface
+
+short introduction about coupling for the following subsections
+
 \subsubsection{Trust Backend}
+this does the dirty work
+
+bit about the different strategies
+
 \subsubsection{PGP Backend}
+bit about the importance of verifying a PGP link (identity is good)
 
 \section{Future Work}
+\subsection{Other Clients}
+\subsubsection{Firefox + Mime}
+\subsection{Topic Hierarchy}
+\section{Other Issues}
+\subsection{Privacy}
+Should there be any?  How will it be controlled?
+Encrypted FOAFs.
+
+\subsection{Ethics}
+Dependency on a trust system, trust in the system, etc.
 
 \section{Conclusions}
 
