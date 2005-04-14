@@ -60,7 +60,7 @@ extra notes go here
 <div class="slide">
 <h1>Motivation: Stopping Spam</h1>
 <ul>
-<li>Failing attempts</li>
+<li>Current Techniques</li>
   <ul>
   <li>Content-level (SpamAssassin, Bayesian)</li>
   <li>User-level (challenge-response)</li>
@@ -72,6 +72,44 @@ extra notes go here
   <li>PGP signatures</li>
   <li>Trust values</li>
   </ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Related Work</h1>
+<ul>
+<li>IIM</li>
+<li>Jennifer Golbeck's TrustMail</li>
+<li>FOAF whitelisting</li>
+</div>
+
+
+<div class="slide">
+<h1>Applications to other Topics</h1>
+<ul>
+<li>Web communication in general</li>
+  <ul>
+  <li>wiki spam</li>
+  <li>blog spam</li>
+  <li>IM spam</li>
+  </ul>
+<li>P2P online sales (eBay)</li>
+  <ul>
+  <li>"Reputation" studies in this area</li>
+  </ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Applications to other Topics</h1>
+<li>Websites</li>
+  <ul>
+  <li>e.g. VanderLinden writes and signs pages about AI</li>
+  <li>Topic hierarchy AI -> CS -> Science</li>
+  <li>Apache module to serve multipart/signed if browser supports it</li>
+  <li>Firefox plugin to handle multipart/signed</li>
+  </ul>
+</li>
 </ul>
 </div>
 
@@ -173,73 +211,8 @@ extra notes go here
 <li>Python - for fun</li>
 <li>Apache httpd server - admin-ability</li>
 <li>mod_python</li>
-<li>Protocol: REST</li>
-  <ul>
-  <li>Use HTTP methods, GET PUT POST etc
-  <li>URLs like ...com/foafserver/EAB0FABEDEA81...
-  <li>Respond with XML or simple text
-  </ul>
+<li>Protocol: REST architecture</li>
 <li>Basic functionality completed in all areas</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Future work</h1>
-<ul>
-<li>Security</li>
-<li>Usability</li>
-<li>FOAFServer</li>
-  <ul>
-  <li>synchronization with others</li>
-  </ul>
-</li>
-<li>Trust Server</li>
-  <ul>
-  <li>tweak trust strategies</li>
-  <li>run large tests</li>
-  </ul>
-</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Future work (cont.)</h1>
-<ul>
-<li>MUA Plugins</li>
-  <ul>
-  <li>HORDE/IMP</li>
-  <li>Hotmail, GMail, etc</li>
-  </ul>
-<li>Trust-o-matic</li>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Applications to other Topics</h1>
-<ul>
-<li>Web communication in general</li>
-  <ul>
-  <li>wiki spam</li>
-  <li>blog spam</li>
-  <li>IM spam</li>
-  </ul>
-<li>P2P online sales (eBay)</li>
-  <ul>
-  <li>"Reputation" studies in this area</li>
-  </ul>
-</ul>
-</div>
-
-<div class="slide">
-<h1>Applications to other Topics</h1>
-<li>Websites</li>
-  <ul>
-  <li>e.g. VanderLinden writes and signs pages about AI</li>
-  <li>Topic hierarchy AI -> CS -> Science</li>
-  <li>Apache module to serve multipart/signed if browser supports it</li>
-  <li>Firefox plugin to handle multipart/signed</li>
-  </ul>
-</li>
 </ul>
 </div>
 
@@ -261,11 +234,14 @@ extra notes go here
 </div>
 
 <div class="slide">
-<h1>Related Work</h1>
+<h1>Future work</h1>
 <ul>
-<li>IIM</li>
-<li>Jennifer Golbeck's TrustMail</li>
-<li>FOAF whitelisting</li>
+<li>Security &amp; usability</li>
+<li>FOAFServer synch</li>
+<li>Trust Server: test strategies</li>
+<li>MUA Plugins</li>
+<li>Trust-o-matic</li>
+</ul>
 </div>
 
 <div class="slide">
