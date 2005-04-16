@@ -9,7 +9,7 @@ class SignedFOAF:
         self.accept_types = accept_types
         
         self.mimetype = None
-        self.submimetype = None
+        self.mimesubtype = None
         
         # ignore q-values; for now we'll set preference
         if accept_types.find("multipart/signed") != -1:
