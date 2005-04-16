@@ -76,6 +76,8 @@ def index(req):
     <br>
     <a href="8A335B856C4AE39A0C36A47F152C15A0F2454727">andy schamp</a><br>
     <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">dave brondsema</a><br>
+    <br>
+    Different outputs will be served when the request has an HTTP 'Accept:' header with a value in the following: "multipart/signed", "application/pgp-signature", {"application/xml+rdf", "text/xml", "text/*", "application/xml"}
     
     <h4>Uploading</h4>
     Human web interface: <a href="form">web form</a><br>
