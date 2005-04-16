@@ -2,27 +2,21 @@ from mod_python import apache
 
 # local
 import dump
+from MultipartSigned import MultipartSigned
+from PGPSig import PGPSig
+from FOAFDoc import FOAFDoc
+from FOAFServerError import FOAFServerError
 
 # system
 import os
 import re
 import sys
 from socket import *
-from rdflib.Namespace import Namespace
-from rdflib.TripleStore import TripleStore
-from rdflib.StringInputSource import StringInputSource
-from xml.sax import SAXParseException
 from mod_python import apache
 from mod_python import util
 
 foafserver_version = "0.1"
 
-# our own error class
-class FOAFServerError(Exception):
-    def __init__(self, value):
-        self.value = value
-    def __str__(self):
-        return repr(self.value)
 
 #
 # Simple utility functions
@@ -41,13 +35,16 @@ def uniqueURI(req):
 def ishex(string):
     return re.search('^[A-F0-9]+$', string)
 
-
 def handler(req):
     """main handler; called by mod_python"""
     req.allow_methods(["GET", "PUT"])
     
     if req.get_config().has_key('PythonDebug'):
         reload(dump)
+        from MultipartSigned import MultipartSigned
+        from PGPSig import PGPSig
+        from FOAFDoc import FOAFDoc
+        from FOAFServerError import FOAFServerError
     
     if (uniqueURI(req) == "test"):
         return test(req)
@@ -98,19 +95,16 @@ def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
     if ishex(uri):
-        filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.rdf'], uri + '.rdf')
-        filename_asc = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.sig'], uri + '.rdf.asc')
         try:
             try:
-                req.content_type = "text/plain"
-                sigfile = open(filename_asc, 'r')
-                req.write(sigfile.read())
-                sigfile.close()
+                sig = PGPSig()
+                sig.load(req.get_options()['storage.dir.sig'], uri)
+                req.write(sig.content)
             except IOError:
                 req.content_type = "text/xml"
-            xmlfile = open(filename, 'r')
-            req.write(xmlfile.read())
-            xmlfile.close()
+            foaf = FOAFDoc()
+            foaf.load(req.get_options()['storage.dir.rdf'], uri)
+            req.write(foaf.content)
             return apache.OK
         except IOError:
             apache.log_error("not found: requested " + uri, apache.APLOG_ERR)
@@ -178,53 +172,14 @@ def form(req):
 # workhorse utilities
 #
 
-# TODO: refactor this logic into something common to trustserver/UpdateListener.py too?
-# TODO: what else to validate?
-def validate(req, content, uri_fingerprint):
-    FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-    TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
-    WOT = Namespace("http://xmlns.com/wot/0.1/")
-    RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-    store = TripleStore()
-
-    # TODO: verify all <truster>s have fingerprints
-    # and that they're all the same
-    try:
-        store.parse(StringInputSource(content))
-    except SAXParseException:
-        raise FOAFServerError, "invalid XML: " + str(sys.exc_info()[1])
-    
-    fingerprint = last_fingerprint = None
-    for (relationship, truster) in store.subject_objects(TRUST["truster"]):
-        fingerprint = store.objects(truster, WOT["fingerprint"]).next()
-        if last_fingerprint:
-            if fingerprint != last_fingerprint:
-                raise FOAFServerError, "All 'wot:fingerprint's from 'trust:truster's must be the same.  Found '%s' and '%s'" % (fingerprint, last_fingerprint)
-        last_fingerprint = fingerprint
-    
-    fingerprint = fingerprint.replace(" ", "")
-    fingerprint = fingerprint.replace(":", "")
-    if req.get_options()['validate.wot'] == "1" and not(ishex(fingerprint)):
-        raise FOAFServerError, "Invalid fingerprint format; must be hex"
-    
-    if uri_fingerprint and uri_fingerprint != fingerprint:
-        raise FOAFServerError, "URI fingerprint doesn't match FOAF fingerprint"
-        
-    return fingerprint
-
-def savetofile(req, content, fingerprint):
-    filename = os.path.join(os.path.dirname(__file__), req.get_options()['storage.dir.rdf'], fingerprint + '.rdf')
-    foaffile = open(filename, 'w')
-    foaffile.write(content)
-    foaffile.close()
-    return filename
 
 def storefoaf(req, content, uri_fingerprint=""):
+    foaf = FOAFDoc(content)
     try:
-        fingerprint = validate(req, content, uri_fingerprint)
+        fingerprint = foaf.validate(uri_fingerprint, req.get_options()['validate.wot'] == "1")
     except FOAFServerError:
         return str(sys.exc_info()[1])
-    filename = savetofile(req, content, fingerprint)
+    filename = foaf.save(req.get_options()['storage.dir.rdf'], fingerprint)
     updatetrustserver(req, filename)
 
 def updatetrustserver(req, filename):

@@ -7,7 +7,7 @@ PythonOption storage.dir.sig /home/ams5/foafs
 
 # the trust server to which we communicate all new files
 PythonOption trustserver.hostname localhost
-PythonOption trustserver.port 20010
+PythonOption trustserver.port 30010
 
 # 0 or 1; do hex validation?
 PythonOption validate.wot 0
