@@ -148,8 +148,27 @@ img#me05 {top: 43px;left: 36px;}
 
 <div class="slide">
 <h1>Topical Trust</h1>
+<div style="position:absolute;top:20%;margin-right: 10px;left:50%;white-space:pre;font-size:0.5em;filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;background: white;border: 2px solid black;padding: 10px">&lt;Relationship>
+        &lt;truster rdf:nodeID="person9BB3CE70"/>
+        &lt;trusted>
+                &lt;foaf:Person>
+                        &lt;wot:fingerprint>407CDD8D&lt;/wot:fingerprint>
+                &lt;/foaf:Person>
+        &lt;/trusted>
+        &lt;about>
+                &lt;Item>
+                        &lt;topic rdf:resource="&amp;subject;#email"/>
+                        &lt;rating>.8&lt;/rating>
+                &lt;/Item>
+        &lt;/about>
+&lt;/Relationship>
+</div>
 <ul>
-<li>Person A trusts Person B on topic T at value X</li>
+<li>Person A trusts Person B</li>
+  <ul>
+  <li>on topic T</li>
+  <li>at value X</li>
+  </ul>
 <li>RDF</li>
   <ul>
   <li>XML markup</li>
@@ -209,7 +228,7 @@ img#me05 {top: 43px;left: 36px;}
   <li>Validate incoming signatures</li>
   <li>Query frontend with PGP fingerprints of sender &amp; recipient</li>
   <li>Add headers</li>
-  <li>Filter appropriately</li>
+  <li>Filter - integrate with other techniques</li>
   </ul>
 </ul>
 </div>
@@ -230,13 +249,6 @@ img#me05 {top: 43px;left: 36px;}
 <li>Protocol: REST architecture</li>
 <li>Basic functionality completed in all areas</li>
 </ul>
-</div>
-
-<div class="slide">
-<h1>Technical Issues</h1>
-<ul>
-<li>Integrate with other techniques</li>
-<li>Open standard</li>
 </div>
 
 <div class="slide">
