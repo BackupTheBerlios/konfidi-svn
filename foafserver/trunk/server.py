@@ -2,7 +2,7 @@ from mod_python import apache
 
 # local
 import dump
-from MultipartSigned import MultipartSigned
+from SignedFOAF import SignedFOAF
 from PGPSig import PGPSig
 from FOAFDoc import FOAFDoc
 from FOAFServerError import FOAFServerError
@@ -41,10 +41,6 @@ def handler(req):
     
     if req.get_config().has_key('PythonDebug'):
         reload(dump)
-        from MultipartSigned import MultipartSigned
-        from PGPSig import PGPSig
-        from FOAFDoc import FOAFDoc
-        from FOAFServerError import FOAFServerError
     
     if (uniqueURI(req) == "test"):
         return test(req)
@@ -95,16 +91,17 @@ def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
     if ishex(uri):
+        
         try:
-            try:
-                sig = PGPSig()
-                sig.load(req.get_options()['storage.dir.sig'], uri)
-                req.write(sig.content)
-            except IOError:
-                req.content_type = "text/xml"
             foaf = FOAFDoc()
             foaf.load(req.get_options()['storage.dir.rdf'], uri)
-            req.write(foaf.content)
+            sig = PGPSig()
+            sig.load(req.get_options()['storage.dir.sig'], uri)
+            
+            signedFOAF = SignedFOAF(foaf, sig, req.subprocess_env['HTTP_ACCEPT'])
+            
+            req.content_type = signedFOAF.content_type()
+            req.write(signedFOAF.body())
             return apache.OK
         except IOError:
             apache.log_error("not found: requested " + uri, apache.APLOG_ERR)
