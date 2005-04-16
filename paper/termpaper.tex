@@ -9,26 +9,26 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
 % --- End of Author Metadata ---
 
-\title{Konfidi: Trust Networks Using PGP and RDF}
+\title{Konfidi\titlenote{\textit{Konfidi} is the Esperanto term for trust.  A universal concept, in a universal language, seemed appropriate for what we hope will become a universal system.}: Trust Networks Using PGP and RDF}
 
 \numberofauthors{2}
 
 \author{
+\alignauthor Dave Brondsema\\
+       \affaddr{Calvin College}\\
+       \affaddr{3201 Burton SE}\\
+       \affaddr{Grand Rapids, MI 49546}\\
+       \email{dave@brondsema.net}
 \alignauthor Andrew Schamp
 %\titlenote{Mr. Schamp is first because he is primarily responsible for this document, while Mr. Brondsema is primarily responsible for the presentation.}
 \\
        \affaddr{Calvin College}\\
        \affaddr{3201 Burton SE}\\
        \affaddr{Grand Rapids, MI  49546}\\
-       \email{ams5@calvin.edu}
-\alignauthor Dave Brondsema\\
-       \affaddr{Calvin College}\\
-       \affaddr{3201 Burton SE}\\
-       \affaddr{Grand Rapids, MI 49546}\\
-       \email{dave@brondsema.net}
+       \email{schamp@gmail.com}
 }
 
-\date{12 April 2005}
+\date{16 April 2005}
 
 \maketitle
 \begin{abstract}
@@ -44,31 +44,39 @@ We ought to write this last.
 
 \terms{source, sink, concatenation, aggregation}
 
-\keywords{Semantic Web, Trust Network, FOAF, RDF, PGP, reputation, propogation, distributed, inference, delegation, social, GPG} % NOT required for Proceedings
+\keywords{Semantic Web, trust network, FOAF, RDF, PGP, GPG, reputation, propogation, distributed, inference, delegation, social network}
 
 \section{Introduction}
-We should write this second to last.
+As more and more information becomes available on the internet, there is a growing problem determining which information is reliable and accurate.  A person may, over time, develop a reputation as a reliable source of information for a certain topic, however, someone unfamiliar with that person's reputation may either place too much or too little trust in that person.  
+
+Ratings system for reputation within certain domains (eBay auctions, for example), may be of some limited use, however, they may also be susceptible to floods of manipulative ratings.  Even if such systems can be guarded against such attacks, why should someone base whether they trust anotehr person on opinions given by others that they neither know nor trust?
+
+A solution growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust the ratings they give of others.  However, these systems too can subject to problems if someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  The PGP web of trust provides the necessary verification of an individual's identity, however, it does not allow for expressing any additional information about that individual's trustworthiness on matters apart from personal identification.
+
+In this paper, we will describe some difficulties in integrating these two kinds of trust network, and how we designed a system to overcome them.  We will then describe our structure for representing trust data, and our methods for making trust inferences on this data.  Finally, we will discuss other things (find a better way to phrase this) that we have built to develop the beginnings of a useful infrastructure for this model of trust network.
 
 \section{Related Work}
 
 \subsection{Representing Trust Relationships}
-There seems to be a general lack of psychological research on trust inference and representing trust relationships. In fact, most works in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
+There seems to be a general lack of psychological research on trust inference and representing trust relationships. In fact, most work in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
 
 Konfidi likewise has chosen a somewhat arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
 There are a number of mathematical papers discussing a number of propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
 
-Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\footnote{See "Trust and Reputation in Web-based Social Networks" at http://trust.mindswap.org/} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\footnote{For more information about TrustMail, and to download a demonstration, visit the website at http://trust.mindswap.org/trustMail.shtml}, an email client that uses the trust network that she is building.  She is more concerned with the academic side of things, since this field is still growing rapidly, and less in the pragmatic side of things, as she prefers to help determine a good system of standards in the area.
+Belief in statements vs. trust in people.
+
+Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\cite{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\cite{trustMail}, an email client that uses the trust network that she is building.  She is more concerned with the academic side of things, since this field is still growing rapidly, and less in the pragmatic side of things, as she prefers to help determine a good system of standards in the area.
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
 \subsubsection{Friend of a Friend (FOAF)}
-The FOAF project\footnote{See http://www.foaf-project.org/ for more information about FOAF} is an RDF vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users created RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  
+The FOAF project\cite{foafProject} is an RDF vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users created RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  
 
 \subsubsection{FOAF Whitelisting}
-Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox\_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\footnote{See http://www.w3.org/2001/12/rubyrdf/util/foafwhite/intro.html for more information about the whitelisting experiments}.
+Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox\_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\cite{foafWhitelisting}.
 
 \subsection{Email Filtering by Inferred Trust}
 Boykin and Roychowdhury discuss ways to infer relationships based on existing data (From:, To:, Cc: headers)\cite{boykin04email}. This seems to work fairly well but there is often not enough data to make the spam/not-spam decision. They clearly state a cryptographic solution would be ideal.
@@ -183,6 +191,7 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 % The following two commands are all you need in the
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
+%\bibliographystyle{authordate1}
 \bibliographystyle{abbrv}
 \bibliography{termpaper}  
 % Bibliography in this case
