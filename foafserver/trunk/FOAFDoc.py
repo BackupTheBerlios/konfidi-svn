@@ -1,4 +1,5 @@
 import os
+import sys
 from xml.sax import SAXParseException
 
 from rdflib.Namespace import Namespace
