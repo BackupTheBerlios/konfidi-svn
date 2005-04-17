@@ -75,27 +75,27 @@ class Frontend:
 		<h4>Querying</h4>
 		Just do a GET using to the url "query", defining the variables "source", "sink", and "subject"
 		<br>
-		<a href="query?strategy=Prototype&source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
-		<a href="query?strategy=Prototype&source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
-		<a href="query?strategy=Prototype&source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
-		<a href="query?strategy=Prototype&source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
-		<a href="query?strategy=Prototype&source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
-		<a href="query?strategy=Default&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
-		<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
-		<a href="query?strategy=Prototype&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative&source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
+		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
+		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
+		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
+		<a href="query?strategy=Multiplicative&source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
+		<a href="query?strategy=Multiplicative&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
 		<br>Edge cases:<br>
 		Ghandi, Spammer, email
 		Ghandi, Scumbag, email
 		<h4>TrustServer commands</h4>
-		<a href="command?cmd=start">Start server</a><br>
-		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.--><br>
+		<!--<a href="command?cmd=start">Start server</a><br>
+		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.--><br>-->
 		<a href="command?cmd=load1">Load data set 1 (schamp, laing, brondsema)</a><br>
 		<a href="command?cmd=load2">Load data set 2 (real keys, etc)</a><br>
 		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
 		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br/>
-		Or <a href="map">Map all trust relationships and inferences</a><br/>
+		Or <a href="map?strategy=Multiplicative">Map all trust relationships and inferences</a><br/>
 		<h4><a href="test">debug output</a></h4>""" +
 		str(self.config) + 
 		"""</body>
@@ -162,68 +162,30 @@ class Frontend:
 				reload(xmlgen)
 			f = xmlgen.Factory()
 			r = []
-			if opt["pgpquery"]:
-				# first, check the PGP server:
-				try:
-					exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
-					exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
-				except (ImportError):
-					# put the hardcoded one here
-					raise ImportError
-				pgptime = time.time()
-				pgp_result = str(pathfinder.graph(source, sink))
-				pgptime = time.time() - pgptime
-				
-				pgp_result = minidom.parseString(pgp_result).documentElement
-				connected = pgp_result.getElementsByTagName("connected")[0]
-				pgp_path = pgp_result.getElementsByTagName("path")[0]
-				pgp_error = pgp_result.getElementsByTagName("error")[0]
-				
-				pgp_result = f.pgp_result(search_time=pgptime)[connected.toxml(), pgp_path.toxml(), pgp_error.toxml()]
-				
-			
-			if opt["trustquery"]:
-				# then, check the TrustServer:
-				try:
-					trustresult = self.send_query(strategy, source, sink, options)
-					trustresult = minidom.parseString(trustresult).documentElement
-					try:
-						trust_rating = trustresult.getElementsByTagName("rating")[0].toxml()
-					except IndexError:
-						trust_rating = str(f.rating("0"))
-					try:
-						trust_path = trustresult.getElementsByTagName("path")[0].toxml()
-					except IndexError:
-						trust_path = str(f.path("N/A"))
-					try:
-						trust_data = trustresult.getElementsByTagName("data")[0].toxml()
-					except IndexError:
-						trust_data = str(f.data("N/A"))
-					try:
-						trust_error = trustresult.getElementsByTagName("error")[0].toxml()
-					except IndexError:
-						trust_error = str(f.error("None"))
+			try:
+				if opt["pgpquery"]:
+					pgp_result = str(self.pgp_query(source, sink, f))
+					r.append(pgp_result)
 					
-					trust_result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'])[trust_rating, trust_path, trust_data, trust_error]
-				except error, (errno, errstr):
-					req.write("Error(%s): %s" % (errno, errstr))
+				if opt["trustquery"]:
+					trust_result = str(self.trust_query(strategy, source, sink, options, f))
+					r.append(trust_result)
+				
+				if opt["pgpquery"] and minidom.parseString(pgp_result).documentElement.getElementsByTagName("connected")[0].firstChild.nodeValue == "0":
+					shortoutput = "-1"
+				else:
+					shortoutput = minidom.parseString(trust_result).documentElement.getElementsByTagName("rating")[0].firstChild.nodeValue
+				r.extend([f.source(source), f.sink(sink), f.options(options)])
+				longoutput = self.xml_indenter(str(f.result[r]))
+			except:
+				shortoutput = "-1"
+				longoutput = self.xml_indenter(str(f.result[f.error(str(sys.exc_info()[1]))]))
 			
 			if opt["trustoutput"] == "short":
-				if opt["pgpquery"] and connected.firstChild.nodeValue == "0":
-					req.write("-1")
-				else:
-					#trust_rating = minidom.parseString(trustresult).documentElement
-					#print trust_rating
-					req.write(trustresult.getElementsByTagName("rating")[0].firstChild.nodeValue)
+				req.write(str(shortoutput))
 			else:
-				r.extend([f.source(source), f.sink(sink), f.options(options)])
-				if opt["pgpquery"]:
-					r.append(pgp_result)
-				if opt["trustquery"]:
-					r.append(trust_result)
-				req.write(self.xml_indenter(str(f.result[r])))
+				req.write(str(longoutput))
 			return apache.OK
-			
 				
 		else:
 			# hmm, something went horribly wrong.
@@ -232,6 +194,52 @@ class Frontend:
 			req.write("405: HTTP_METHOD_NOT_ALLOWED: %s" % req.method)
 			return apache.OK
 	
+	def pgp_query(self, source, sink, f):
+		# first, check the PGP server:
+		try:
+			exec("from PGPPathfinders.%sPathfinder import %sPathfinder" % (self.config["pgpserver"]["pathfinder"],self.config["pgpserver"]["pathfinder"]))
+			exec('pathfinder = %sPathfinder(self.config["%s"])' % (self.config["pgpserver"]["pathfinder"], self.config["pgpserver"]["pathfinder"]))
+		except (ImportError):
+			# put the hardcoded one here
+			raise ImportError
+		pgptime = time.time()
+		pgp_result = str(pathfinder.graph(source, sink))
+		pgptime = time.time() - pgptime
+		
+		pgp_result = minidom.parseString(pgp_result).documentElement
+		connected = pgp_result.getElementsByTagName("connected")[0]
+		pgp_path = pgp_result.getElementsByTagName("path")[0]
+		pgp_error = pgp_result.getElementsByTagName("error")[0]
+		
+		return f.pgp_result(search_time=pgptime)[connected.toxml(), pgp_path.toxml(), pgp_error.toxml()]	
+		
+	def trust_query(self, strategy, source, sink, options, f):
+		# then, check the TrustServer:
+		try:
+			result = self.send_query(strategy, source, sink, options)
+			result = minidom.parseString(result).documentElement
+			
+			try:
+				trust_rating = result.getElementsByTagName("rating")[0].toxml()
+			except IndexError:
+				trust_rating = str(f.rating("0"))
+			try:
+				trust_path = result.getElementsByTagName("path")[0].toxml()
+			except IndexError:
+				trust_path = str(f.path("N/A"))
+			try:
+				trust_data = result.getElementsByTagName("data")[0].toxml()
+			except IndexError:
+				trust_data = str(f.data("N/A"))
+			try:
+				trust_error = result.getElementsByTagName("error")[0].toxml()
+			except IndexError:
+				trust_error = str(f.error("None"))
+			result = f.trust_result(trust_host = self.config['trustserver']['host'], trust_port = self.config['trustserver']['port'], executed = result.getAttribute('executed'), strategy = result.getAttribute('strategy'), search_time = result.getAttribute('search_time'), lock_time=result.getAttribute('lock_time') )[trust_rating, trust_path, trust_data, trust_error]
+		except error, (errno, errstr):
+			result = f.trust_result[trust_error(errno, errstr)]
+		return result
+		
 	def xml_indenter(self, xml, indent=0):
 		if len(xml) == 0:
 			#print "None\n"
