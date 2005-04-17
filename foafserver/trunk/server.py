@@ -71,17 +71,17 @@ def index(req):
     <body>
     <h2>FOAFServer v""" + foafserver_version + """</h2>
     
-    <h4>Retrieving</h4>
-    Just do a GET using a URL of the PGP fingerprint
+    <h3>Retrieving</h3>
+    Do an HTTP GET using a URL of the PGP fingerprint.  Examples:
     <br>
     <a href="8A335B856C4AE39A0C36A47F152C15A0F2454727">andy schamp</a><br>
     <a href="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70">dave brondsema</a><br>
     <br>
     Different outputs will be served when the request has an HTTP 'Accept:' header with a value in the following: "multipart/signed", "application/pgp-signature", {"application/xml+rdf", "text/xml", "text/*", "application/xml"}
     
-    <h4>Uploading</h4>
-    Human web interface: <a href="form">web form</a><br>
-    Programmatic interface: Just do a PUT using a URL of the PGP fingerprint (much like retrieving)
+    <h3>Uploading</h3>
+    <b>Human web interface:</b> Use this <a href="form">web form</a><br>
+    <b>Programmatic interface:</b> Do an HTTP PUT using a URI of the PGP fingerprint (like retrieving).  You must send a Content-Type: multipart/signed message that contains the FOAF document and the pgp-signature.
     
     <h4><a href="test">debug output</a></h4>
     </body>
