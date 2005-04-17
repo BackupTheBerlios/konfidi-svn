@@ -36,13 +36,15 @@ class SignedFOAF:
         
         range = 1000000000
         self.boundary = '-------' + str(randint(1*range,9*range))
+        
+        self.micalg = 'pgp-sha1'
     
     def return_mimetype(self):
         return self.mimetype
     
     def content_type(self):
         if self.mimetype == "multipart/signed":
-            return 'multipart/signed; boundary="' + self.boundary + '"; protocol="application/pgp-signature"; micalg=pgp-sha1'
+            return 'multipart/signed; boundary="' + self.boundary + '"; protocol="application/pgp-signature"; micalg=' + self.micalg
         else:
             return self.mimetype
 
