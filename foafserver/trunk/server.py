@@ -114,11 +114,15 @@ def get(req):
 
 def put(req):
     fingerprint = uniqueURI(req)
-    content = req.read()
-    foaf = FOAFDoc(content)
-    sig = PGPSig()
-    signedFOAF = SignedFOAF(foaf, sig)
-    err = storefoaf(req, signedFOAF, fingerprint)
+    # Content-Type: must begin with multipart/signed
+    if "Content-Type:" in req.headers_in and req.headers_in["Content-Type:"].find("multipart/signed") == 0:
+        content = req.read()
+        foaf = FOAFDoc(content)
+        sig = PGPSig()
+        signedFOAF = SignedFOAF(foaf, sig)
+        err = storefoaf(req, signedFOAF, fingerprint)
+    else:
+        err = "Must PUT with Content-Type: multipart/signed"
     
     if err:
         apache.log_error(err, apache.APLOG_NOTICE)
@@ -126,6 +130,7 @@ def put(req):
         req.write("Error: " + err)
         return apache.OK
     else:
+        #TODO: if a new file, return 201 (Created)
         return apache.OK
 
 def form(req):
@@ -227,6 +232,8 @@ def test(req):
     req.write(dump.dump(req.get_options()))
     req.write("\nModPython Config:\n-------------\n")
     req.write(dump.dump(req.get_config()))
+    req.write("\nRequest headers:\n-------------\n")
+    req.write(dump.dump(req.headers_in))
     
     req.write("\nOS Env:\n-------------\n")
     req.write(dump.dump(os.environ))
