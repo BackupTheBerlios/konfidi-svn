@@ -115,7 +115,10 @@ def get(req):
 def put(req):
     fingerprint = uniqueURI(req)
     content = req.read()
-    err = storefoaf(req, content, fingerprint)
+    foaf = FOAFDoc(content)
+    sig = PGPSig()
+    signedFOAF = SignedFOAF(foaf, sig)
+    err = storefoaf(req, signedFOAF, fingerprint)
     
     if err:
         apache.log_error(err, apache.APLOG_NOTICE)
@@ -138,31 +141,51 @@ def form(req):
         
         form = util.FieldStorage(req, 1)
         
-        try:
-            content = form["foaf_content"]
-        except KeyError:
+        inputs_exist = True
+        if 'submit_upload' in form:
             if not(form["foaf_file"].filename):
-                req.write("<p>You must select a file</p>")
-            content=form["foaf_file"].value
-        
-        store_error = storefoaf(req, content)
-        if store_error:
-            req.write("<p>Error: " + store_error + "</p>")
+                req.write("<p>You must select a FOAF file to upload</p>")
+                inputs_exist = False
+            if not(form["sig_file"].filename):
+                req.write("<p>You must select a PGP signature file to upload</p>")
+                inputs_exist = False
+            foaf_content = form["foaf_file"].value
+            sig_content = form["sig_file"].value
         else:
-            req.write("<p>FOAF succesfully uploaded</p>")
+            foaf_content = form["foaf_content"]
+            sig_content = form["sig_content"]
+            if len(foaf_content) == 0:
+                req.write("<p>You must enter a FOAF document</p>")
+                inputs_exist = False
+            if len(sig_content) == 0:
+                req.write("<p>You must enter a PGP signature</p>")
+                inputs_exist = False
+        
+        if inputs_exist:
+            foaf = FOAFDoc(foaf_content)
+            sig = PGPSig(sig_content)
+            signedFOAF = SignedFOAF(foaf, sig)
+            store_error = storefoaf(req, signedFOAF)
+            if store_error:
+                req.write("<p>Error: " + store_error + "</p>")
+            else:
+                req.write("<p>FOAF succesfully uploaded</p>")
     
     req.write("""
     <h2>Submit an unsiqned FOAF record</h2>
     <form action="form" method="POST" enctype="multipart/form-data">
-    Upload FOAF file: <input type="file" name="foaf_file"/>
-    <input type="submit" name="submit" value="Submit">
+    Upload FOAF file: <input type="file" name="foaf_file"/><br/>
+    Upload PGP signature file: <input type="file" name="sig_file"/><br/>
+    <input type="submit" name="submit_upload" value="Submit">
     </form>
-    <hr/>
-    Or paste FOAF XML:
+    <br/><hr/><br/>
+    Or,<br/>
     <form action="form" method="POST">
-    <textarea name="foaf_content" rows="20" cols="50" wrap="none"></textarea>
-    <br/>
-    <input type="submit" name="submit" value="Submit">
+    paste FOAF XML:<br/>
+    <textarea name="foaf_content" rows="12" cols="50" wrap="none"></textarea><br/>
+    paste PGP signature:<br/>
+    <textarea name="sig_content" rows="8" cols="50" wrap="none"></textarea><br/>
+    <input type="submit" name="submit_text" value="Submit">
     </form>
     </body></html>""")
     return apache.OK
@@ -172,13 +195,13 @@ def form(req):
 #
 
 
-def storefoaf(req, content, uri_fingerprint=""):
-    foaf = FOAFDoc(content)
+def storefoaf(req, signedFOAF, uri_fingerprint=""):
     try:
-        fingerprint = foaf.validate(uri_fingerprint, req.get_options()['validate.wot'] == "1")
+        fingerprint = signedFOAF.foaf.validate(uri_fingerprint, req.get_options()['validate.wot'] == "1")
     except FOAFServerError:
         return str(sys.exc_info()[1])
-    filename = foaf.save(req.get_options()['storage.dir.rdf'], fingerprint)
+    signedFOAF.signature.save(req.get_options()['storage.dir.sig'], fingerprint)
+    filename = signedFOAF.foaf.save(req.get_options()['storage.dir.rdf'], fingerprint)
     updatetrustserver(req, filename)
 
 def updatetrustserver(req, filename):

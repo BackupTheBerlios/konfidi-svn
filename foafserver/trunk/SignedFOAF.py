@@ -3,7 +3,7 @@ from random import randint
 class SignedFOAF:
     """a PGP-signed FOAF document"""
     
-    def __init__(self, foaf, signature, accept_types):
+    def __init__(self, foaf, signature, accept_types=None):
         self.foaf = foaf
         self.signature = signature
         self.accept_types = accept_types
@@ -11,18 +11,19 @@ class SignedFOAF:
         self.mimetype = None
         self.mimesubtype = None
         
-        # ignore q-values; for now we'll set preference
-        if accept_types.find("multipart/signed") != -1:
-            self.mimetype = "multipart/signed"
-            for type in ["application/xml+rdf", "text/xml", "text/*", "application/xml"]:
-                if accept_types.find(type) != -1:
-                    self.mimesubtype = type
-                    break
-        else:
-            for type in ["application/pgp-signature", "application/xml+rdf", "text/xml", "text/*", "application/xml"]:
-                if accept_types.find(type) != -1:
-                    self.mimetype = type
-                    break
+        if accept_types is not None:
+            # ignore q-values; for now we'll set preference
+            if accept_types.find("multipart/signed") != -1:
+                self.mimetype = "multipart/signed"
+                for type in ["application/xml+rdf", "text/xml", "text/*", "application/xml"]:
+                    if accept_types.find(type) != -1:
+                        self.mimesubtype = type
+                        break
+            else:
+                for type in ["application/pgp-signature", "application/xml+rdf", "text/xml", "text/*", "application/xml"]:
+                    if accept_types.find(type) != -1:
+                        self.mimetype = type
+                        break
         # cleanup
         if self.mimetype is None:
             self.mimetype = "text/xml"
