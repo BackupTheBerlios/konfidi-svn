@@ -120,15 +120,15 @@ class Frontend:
 				#req.write("std err: %s\n" % stderr.read())
 				req.write("Did something.")
 			elif (cmd == "load1"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/prototype && svn cat http://brondsema.gotdns.com/svn/dmail/clients/simple/load_rdf.py | python")
+				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/prototype && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
 				req.write("std out: %s\n" % stdout.read())
 				req.write("std err: %s\n" % stderr.read())
 			elif (cmd == "load2"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/small/ && svn cat http://brondsema.gotdns.com/svn/dmail/clients/simple/load_rdf.py | python")
+				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/small/ && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
 				req.write("std out: %s\n" % stdout.read())
 				req.write("std err: %s\n" % stderr.read())
 			elif (cmd == "load3"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/edgecases/ && svn cat http://brondsema.gotdns.com/svn/dmail/clients/simple/load_rdf.py | python")
+				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/edgecases/ && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
 				req.write("stdout: %s\n" % stdout.read())
 				req.write("stderr: %s\n" % stderr.read())
 			else:

@@ -3,7 +3,7 @@
     xmlns:foaf="http://xmlns.com/foaf/0.1/#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:wot="http://xmlns.com/wot/0.1/#"
-    xmlns:trust="http://brondsema.gotdns.com/svn/dmail/schema/tags/release-1.1/trust.owl#"
+    xmlns:trust="http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#"
     >
 
 <foaf:Person rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"> 

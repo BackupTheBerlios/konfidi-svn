@@ -26,7 +26,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		#self.RDF = Namespace(self.server.config.rdf_url + "#")
 		
 		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-		self.TRUST = Namespace("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
+		self.TRUST = Namespace("http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 
@@ -34,7 +34,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		#trust = TripleStore()
 		#trust.load(self.server.config.trust_url)
 		
-		#trust.load("http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#")
+		#trust.load("http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#")
 		#self.trustValues = []
 		#for s in trust.subjects(self.RDF["subPropertyOf"], self.TRUST["trustValue"]):
 		#	self.trustValues.append(s)
