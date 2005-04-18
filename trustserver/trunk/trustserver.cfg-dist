@@ -1,3 +1,10 @@
+#
+# Configuration file for Trust Server
+#
+# Copy this file to trustserver.cfg and then modify the top section of settings
+#
+#
+
 # provides the URLs of the required XML and RDF schemas, ontologies, etc.
 # (won't this be handled by the FOAF server?  hmm..)
 [Schema]
