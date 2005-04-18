@@ -1,5 +1,9 @@
-
+#
 # Configuration file for FOAF server
+#
+# Copy this file to .htaccess and then modify the top section of settings
+#
+#
 
 # either a relative or absolute path
 PythonOption storage.dir.rdf /home/ams5/foafs

@@ -1,4 +1,9 @@
+#
 # Configuration file for Trust server Apache module frontend
+#
+# Copy this file to .htaccess and then modify the top section of settings
+#
+#
 
 # If debugging is turned on, modules will be reloaded.
 PythonOption debug 1
