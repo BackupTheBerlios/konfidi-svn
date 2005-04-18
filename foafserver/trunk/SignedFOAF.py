@@ -8,6 +8,8 @@ class SignedFOAF:
         self.signature = signature
         self.accept_types = accept_types
         
+        #TODO: validate signature
+        
         self.mimetype = None
         self.mimesubtype = None
         

@@ -176,6 +176,7 @@ def form(req):
             else:
                 req.write("<p>FOAF succesfully uploaded</p>")
     
+    # TODO: -----BEGIN PGP SIGNED MESSAGE----- option
     req.write("""
     <h2>Submit an unsiqned FOAF record</h2>
     <form action="form" method="POST" enctype="multipart/form-data">
@@ -205,6 +206,7 @@ def storefoaf(req, signedFOAF, uri_fingerprint=""):
         fingerprint = signedFOAF.foaf.validate(uri_fingerprint, req.get_options()['validate.wot'] == "1")
     except FOAFServerError:
         return str(sys.exc_info()[1])
+    # TODO: get fingerprint from signedFOAF.signature and compare that to fingeprint
     signedFOAF.signature.save(req.get_options()['storage.dir.sig'], fingerprint)
     filename = signedFOAF.foaf.save(req.get_options()['storage.dir.rdf'], fingerprint)
     updatetrustserver(req, filename)
