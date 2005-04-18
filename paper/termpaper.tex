@@ -1,10 +1,13 @@
-\documentclass{acm_proc_article-sp}
+\documentclass[onecolumn]{acm_proc_article-sp}
+%\documentclass[twocolumn]{article}
 
 \begin{document}
 %
 % --- Author Metadata here ---
 %\conferenceinfo{WOODSTOCK}{'97 El Paso, Texas USA}
+
 \setpagenumber{50}
+
 %\CopyrightYear{2002} % Allows default copyright year (2002) to be over-ridden - IF NEED BE.
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
 % --- End of Author Metadata ---
@@ -28,7 +31,7 @@
        \email{schamp@gmail.com}
 }
 
-\date{16 April 2005}
+\date{4 May 2005}
 
 \maketitle
 \begin{abstract}
@@ -60,10 +63,10 @@ In this paper, we will describe some difficulties in integrating these two kinds
 \subsection{Representing Trust Relationships}
 There seems to be a general lack of psychological research on trust inference and representing trust relationships. In fact, most work in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
 
-Konfidi likewise has chosen a somewhat arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
+For Konfidi, we have likewise has chosen an arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
-There are a number of mathematical papers discussing a number of propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
+There are a number of papers discussing different propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and did not have much in the way of practical application. 
 
 Belief in statements vs. trust in people.
 
@@ -84,21 +87,23 @@ Boykin and Roychowdhury discuss ways to infer relationships based on existing da
 \subsubsection{Spam Filtering}
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which dmail does, is not very common. Challenge-response to build a whitelist is tedious for sender and reciever and does not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
 
-\section{Motivation}
-This project began as an exploration of whether we might use the PGP web-of-trust to filter email spam at the client's end. A mail client plugin would filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, it soon became clear that the recommended PGP keysigning practices require only the careful verification of the key-holder's identity. Thus, any information about whether a user was trusted to send good email, and not spam, was information over and above the information expressed in the PGP web-of-trust itself, so any attempt to encode such information in the web-of-trust would be inadequate.
+\subsection{Previous Attempt}
+Our own project began as an exploration of whether we might use the PGP web-of-trust to filter email spam at the client's end. A mail client plugin would filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
 
-A more serious flaw in this thick-client approach is that, given the key-centric nature of the web-of-trust, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
+\section{Motivation}
+A more serious flaw in an approach that depends so heavily on the client software is this:  because information about key signatures is stored as a part of the key that was signed, and not that of the signer, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
 
 So, for our idea to be viable, it must first deal with these two issues, namely, representing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
 
-\section{Design}
+\section{Konfidi}
+--Diagram--
 Say something here.
 
-\subsection{Representation}
-Our schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, we felt that a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
+\subsection{Trust Ontology}
+The schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
 
 \subsubsection{Distrust}
-This is closely related to another important concern, that our representation give some account of distrust.  If our trust network contained trust values ranging from neutral to complete, then everyone in the network is trusted, explicitly, or by inference on some level at or above this.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
+This is closely related to another important concern, that the representation give some account of distrust.  If the trust network contained values ranging from neutral trust to complete trust, then everyone in the network is trusted, explicitly, or by inference on some level at or above neutral.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
 
 One of the difficulties of using explicit distrust in an inference network, however, is that it is unclear how inferences should proceed once a link of distrust has been encountered.  Suppose Alice distrusts Bob, and Bob distrusts Clara.  As Guha points out\cite{guha04propagation}, there are at least two interpretations of this situation.  On the one hand, Alice might think something like "the enemy of my enemy is my friend" and so decide to put trust in Clara.  On the other hand, she might realize that if someone as scheming as Bob distrusts Clara, then Clara must really be an unreliable character, and so decide to distrust Clara.  Further, suppose Bob expressed trust for Dave.  At first consideration, it might seem reasonable to simply distrust everyone that Bob distrusts, including Dave.  But suppose there were another path through different nodes indicating some minimal level of trust for Dave.  Which path should be chosen as one which provides the correct inference?
 
@@ -107,44 +112,35 @@ One solution to this problem is simply to traverse one link of distrust, and the
 We explored a method similar to this one, but in the absence of sufficient psychological research affirming a model of this type, we sought a simpler solution.  In the end, we decided on a model that corresponds to another intuition about how trust works between people, that it is more of a continuum of both trust and distrust than a measure of just one or the other.  For example, if Alice trusts Bob at some moderate level (say, .75 of a scale of 0 to 1), then it seems that she also \textit{distrusts} him at some minimal level (say, .25).  If Alice trusts Bob neutrally, then she trusts him about as much as she distrusts him.  If she distrusts him completely, then she doesn't trust him at all.  But in all of these cases, there is a trade-off between trust and distrust.  Only in the extremes is either of them eliminated completely.  So, we decided that our trust model should represent a range of values from 0 to 1, treating 0 as complete distrust, 1 as complete trust, and 0.5 as neutral, and calculate trust inferences accordingly\footnote{This also makes many propagation algorithms simpler, as we'll discuss later.}.
 
 \subsubsection{Trust Topics}
-We thought that if other attributes about a trust relationship could be expressed, in addition to the rating system, then a system like Konfidi would be useful in many wider scopes than email spam prevention.  The most important of these is the trust topic, or in other words, what the trust is about.  A natural feature of interpersonal trust relationships is that there can be many different aspects of the same trust relationship.  
+If other attributes about a trust relationship could be expressed, in addition to the rating system, then a system like Konfidi would be useful in many wider scopes than email spam prevention.  The most important of these is the trust topic, or in other words, what the trust is about.  A natural feature of interpersonal trust relationships is that there can be many different aspects of the same trust relationship.  
 
 (you can make an Alice-Bob-Clara-Dave diagram for this business)
 
 For example, suppose Bob is a master chef, but is terribly gullible about the weather forecast.  Alice, of course, knows this, and so wants to express that she trusts Bob very highly when he gives advice for making souffle, but she does not trust him at all when he volunteers information about the likelihood of the next tornado.  Suppose she only knows Bob in these two capacities.  Any trust inference system should not average the two trust values and get a somewhat neutral rating for Bob, for that would lose important information about each of those two trust ratings\footnote{In fact, it would lose the only information that made these ratings useful in the first place.}.
 
-Suppose also that, given only the above trust ratings, the system tried to make an inference on a subject that was not specified.  Perhaps Alice has some general level of trust for Bob that should be used when there is no specific rating for the topic in question.  See the discussion in Future Work for our proposal for a system of topics that might account for this situation.
+Suppose also that, given only the above trust ratings, the system tried to make an inference on a subject that was not specified.  Perhaps Alice has some general level of trust for Bob that should be used when there is no specific rating for the topic in question.  See the discussion in Future Work for our proposal for a hierarchical system of topics that might account for this situation.
 
 \subsubsection{Rating System}
 With these considerations in mind, we decided that a relationship-based system would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting party and the trusted party are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships are related to objects representing trust items.  Each of these items has a topic and a rating associated with that topic.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
 
-\subsection{Infrastructure}
-As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values\footnote{should we leave the FOAF stuff to "implementation", and just discuss "data" here?  I think so.}
+\subsubsection{OWL Schema}
+See Appendix~\ref{schemaCode} for the full OWL source code.
 
-\subsubsection{Data Management}
+\subsection{FOAFServer}
+As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values.
+
 One need was for a system to store trust network data, verify signatures on that data, and allow for updates of existing files and their signatures.
 
 If Konfidi were to be useful as a system of trust management, then the operations it performs and the results it returns must be trusted by the users.  Thus, to prevent malicious users from submitting faulty or incorrect trust data for others, Konfidi will require every file submitted to be digitally signed by the key of the user who is indicated as the trusting party.  Konfidi will then verify the signature before accepting the data as legitimate and passing it along to the trust management system.
 
-\subsubsection{Trust Management}
-This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, this part would handle requests for trust ratings, traverse the internal representation to find a path, and provide a response.  
-
-We should say more about this.  Why did we choose the design we did?  I can barely remember...
-
-\section{Implementation}
-put a shiny diagram in here
-
-\subsection{OWL Schema}
-Explain OWL, RDF, and how it fits into FOAF as needed.
-
-\subsection{FOAF Server}
 URI based lookup
 
 communications with trust server
 
-\subsection{Trust Server}
+\subsection{TrustServer}
+This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, this part would handle requests for trust ratings, traverse the internal representation to find a path, and provide a response.  
 
 \subsubsection{Frontend}
 generic interface
@@ -152,13 +148,17 @@ generic interface
 short introduction about coupling for the following subsections
 reasons for it (scalability)
 
+\subsubsection{PGP Backend}
+bit about the importance of verifying a PGP link (identity is good)
+
 \subsubsection{Trust Backend}
+We should say more about this.  Why did we choose the design we did?  I can barely remember...
+
 this does the dirty work
 
 bit about the different strategies
 
-\subsubsection{PGP Backend}
-bit about the importance of verifying a PGP link (identity is good)
+\subsection{Clients}
 
 \section{Future Work}
 \subsection{Psychological Research}
@@ -191,9 +191,11 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 % The following two commands are all you need in the
 % initial runs of your .tex file to
 % produce the bibliography for the citations in your paper.
-%\bibliographystyle{authordate1}
-\bibliographystyle{abbrv}
+%\bibliographystyle{abbrv}
+
+\bibliographystyle{authordate1}
 \bibliography{termpaper}  
+
 % Bibliography in this case
 % You must have a proper ".bib" file
 %  and remember to run:
@@ -204,7 +206,123 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 %
 %APPENDICES are optional
 
-\balancecolumns
+\onecolumn
 
+\appendix
+%Appendix A
+
+\section{OWL Trust Schema}
+\label{schemaCode}
+
+\begin{verbatim}
+
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY trust "http://brondsema.gotdns.com/svn/dmail/schema/trunk/trust.owl#" >
+    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+    <!ENTITY wot  "http://xmlns.com/wot/0.1/" >
+    <!ENTITY rel "http://vocab.org/relationship/#" >
+    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+    <!ENTITY vs "http://www.w3.org/2003/06/sw-vocab-status/ns#" >
+  ]>
+
+<rdf:RDF 
+    xmlns="&trust;"
+    xmlns:owl="&owl;" 
+    xmlns:rdf="&rdf;" 
+    xmlns:rdfs="&rdfs;"
+    xmlns:xsd="&xsd;"
+    xmlns:rel="&rel;"
+    xmlns:foaf="&foaf;"
+    xmlns:wot="&wot;"
+    xmlns:dc="&dc;"
+    xmlns:vs="&vs;"
+>
+
+<rdf:Description rdf:about="">
+    <dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
+    <dc:date>2005-03-20</dc:date>
+    <dc:description xml:lang="en">This is the description</dc:description>
+    <dc:contributor>Andrew Schamp</dc:contributor>
+    <dc:contributor>Dave Brondsema</dc:contributor>
+</rdf:Description>
+
+<owl:Ontology 
+    rdf:about="&trust;" 
+    dc:title="Trust Vocabulary" 
+    dc:description="The Trust RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language." 
+    dc:date="$Date: 2005/03/19 11:38:02 $"
+    > 
+    <owl:versionInfo>v1.0</owl:versionInfo>
+</owl:Ontology>
+
+<!-- classes first -->
+<owl:Class rdf:about="&trust;Item" rdfs:label="Item" rdfs:comment="An item of trust">
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+    <rdfs:subClassOf rdf:resource="&rdfs;Resource" />
+</owl:Class>
+
+<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship" rdfs:comment="A relationship between two agents">
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+    <rdfs:subClassOf rdf:resource="&rel;Relationship" />
+</owl:Class>
+
+<!-- for constraints -->
+<xsd:element xsd:name="percent" rdf:ID="percent">
+    <xsd:simpleType>
+        <xsd:restriction xsd:base="xsd:decimal">
+            <xsd:totalDigits>4</xsd:totalDigits>
+            <xsd:fractionDigits>2</xsd:fractionDigits>
+            <xsd:minInclusive> 0.00</xsd:minInclusive>
+            <xsd:maxInclusive> 1.00</xsd:maxInclusive>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:element>
+
+<!-- properties second -->
+<owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
+    rdfs:comment="The agent doing the trusting.">
+    <rdfs:domain rdf:resource="&trust;Relationship" />
+    <rdfs:range rdf:resource="&foaf;Agent" />
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="trusted" rdfs:label="trusted"
+    rdfs:comment="The agent being trusted.">
+    <rdfs:domain rdf:resource="&trust;Relationship" />
+    <rdfs:range rdf:resource="&foaf;Agent" />
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="about" rdfs:label="about" 
+    rdfs:comment="Relates things to trust items.">
+    <rdfs:domain rdf:resource="&trust;Relationship" />
+    <rdfs:range rdf:resource="#Item" />
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="rating" rdfs:label="rating">
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+    <rdfs:domain rdf:resource="#Item" />
+    <rdfs:range rdf:resource="&rdfs;Literal" rdf:type="#percent" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="topic" rdfs:label="topic">
+    <rdfs:isDefinedBy rdf:resource="&trust;" />
+    <rdfs:domain rdf:resource="#Item" />
+    <rdfs:range rdf:resource="&owl;Thing" />
+</owl:ObjectProperty>
+
+
+</rdf:RDF>
+\end{verbatim}
+
+\twocolumn
+
+\balancecolumns
 % That's all folks!
 \end{document}
