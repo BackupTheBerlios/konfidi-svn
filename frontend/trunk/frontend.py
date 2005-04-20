@@ -50,8 +50,8 @@ class Frontend:
 			return self.map(self.req)
 		if (page == "form"):
 			return self.form(self.req)
-		if (page == "command"):
-			return self.command(self.req)
+//		if (page == "command"):
+//			return self.command(self.req)
 		if (page == ""):
 			return self.index(self.req)
 		else:
@@ -88,10 +88,10 @@ class Frontend:
 		Ghandi, Scumbag, email
 		<h4>TrustServer commands</h4>
 		<!--<a href="command?cmd=start">Start server</a><br>
-		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.--><br>-->
+		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.<br>
 		<a href="command?cmd=load1">Load data set 1 (schamp, laing, brondsema)</a><br>
 		<a href="command?cmd=load2">Load data set 2 (real keys, etc)</a><br>
-		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>
+		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>-->
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
 		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br/>
@@ -102,7 +102,8 @@ class Frontend:
 		</html>
 		""")
 		return apache.OK
-	
+		
+/*	--this whole business is just awful.  let's leave it out until we can do it right. --ams5
 	def command(self, req):
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
@@ -141,7 +142,8 @@ class Frontend:
 			req.content_type = "text/html"
 			req.write("405: HTTP_METHOD_NOT_ALLOWED: %s" % req.method)
 			return apache.OK
-	
+*/	
+
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
@@ -433,10 +435,11 @@ def uniqueURI(req):
 	"""Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
 	req.add_common_vars()
 	uri = req.filename[len(os.path.dirname(__file__))+1:]
-	apache.log_error("uri ams5 1: %s" % uri, apache.APLOG_NOTICE)
+	# are these two log things really necessary?
+	# apache.log_error("1: %s" % uri, apache.APLOG_NOTICE)
 	try:
 		uri += req.subprocess_env['PATH_INFO']
-		apache.log_error("uri ams5 2: %s" % uri, apache.APLOG_NOTICE)
+		# apache.log_error("uri ams5 2: %s" % uri, apache.APLOG_NOTICE)
 	except KeyError:
 		uri += ""
 	return uri
