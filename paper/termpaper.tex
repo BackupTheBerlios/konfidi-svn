@@ -74,6 +74,7 @@ Jennifer Golbeck, at the University of Maryland, is doing graduate research on t
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
 \subsubsection{Friend of a Friend (FOAF)}
+\label{foaf}
 The FOAF project\cite{foafProject} is an RDF vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users created RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  
 
 \subsubsection{FOAF Whitelisting}
@@ -85,9 +86,10 @@ Boykin and Roychowdhury discuss ways to infer relationships based on existing da
 \subsubsection{Spam Filtering}
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which Konfidi does in the context of email filtering, is not very common. Challenge-response mechanisms to build a whitelist are tedious for the sender and reciever and do not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
 
-\subsection{Previous Attempt}
+\subsection{Trust Inference Using PGP}
 % Should we include this at all? Perhaps title it something like "An approach using only PGP" and demphasize the fact that it was an idea we explored during this project?
-Our own project began as an exploration of whether we might use the PGP web-of-trust to filter email spam at the client's end. A mail client plugin would filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
+% how is it now?
+One possible approach is to use the PGP web-of-trust to filter email spam at the client's end. For example, a mail client plugin could filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
 
 A more serious flaw in an approach that depends so heavily on the client software is this:  because information about key signatures is stored as a part of the key that was signed, and not that of the signer, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
 
@@ -101,8 +103,11 @@ Say something here.
 
 \subsection{Trust Ontology}
 % representation is seperate from algorithm result, right?  Need to fix this paragraph if so
-The schema for representing trust data went through several iterations before stabilizing in its current form.  It seemed that we had the choice of two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  This had its advantages in setting up our test data, but it also took into consideration our thoughts about the way trust between people works.  
+% what do you mean?  I suppose the algorithm can perform whatever operation on the values it wants, but I think the point is that the domain and range of the network is the same:  an inferred trust rating should look no different from an explicit one.  maybe this is unclear...
+In the current research on trust inference networks, there seem to be two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  Further, the inferred trust values returned by searches would be similar to the explicit trust values users provided when specifying trust relationships.  This makes it easier to evaluate such results on a scale that has some familiarity.
+
 % we should say what "our thoughts" are, if we include that phrase
+% good point.  I took it out.
 
 \subsubsection{Distrust}
 % shouldn't start out with "This" (I assumed it referred to the section title, Distrust).  I don't even know what concept it really is supposed to refer to
@@ -127,17 +132,53 @@ For example, suppose Bob is a master chef, but is terribly gullible about the we
 Suppose also that, given only the above trust ratings, the system tried to make an inference on a subject that was not specified.  Perhaps Alice has some general level of trust for Bob that should be used when there is no specific rating for the topic in question.  See the discussion in Future Work for our proposal for a hierarchical system of topics that might account for this situation.
 
 \subsubsection{Rating System}
+\label{rating}
 % "Rating System" seems inappropriate.  How about "Data structure" or something?
 With these considerations in mind, we decided that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each items is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
 
 \subsubsection{OWL Schema}
+% we need to say more at some point about FOAF, so that it is clear how we are using it and why.  But where?  In related work?  Here?  I'll put it here for now.
+As the FOAF project grows in popularity, an infrastructure is growing to support it, as mentioned in \ref{foaf}.  Since there would be many advantages to tapping into this infrastructure, and since the specification of trust relationships fits in naturally alongside the existing \texttt{foaf:knows} property, Konfidi also uses the Resource Description Framework (RDF)\cite{rdf} for representing trust relationships.  In addition to the FOAF vocabulary, there is a vocabulary called WOT defining and describing singing and assurance, which provides the necessary structure for associating persons and organizations with key fingerprints\cite{wot}.  By designing Konfidi's vocabulary to make use of FOAF and WOT vocabulary elements, then, we can take advantage of the established standards and make our extensions compatible with existing FOAF-enabled tools.
+
+Konfidi uses the Web Ontology Language (OWL)\cite{owl} to define the RDF elements that make up the Konfidi trust ontology.  OWL builds on the existing RDF specification by providing a vocabulary to describe properties and classes, and their relations.  The Konfidi trust ontology provides two objects and five properties, which, in conjunction with the existing FOAF and WOT vocabularies, are sufficient to describe the trust relationships that Konfidi requires.
+
+% how should we describe the ontology?  how about this for now?
+
+The primary element is \texttt{Relationship}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.}, which represents a relationship of trust that holds between two people.  There are two properties required for every \texttt{Relationship}, \texttt{truster} and \texttt{trusted}, which indicate the two parties to the relationship.  Both \texttt{truster} and \texttt{trusted} have \texttt{foaf:Person} objects as their targets\footnote{These \texttt{Person} objects should also contain at least one \texttt{wot:fingerprint} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Person} describes.  This property is required for verification; if no \texttt{fingerprint} is available, then Konfidi cannot use the relationship.}, which may be defined in the same file, inline, or in external documents indicated by their resource URIs\footnote{Because it does not matter where the \texttt{foaf:Person} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to prevent spoofing, any file containing one or more \texttt{Relationship} objects must have a valid signature from a public key \texttt{fingerprint} corresponding to each \texttt{Person} listed as a \texttt{truster} in that file.  As described in \ref{foafserver}, flexibility in data location can have a number of advantages. }.  
+
+In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Relationship} to a trust \texttt{Item}\footnote{A \texttt{Relationship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it, etc. may be recorded without having an effect on the requirements of Konfidi.}.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale specified in Section~\ref{rating} of the trust assigned to the relationship on that topic.  
+
+A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  For example, remember the example given above, in which Alice trusts Bob highly about cooking, and distrusts him somewhat about the weather.  This might be represented in our ontology as something like the following\footnote{That is, supposing that the objects \texttt{alice123}, \texttt{bob1812}, \texttt{cooking}, and \texttt{weather} are all defined elsewhere in the same file.}.  For a more in-depth example, see Appendix~\ref{trustExample}.:
+
+\begin{verbatim}
+<Relationship>
+  <truster rdf:resource="#alice123" />
+  <truster rdf:resource="#bob1812" />
+  <about>
+    <Item>
+      <rating>.95</rating>
+      <topic rdf:resource="#cooking" />
+    </Item>
+  </about>
+  <about>
+    <Item>
+      <rating>.35</rating>
+      <topic rdf:resource="#weather" />
+    </Item>
+  </about>
+</Relationship>
+\end{verbatim}
+
 % explain a bit what OWL is (e.g. a blah-blah XML/RDF markup that we use to encode(?) the data structure described above) and give a URL for more info
 % include a concise example inline
 See Appendix~\ref{schemaCode} for the full OWL source code.
 
 \subsection{FOAFServer}
+\label{foafserver}
+% in the "owl schema" section, I say that this section talks about the advantages of having distributed FOAF and RDF records, so be sure to cover that here as part of hte motivation of the Foafserver.  you remember what I mean, right?
+
 As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values.
 
 One need was for a system to store trust network data, verify signatures on that data, and allow for updates of existing files and their signatures.
@@ -328,6 +369,15 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 
 
 </rdf:RDF>
+\end{verbatim}
+
+%Appendix B
+
+\section{Example Trust Network}
+\label{trustExample}
+
+\begin{verbatim}
+edgecases example here
 \end{verbatim}
 
 \twocolumn
