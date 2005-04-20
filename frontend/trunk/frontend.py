@@ -435,11 +435,8 @@ def uniqueURI(req):
 	"""Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
 	req.add_common_vars()
 	uri = req.filename[len(os.path.dirname(__file__))+1:]
-	# are these two log things really necessary?
-	# apache.log_error("1: %s" % uri, apache.APLOG_NOTICE)
 	try:
 		uri += req.subprocess_env['PATH_INFO']
-		# apache.log_error("uri ams5 2: %s" % uri, apache.APLOG_NOTICE)
 	except KeyError:
 		uri += ""
 	return uri
