@@ -87,8 +87,6 @@ Boykin and Roychowdhury discuss ways to infer relationships based on existing da
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which Konfidi does in the context of email filtering, is not very common. Challenge-response mechanisms to build a whitelist are tedious for the sender and reciever and do not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
 
 \subsection{Trust Inference Using PGP}
-% Should we include this at all? Perhaps title it something like "An approach using only PGP" and demphasize the fact that it was an idea we explored during this project?
-% how is it now?
 One possible approach is to use the PGP web-of-trust to filter email spam at the client's end. For example, a mail client plugin could filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
 
 A more serious flaw in an approach that depends so heavily on the client software is this:  because information about key signatures is stored as a part of the key that was signed, and not that of the signer, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
@@ -105,9 +103,6 @@ Say something here.
 % representation is seperate from algorithm result, right?  Need to fix this paragraph if so
 % what do you mean?  I suppose the algorithm can perform whatever operation on the values it wants, but I think the point is that the domain and range of the network is the same:  an inferred trust rating should look no different from an explicit one.  maybe this is unclear...
 In the current research on trust inference networks, there seem to be two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  Further, the inferred trust values returned by searches would be similar to the explicit trust values users provided when specifying trust relationships.  This makes it easier to evaluate such results on a scale that has some familiarity.
-
-% we should say what "our thoughts" are, if we include that phrase
-% good point.  I took it out.
 
 \subsubsection{Distrust}
 % shouldn't start out with "This" (I assumed it referred to the section title, Distrust).  I don't even know what concept it really is supposed to refer to
@@ -155,7 +150,7 @@ A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  
 \begin{verbatim}
 <Relationship>
   <truster rdf:resource="#alice123" />
-  <truster rdf:resource="#bob1812" />
+  <trusted rdf:resource="#bob1812" />
   <about>
     <Item>
       <rating>.95</rating>
@@ -171,8 +166,6 @@ A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  
 </Relationship>
 \end{verbatim}
 
-% explain a bit what OWL is (e.g. a blah-blah XML/RDF markup that we use to encode(?) the data structure described above) and give a URL for more info
-% include a concise example inline
 See Appendix~\ref{schemaCode} for the full OWL source code.
 
 \subsection{FOAFServer}
