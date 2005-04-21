@@ -13,9 +13,10 @@
 % --- End of Author Metadata ---
 
 \title{Konfidi\titlenote{\textit{Konfidi} is the Esperanto term for trust.  
-A universal concept, in a universal language, seemed appropriate for what we hope will become a universal system.}\titlenote{The name Konfidi applies to our system as a whole.  The various components, FOAFServer, TrustServer, and Clients, will be called by their individual names.}: Trust Networks Using PGP and RDF}
+A universal concept in a universal language seemed appropriate for what we hope will become a universal system.}\titlenote{The name Konfidi applies to our system as a whole.  The various components, FOAFServer, TrustServer, and Clients, will be called by their individual names.}: Trust Networks Using PGP and RDF}
 % the first note is cheesy, I admit.  can you think of a better way to say it?
 % There's probably a better way to say this stuff (second stuff).  do you get the idea?
+% why don't we just say the 2nd stuff at the beginning of the Konfidi section?  or not at all.  do you suspect confusion?
 
 \numberofauthors{2}
 
@@ -180,6 +181,8 @@ See Appendix~\ref{schemaCode} for the full OWL source code.
 \label{foafserver}
 % in the "owl schema" section, I say that this section talks about the advantages of having distributed FOAF and RDF records, so be sure to cover that here as part of hte motivation of the Foafserver.  you remember what I mean, right?
 
+% explain that this is not part of Konfidi proper, but a requisite system like PGP keyservers are
+
 As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values.
 
 One need was for a system to store trust network data, verify signatures on that data, and allow for updates of existing files and their signatures.
@@ -198,21 +201,23 @@ Like the FOAFServer, the TrustServer's frontend uses the REST architecture to pr
 %more here tying specifics of REST in as advantages, as outlined in the FOAFServer
 It also runs on the Apache web server, using the mod\_python framework.  Queries are passed in using HTTP's GET method, and responses are returned in XML, which a client application may parse to retrieve the desired data.
 
+% this is first use of source/sink.  Might need to explain here or before
 When a query is received, the Frontend passes the source and sink fingerprints to the PGP backend, and, if a valid path is found, to the trust backend\footnote{Strictly speaking, either query is optional.  The PGP backend may be skipped to run tests on large sets of sample data, and the trust backend may be skipped if the system is to be used as an interface to the PGP web-of-trust only.}.  The Frontend then builds the response document in XML, and passes the result back to the client\footnote{The client may also request for simplicity a single value, the trust rating value.}.
 
 This simple, but powerful blah blah blah
 % more rhetoric here, perhaps.
 
 \subsubsection{PGP Backend}
-As mentioned in Section~\ref{earlierPGP}, the PGP web-of-trust is not sufficient for determining trust.  However, it is necessary for the proper operation of Konfidi because it plays a very important role in verifying the identity of the sink.  If the author of a document were not identified correctly, someone might forge the trust data, and Konfidi would return a deceptive result.  Verifying that the document's signing key matches the key of the sink in the Konfidi trust network ensures that an inference path found by Konfidi to the sink is valid.
+As mentioned in Section~\ref{earlierPGP}, the PGP web-of-trust is not sufficient for determining trust.  However, it is necessary for the proper operation of Konfidi because it plays a very important role in verifying the identity of the sink.  If the author of a document were not identified correctly, someone might forge the trust data, and Konfidi would return a deceptive result.  Verifying that the document's signing key matches the key of the sink in the Konfidi trust network ensures that when Konfidi finds a topical trust inference path from source to the sink, it is valid.
 
-Since one purpose of Konfidi is to provide trust information over and above the PGP web-of-trust, it may seem natural to keep the Konfidi trust network tightly coupled to it.  In other words, every trust link specified using the Konfidi trust ontology corresponds to a link in the PGP web-of-trust made by signing the appropriate key.  However, there are compelling reasons not to do this.  First, the set of people one might wish to indicate trust for in Konfidi will likely not be the same as the set of those whose keys you are able to sign.  For example, a researcher in Sydney may work closely with another in Oslo, and so trust that person's opinion highly in matters relating to their research.  But unless they are able to meet at a conference sometime, or are willing to fly halfway around the world, it is unlikely that they will be able to sign each other's keys directly.  However, a valid path in the PGP web-of-trust may already exist connecting them.
+Since one purpose of Konfidi is to provide trust information over and above the PGP web-of-trust, it may seem natural to keep the Konfidi trust network tightly coupled to it.  In other words, every trust link specified using the Konfidi trust ontology corresponds to a link in the PGP web-of-trust made by signing the appropriate key.  However, there are compelling reasons not to do this.  First, the set of people one might wish to indicate trust for in Konfidi will likely not be the same as the set of those whose keys you are able to sign.  For example, a researcher in Sydney may work closely with another in Oslo, and so trust that person's opinion highly in matters relating to their research.  But unless they are able to meet at a conference some time, or are willing to fly halfway around the world, it is unlikely that they will be able to sign each other's keys directly.  However, a valid path in the PGP web-of-trust may already exist connecting them.
 
 Second, requiring users to sign the key of each person they want to add to their Konfidi trust networks adds additional difficulty which should otherwise be avoided.  In keeping with the recommended practices for PGP, two individuals must meet in person and verify photo identification before they are to sign each other's keys.  This extra hassle might entice users to grow lax in their keysigning policy, failing to properly complete such requirements.  This attitude, when widespread would substantially weaken the web-of-trust.  By keeping the PGP web-of-trust separate from the Konfidi trust network, the strength of the web-of-trust will not be weakened needlessly.
 
 An additional advantage of separating the two trust networks is usability.  Aunt Sally can use Konfidi to indicate trust if she and one other person (say, a more technically savvy nephew) sign each other's keys.  She will then probably be connected to the PGP web-of-trust within a reasonable distance of other family members which she is likely to include in her trust network.  Now there is no need to teach Aunt Sally the requirements for key signing, and explaining why they must be done for each person she wishes to add to her Konfidi trust network.  The system is easier to use, and the web-of-trust is less likely to be compromised\footnote{While the effects of individual keys being compromise on the web-of-trust as a whole would be restricted to the key's neighborhood in the web, as this happened with greater frequency, the usefulness of the entire web would be undermined.}.
 
 %how should I re-introduce this business?
+% I respond with another question.  What's the point of this (and the following) paragraph?  What are you trying to achieve?
 As you remember, before completing a query on the Konfidi trust network, the frontend will verify that a valid path exists on the PGP web-of-trust.  While we are eager to avoid some of the difficulties with searching the web-of-trust using the existing keyserver infrastructure, as mentioned in Section~\ref{earlierPGP}, it was not the main goal of our project to deal with all of them at this stage.  The frontend uses a number of drivers in a Strategy pattern \cite{designPatterns}, so that different subsystems for doing PGP pathfinding can be interchanged as they are developed.
 
 The current version utilizes a pathfinder known as Wotsap \cite{wotsap}, which downloads the complete web-of-trust from a keyserver and stores it in an intermediate format for searching.
@@ -226,8 +231,9 @@ Intermediate representation
 Queries
 Strategies
 
+% shouldn't this actually be breadth-first in which the level is defined by the currently computed trust value of each path.  So a deeper path that has a higher trust value so far would be traversed before one otherwise
 Konfidi currently uses a breadth-first search to find the shortest path between source and sink, if one exists.
-% an algorithm for breadth-first search for pathfinding
+%  Should be more psuedo and less code
 \begin{verbatim}
 function findPath(source, sink):
   paths = new list
@@ -249,6 +255,7 @@ function findPath(source, sink):
 \end{verbatim}
 
 One such propagation algorithm is a simple strategy like the following, which simply multiplies trust ratings along each step in the path:
+% this should be a mathematical formula, not code.  See Jennifer's papers for an example
 % an algorithm for calculating the trust rating after a path has been found
 \begin{verbatim}
 function getRating(path):
