@@ -12,7 +12,10 @@
 %\crdata{0-12345-67-8/90/01}  % Allows default copyright data (X-XXXXX-XX-X/XX/XX) to be over-ridden.
 % --- End of Author Metadata ---
 
-\title{Konfidi\titlenote{\textit{Konfidi} is the Esperanto term for trust.  A universal concept, in a universal language, seemed appropriate for what we hope will become a universal system.}: Trust Networks Using PGP and RDF}
+\title{Konfidi\titlenote{\textit{Konfidi} is the Esperanto term for trust.  
+A universal concept, in a universal language, seemed appropriate for what we hope will become a universal system.}\titlenote{The name Konfidi applies to our system as a whole.  The various components, FOAFServer, TrustServer, and Clients, will be called by their individual names.}: Trust Networks Using PGP and RDF}
+% the first note is cheesy, I admit.  can you think of a better way to say it?
+% There's probably a better way to say this stuff (second stuff).  do you get the idea?
 
 \numberofauthors{2}
 
@@ -87,9 +90,14 @@ Boykin and Roychowdhury discuss ways to infer relationships based on existing da
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which Konfidi does in the context of email filtering, is not very common. Challenge-response mechanisms to build a whitelist are tedious for the sender and reciever and do not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
 
 \subsection{Trust Inference Using PGP}
+\label{earlierPGP}
 One possible approach is to use the PGP web-of-trust to filter email spam at the client's end. For example, a mail client plugin could filter incoming mail, and check to see if there was a path from the sender to the recipient, in which the recipient had signed someone's key, who had signed another key, which eventually lead to the sender's key. If there was a path within a certain length, the message would be marked as trusted, if not, it would be marked as not trusted. This approach required that most users digitally sign email messages, and it depended on users to be aware of known spammers and keep from signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
 
 A more serious flaw in an approach that depends so heavily on the client software is this:  because information about key signatures is stored as a part of the key that was signed, and not that of the signer, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be polluted with fabricated keys, users, and signatures. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
+
+\subsubsection{Wotsap}
+\label{wotsap}
+Talk about wotsap a bit.
 
 \section{Motivation}
 % moved this section heading down one paragraph.  seemed to fit better.  But we need a better opening to this paragraph then.
@@ -183,25 +191,87 @@ URI based lookup
 communications with trust server
 
 \subsection{TrustServer}
-This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, this part would handle requests for trust ratings, traverse the internal representation to find a path, and provide a response.  
+This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, the TrustServer would handle requests for trust ratings, verify that a PGP connection exists, and traverse the internal representation to find a path.  Since these three tasks are so distinct, all of Konfidi is divided into three parts, a frontend which listens for requests and dispatches them, and two backend components, one to search the PGP web-of-trust and another to query against Konfidi's own trust network.  This separation, in addition to simpilifying the design by encapsulating the different functions, also allows for increased flexibility and scalability.  Each part is loosely coupled to the other parts, with a simple API for handling communications between them.
 
 \subsubsection{Frontend}
-generic interface
+Like the FOAFServer, the TrustServer's frontend uses the REST architecture to provide a versatile system for receiving and answering queries. 
+%more here tying specifics of REST in as advantages, as outlined in the FOAFServer
+It also runs on the Apache web server, using the mod\_python framework.  Queries are passed in using HTTP's GET method, and responses are returned in XML, which a client application may parse to retrieve the desired data.
 
-short introduction about coupling for the following subsections
-reasons for it (scalability)
+When a query is received, the Frontend passes the source and sink fingerprints to the PGP backend, and, if a valid path is found, to the trust backend\footnote{Strictly speaking, either query is optional.  The PGP backend may be skipped to run tests on large sets of sample data, and the trust backend may be skipped if the system is to be used as an interface to the PGP web-of-trust only.}.  The Frontend then builds the response document in XML, and passes the result back to the client\footnote{The client may also request for simplicity a single value, the trust rating value.}.
+
+This simple, but powerful blah blah blah
+% more rhetoric here, perhaps.
 
 \subsubsection{PGP Backend}
-bit about the importance of verifying a PGP link (identity is good)
+As mentioned in Section~\ref{earlierPGP}, the PGP web-of-trust is not sufficient for determining trust.  However, it is necessary for the proper operation of Konfidi because it plays a very important role in verifying the identity of the sink.  If the author of a document were not identified correctly, someone might forge the trust data, and Konfidi would return a deceptive result.  Verifying that the document's signing key matches the key of the sink in the Konfidi trust network ensures that an inference path found by Konfidi to the sink is valid.
+
+Since one purpose of Konfidi is to provide trust information over and above the PGP web-of-trust, it may seem natural to keep the Konfidi trust network tightly coupled to it.  In other words, every trust link specified using the Konfidi trust ontology corresponds to a link in the PGP web-of-trust made by signing the appropriate key.  However, there are compelling reasons not to do this.  First, the set of people one might wish to indicate trust for in Konfidi will likely not be the same as the set of those whose keys you are able to sign.  For example, a researcher in Sydney may work closely with another in Oslo, and so trust that person's opinion highly in matters relating to their research.  But unless they are able to meet at a conference sometime, or are willing to fly halfway around the world, it is unlikely that they will be able to sign each other's keys directly.  However, a valid path in the PGP web-of-trust may already exist connecting them.
+
+Second, requiring users to sign the key of each person they want to add to their Konfidi trust networks adds additional difficulty which should otherwise be avoided.  In keeping with the recommended practices for PGP, two individuals must meet in person and verify photo identification before they are to sign each other's keys.  This extra hassle might entice users to grow lax in their keysigning policy, failing to properly complete such requirements.  This attitude, when widespread would substantially weaken the web-of-trust.  By keeping the PGP web-of-trust separate from the Konfidi trust network, the strength of the web-of-trust will not be weakened needlessly.
+
+An additional advantage of separating the two trust networks is usability.  Aunt Sally can use Konfidi to indicate trust if she and one other person (say, a more technically savvy nephew) sign each other's keys.  She will then probably be connected to the PGP web-of-trust within a reasonable distance of other family members which she is likely to include in her trust network.  Now there is no need to teach Aunt Sally the requirements for key signing, and explaining why they must be done for each person she wishes to add to her Konfidi trust network.  The system is easier to use, and the web-of-trust is less likely to be compromised\footnote{While the effects of individual keys being compromise on the web-of-trust as a whole would be restricted to the key's neighborhood in the web, as this happened with greater frequency, the usefulness of the entire web would be undermined.}.
+
+%how should I re-introduce this business?
+As you remember, before completing a query on the Konfidi trust network, the frontend will verify that a valid path exists on the PGP web-of-trust.  While we are eager to avoid some of the difficulties with searching the web-of-trust using the existing keyserver infrastructure, as mentioned in Section~\ref{earlierPGP}, it was not the main goal of our project to deal with all of them at this stage.  The frontend uses a number of drivers in a Strategy pattern \cite{designPatterns}, so that different subsystems for doing PGP pathfinding can be interchanged as they are developed.
+
+The current version utilizes a pathfinder known as Wotsap \cite{wotsap}, which downloads the complete web-of-trust from a keyserver and stores it in an intermediate format for searching.
+% can you think of something else to say here about wotsap?  like, we're working on a way to make it faster, or it currently is not completely secure.  would this be a good place to mention that all data  and sources must be trusted for the Konfidi trust network itself to be trustable?  how might we go about achieving this?
 
 \subsubsection{Trust Backend}
+The Konfidi trust backend is responsible for storing the internal representation of the Konfidi trust network, incorporating updates into the network, and responding to queries about the nodes in the network.
+
+Updates
+Intermediate representation
+Queries
+Strategies
+
+Konfidi currently uses a breadth-first search to find the shortest path between source and sink, if one exists.
+% an algorithm for breadth-first search for pathfinding
+\begin{verbatim}
+function findPath(source, sink):
+  paths = new list
+  newpaths = new list
+  seen = new list
+  seen.append(source)
+  length = 0
+  while sink not in seen:
+    paths = newpaths
+    newpaths = new list
+    for p in paths:
+      for each person s that p trusts:
+        if s not in seen:
+          t = p # copy current path
+          t.append(s) # add person to end
+          newpaths[s] = t #key current path to last person on it
+  paths = newpaths
+  return paths[sink];
+\end{verbatim}
+
+One such propagation algorithm is a simple strategy like the following, which simply multiplies trust ratings along each step in the path:
+% an algorithm for calculating the trust rating after a path has been found
+\begin{verbatim}
+function getRating(path):
+  rating = 1
+  while path.length() > 0:
+    rating *= path.next().getRating()
+  return rating
+\end{verbatim}
+
+Once a PGP path has been found, remember, the frontend passes the query on to the trust backend.  Since the backend holds an internal representation of the Konfidi trust network persistent in memory, it cannot use mod\_python.  Instead, the frontend communicates with it via a socket\footnote{Either locally or on a remote server}.
+
 We should say more about this.  Why did we choose the design we did?  I can barely remember...
 
+update procedure
+algorithms
+strategies
 this does the dirty work
 
-bit about the different strategies
-
 \subsection{Clients}
+\subsubsection{CLI Clients}
+Dave'll do this section, since he wrote it.
+\subsubsection{Simple Web Client}
+Just an HTML form built into the frontend which makes searching marginally easier.
 
 \section{Future Work}
 \subsection{Psychological Research}
