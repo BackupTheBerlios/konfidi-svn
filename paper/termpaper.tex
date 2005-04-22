@@ -1,5 +1,4 @@
-\documentclass[onecolumn]{acm_proc_article-sp}
-%\documentclass[twocolumn]{article}
+\documentclass{acm_proc_article-sp}
 
 \begin{document}
 %
@@ -40,13 +39,6 @@ A universal concept in a universal language seemed appropriate for what we hope 
 We ought to write this last.
 \end{abstract}
 
-% what do we put for these? - ams5
-
-% A category with the (minimum) three required fields
-%\category{H.4}{Information Systems Applications}{Miscellaneous}
-%A category including the fourth, optional field follows...
-%\category{D.2.8}{Software Engineering}{Metrics}[complexity measures, performance measures]
-
 \terms{source, sink, concatenation, aggregation}
 
 \keywords{Semantic Web, trust network, FOAF, RDF, PGP, GPG, reputation, propogation, distributed, inference, delegation, social network}
@@ -68,7 +60,7 @@ There seems to be a general lack of psychological research on representing trust
 For Konfidi, we have likewise has chosen an arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
-There are a number of papers discussing different propagation strategies and algorithms for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and do not have much in the way of practical application. 
+There are a number of papers about different propagation strategies for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and do not have much in the way of practical application. 
 
 Belief in statements vs. trust in people.
 
@@ -85,7 +77,7 @@ The FOAF project\cite{foafProject} is an RDF vocabulary used to represent person
 Dan Brickley has made a non-academic attempt to investigate the use of FOAF, particularly the mbox\_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sending address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is localized, it is difficult for updates to propagate\cite{foafWhitelisting}. No effort was taken in this project to verify the sender's identity.
 
 \subsection{Email Filtering by Inferred Trust}
-Boykin and Roychowdhury discuss ways to infer relationships based on existing data (From:, To:, Cc: headers)\cite{boykin04email}. This seems to work fairly well but there is often not enough data to make the spam/not-spam decision because it is based only on the user's own previously recieved messages. They clearly state a cryptographic solution would be ideal to verify identity.
+Boykin and Roychowdhury discuss ways to infer a relationship based on existing data (From:, To:, Cc: headers)\cite{boykin04email}. This seems to work fairly well but there is often not enough data to make the spam/not-spam decision because it is based only on the user's own previously recieved messages. They clearly state a cryptographic solution would be ideal to verify identity.
 
 \subsubsection{Spam Filtering}
 Domain-level solutions, such as SPF and DomainKeys, are mostly to prevent phishing and also assume that a domain's administrator can control and monitor all its user's activities. Greylisting and blacklisting often have too many false positives and false negatives. User-level filtering, which Konfidi does in the context of email filtering, is not very common. Challenge-response mechanisms to build a whitelist are tedious for the sender and reciever and do not validate authenticity. Content-level testing is the most common, but bayesian filtering and other header checks are reactionary and must be continuously updated, and are becoming less effective as spammers create emails that look more and more real. 
@@ -138,7 +130,7 @@ Suppose also that, given only the above trust ratings, the system tried to make 
 \subsubsection{Rating System}
 \label{rating}
 % "Rating System" seems inappropriate.  How about "Data structure" or something?
-With these considerations in mind, we decided that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each items is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
+With these considerations in mind, we found that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each items is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
 
@@ -191,7 +183,7 @@ If Konfidi were to be useful as a system of trust management, then the operation
 
 URI based lookup
 
-communications with trust server
+communications with trust server and the requirements for a completely trusted system (e.g., signed communication at every step, or something)
 
 \subsection{TrustServer}
 This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, the TrustServer would handle requests for trust ratings, verify that a PGP connection exists, and traverse the internal representation to find a path.  Since these three tasks are so distinct, all of Konfidi is divided into three parts, a frontend which listens for requests and dispatches them, and two backend components, one to search the PGP web-of-trust and another to query against Konfidi's own trust network.  This separation, in addition to simpilifying the design by encapsulating the different functions, also allows for increased flexibility and scalability.  Each part is loosely coupled to the other parts, with a simple API for handling communications between them.
@@ -226,53 +218,34 @@ The current version utilizes a pathfinder known as Wotsap \cite{wotsap}, which d
 \subsubsection{Trust Backend}
 The Konfidi trust backend is responsible for storing the internal representation of the Konfidi trust network, incorporating updates into the network, and responding to queries about the nodes in the network.
 
-Updates
-Intermediate representation
-Queries
-Strategies
+The backend can register with a FOAFServer as a mirror to receive notification whenever a FOAF record with trust information is added or altered.  It needn't ever notify the FOAFServer of any updates to its records, for the FOAFServer would be the only source of new information.  This allows also for it to syncronize with the FOAFServer after a period of down time in which new records have been added.  The backend currently assumes that the FOAFServer has verified the signatures of the FOAF records it stores, freeing it from the computational burden of fetching the signing keys and verifying the signature.
 
-% shouldn't this actually be breadth-first in which the level is defined by the currently computed trust value of each path.  So a deeper path that has a higher trust value so far would be traversed before one otherwise
-Konfidi currently uses a breadth-first search to find the shortest path between source and sink, if one exists.
+When the TrustServer updates a record, the backend parses the RDF input data and adds the relevant information to its internal representation of the trust network, which is a list of all \texttt{foaf:Person} records indexed by fingerprint and links to each \texttt{Person} marked as trusted, along with topic and rating data.  The updated data will then be available for subsequent queries.  This scheme accomplishes the goal of having trust links available in the proper direction, from source to sink, and avoiding one species of bogus data attack, as discussed in Section~\ref{earlierPGP}.  
+
+% dave, check this complexity analysis and make sure you agree.  it's important.
+This representation requires $O(m+n)$ space to store and on average, $O(m*l)$ time to search, and $O(o+p)$ time to update, where $m$ is the number of persons, $n$ is the number of trust links, $l$ is the average length of a path between two persons, $o$ is the number of persons being updated, and $p$ is the number of links being updated.  On the other hand, a representation of a completely solved network, storing the trust values between any two individuals\footnote{In other words, a lookup table.}, requires $O(m^2)$ space, but makes trust queries take a maximum of $O(1)$ time.  However, such a representation requires $O(m^2*l)$ time to solve, which it must do again after every update, since it must recompute the value for every pair.\footnote{The tradeoff between storage space and query time made it hard to settle on a representation.  Perhaps a compromise between a "live" system that incorporates incremental updates with slow queries, and a system that updates its network several times a day, rather than on each update, could provide better performance.  Most users would not need up-to-date links with every user, since their queries would most likely be over a rather limited subset of the network.  Caching of previously computed trust values on the user's end, with periodic updating, could also make a difference.}
+
+It may also be advantageous to store trust links going the other direction, perhaps for local representation analysis, or auxiliary information like name or email address.  Other information, such as when the record was last updated, could allow for record caching that might improve performance.
+
+Because of the apparent lack of psychological research on trust representations, we have again implemented the Strategy pattern\cite{designPatterns}, for the trust propagation algorithm.  This allows additional propagation strategies to be dropped into place as they are developed.\footnote{It also served, unlooked for, as an excellent interface for various special queries we wanted to make, like getting a list of all the people in the network, or a full dump of all people and trust data.}  Our preliminary algorithm does simple multiplicative propagation over each link in a path.  It uses something like a breadth-first search\footnote{Prioritized to follow whichever path has highest value after each iteration.} to find the shortest path between source and sink, if one exists:
 %  Should be more psuedo and less code
+% like this?
 \begin{verbatim}
-function findPath(source, sink):
-  paths = new list
-  newpaths = new list
-  seen = new list
-  seen.append(source)
-  length = 0
-  while sink not in seen:
-    paths = newpaths
-    newpaths = new list
-    for p in paths:
-      for each person s that p trusts:
-        if s not in seen:
-          t = p # copy current path
-          t.append(s) # add person to end
-          newpaths[s] = t #key current path to last person on it
-  paths = newpaths
-  return paths[sink];
+function findRating(source, sink):
+  keep a priority queue of all paths
+  until the sink is found
+    find the path with the highest rating
+    find the link not already seen
+      concatenate path's and the link's rating
+      add the path with its rating to the queue
+  return the rating of the path to the sink
 \end{verbatim}
 
-One such propagation algorithm is a simple strategy like the following, which simply multiplies trust ratings along each step in the path:
-% this should be a mathematical formula, not code.  See Jennifer's papers for an example
-% an algorithm for calculating the trust rating after a path has been found
-\begin{verbatim}
-function getRating(path):
-  rating = 1
-  while path.length() > 0:
-    rating *= path.next().getRating()
-  return rating
-\end{verbatim}
+One such concatenation algorithm is a simple strategy like the following, which simply multiplies trust ratings along each step in the path:
 
-Once a PGP path has been found, remember, the frontend passes the query on to the trust backend.  Since the backend holds an internal representation of the Konfidi trust network persistent in memory, it cannot use mod\_python.  Instead, the frontend communicates with it via a socket\footnote{Either locally or on a remote server}.
+$r = \prod_{i=0}^{n-1} Rating(i, i + 1)$
 
-We should say more about this.  Why did we choose the design we did?  I can barely remember...
-
-update procedure
-algorithms
-strategies
-this does the dirty work
+where $Rating$ returns the rating between two nodes in the network.
 
 \subsection{Clients}
 \subsubsection{CLI Clients}
@@ -281,13 +254,16 @@ Dave'll do this section, since he wrote it.
 Just an HTML form built into the frontend which makes searching marginally easier.
 
 \section{Future Work}
-\subsection{Psychological Research}
-\subsection{Additional Features}
-multipart signing of the results query, and signature checking between components
-\subsection{Other Clients}
-\subsubsection{Firefox + Mime}
-\subsubsection{MTA Integration}
-\subsection{Topic Hierarchy}
+There are a number of things to be done to develop Konfidi from a proof-of-concept to a useful system.  As we've mentioned above, one thing we need most is a good base of psychological research backing up our trust representation and propagation, or suggesting a new one.  Unfortunately, we must leave this to the experts in psychology, and so it is hard to say when it will be there.  The rest of the system can be developed in its absence, so long as it is understood that we have just approximated how trust might work.
+
+As we've said, a trust system is only as useful as it is trusted.  Thus, a system of secure communication between the difference components is required, perhaps using SSL or using PGP directly.  It is hard to say how a user's trust in a system like Konfidi can be represented within itself, but that may have implications, too.
+
+In addition to plugins at the user's email client level, Konfidi could be incorporated into the email infrastructure at the mail transfer agent (MTA) level.  Thus, a system could check Konfidi and add query results to every email message that it delivers to the user.
+
+As the scope of Konfidi naturally expands to include things other than email, other clients will be developed.  One possible client is an web browser extension to query pages when they are visited.  Other extensions might allowing multi-part MIME PGP signatures attached to webpages for easy verification.  
+
+For trust topics to be really useful, some sort of hierarchy is in order.  Topics ought to standardized so that it is clear in what circumstances they apply, and how they relate to one another.  So, for example, if Alice trusts Bob about internet communication in general, then if a query is made about email (a descendent of internet communication) and no explicit email rating is given, then Konfidi traverses up the heirarchy until some more general trust rating is found, and applies that.
+
 \section{Other Issues}
 \subsection{Anonymity}
 Since authentication is a key part of Konfidi, it is effectively impossible to act anonymously within the system.  To enter the PGP web of trust you must prove your identity to someone.  Political and religious discussions (especially in intolerant countries), corporate whistleblowing, crisis hotlines, and other sensitive discussions have grave reasons to be conducted anonymously.  If authentication becomes a defacto standard of communication it will be difficult to conduct these communications.  Two potential alleviations would be to 1) have policies regarding when documents will be signed and when they won't (e.g. banks will always sign) and 2) using an anonymizing proxy service that is trusted by most people.  There are obvious drawbacks to both of these.\cite{fenton05iim}
@@ -297,15 +273,12 @@ Should there be any?  How will it be controlled?
 Encrypted FOAFs.
 
 \subsection{Ethics}
-Dependency on a trust system, trust in the system, etc.
+Dependency on a trust system, trust in the system, trust in admins, etc.
 
 \section{Conclusions}
 
-%\end{document}  % This is where a 'short' article might terminate
-
-%ACKNOWLEDGMENTS are optional
 \section{Acknowledgments}
-We would like to thank the following people:  Jim Laing for assisting with test data, Prof. Vander Linden for advising us on this project, Profs. Fife, Frens and Plantinga for their advice on specific matters.
+We would like to thank Jim Laing for assisting with test data, Prof. Vander Linden for advising us on this project, and Profs. Fife, Frens and Plantinga for their advice on specific matters.
 
 %
 % The following two commands are all you need in the
@@ -329,8 +302,8 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 \onecolumn
 
 \appendix
-%Appendix A
 
+%Appendix A
 \section{OWL Trust Schema}
 \label{schemaCode}
 
@@ -366,7 +339,6 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 <rdf:Description rdf:about="">
     <dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
     <dc:date>2005-03-20</dc:date>
-    <dc:description xml:lang="en">This is the description</dc:description>
     <dc:contributor>Andrew Schamp</dc:contributor>
     <dc:contributor>Dave Brondsema</dc:contributor>
 </rdf:Description>
@@ -374,19 +346,21 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 <owl:Ontology 
     rdf:about="&trust;" 
     dc:title="Trust Vocabulary" 
-    dc:description="The Trust RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language." 
+    dc:description="The Trust RDF vocabulary, in OWL and RDF." 
     dc:date="$Date: 2005/03/19 11:38:02 $"
     > 
     <owl:versionInfo>v1.0</owl:versionInfo>
 </owl:Ontology>
 
 <!-- classes first -->
-<owl:Class rdf:about="&trust;Item" rdfs:label="Item" rdfs:comment="An item of trust">
+<owl:Class rdf:about="&trust;Item" rdfs:label="Item" 
+    rdfs:comment="An item of trust">
     <rdfs:isDefinedBy rdf:resource="&trust;" />
     <rdfs:subClassOf rdf:resource="&rdfs;Resource" />
 </owl:Class>
 
-<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship" rdfs:comment="A relationship between two agents">
+<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship"
+    rdfs:comment="A relationship between two agents">
     <rdfs:isDefinedBy rdf:resource="&trust;" />
     <rdfs:subClassOf rdf:resource="&rel;Relationship" />
 </owl:Class>
@@ -442,7 +416,6 @@ We would like to thank the following people:  Jim Laing for assisting with test 
 \end{verbatim}
 
 %Appendix B
-
 \section{Example Trust Network}
 \label{trustExample}
 
