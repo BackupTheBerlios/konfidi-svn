@@ -25,6 +25,19 @@
     <wot:fingerprint>8a335b856C4AE39a0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
+<!-- test trusting a resource -->
+<Relationship>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted rdf:resource="http://www.yahoo.com"/>
+	<about>
+		<Item>
+			<topic rdf:resource="&subject;#okay-for-children"/>
+			<rating>0.9</rating>
+		</Item>
+	</about>
+</Relationship>
+
+
 <Relationship>
 	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
 	<trusted rdf:nodeID="andy"/>
@@ -44,6 +57,12 @@
 		<Item>
 			<topic rdf:resource="&subject;#wiki"/>
 			<rating>0.60</rating>
+		</Item>
+	</about>
+	<about>
+		<Item>
+			<topic rdf:resource="&subject;#rate-okay-for-children"/>
+			<rating>0.80</rating>
 		</Item>
 	</about>
 </Relationship>
