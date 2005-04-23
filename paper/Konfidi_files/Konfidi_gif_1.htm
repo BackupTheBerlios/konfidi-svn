@@ -1,0 +1,59 @@
+<html>
+<head>
+<LINK REL="stylesheet" TYPE="text/css" HREF="Konfidi.css">
+<title>
+Konfidi
+</title>
+
+<script src="Konfidi_utils.js"></script>
+<script>
+<!--
+var pageID = 0;
+
+function BodyOnLoad ()
+{
+	var pageIndex = PageIndexFromID (pageID);
+	if (pageIndex >= 0)
+	{
+		PageUpdated(pageIndex);
+	}
+}
+
+//-->
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF" onload="BodyOnLoad()" onclick="clickMenu()">
+<base target="_top">
+
+<div id=menu1 
+  onclick="clickMenu()" 
+  onmouseover="toggleMenu()" 
+  onmouseout="toggleMenu()" 
+  style="position:absolute; 
+         display:none; 
+         border: 2px outset black; 
+         width:220; 
+         background-color:menu; 
+		 z-index:10"> 
+</div> 
+
+<DIV id=RasterDiv>
+
+<center>
+  <IMG SRC="Konfidi_gif_1.gif" ALT="" BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" ALT="" TITLE=""  COORDS=" 122,57 216,57 216,0 122,0 122,57" onmouseover="UpdateProps(0,19)" >
+  <AREA shape="POLYGON" ALT="" TITLE=""  COORDS=" 537,305 632,305 632,248 537,248 537,305" onmouseover="UpdateProps(0,15)" >
+  <AREA shape="POLYGON" ALT="" TITLE=""  COORDS=" 381,305 476,305 476,248 381,248 381,305" onmouseover="UpdateProps(0,9)" >
+  <AREA shape="POLYGON" ALT="" TITLE=""  COORDS=" 380,194 474,194 474,137 380,137 380,194" onmouseover="UpdateProps(0,8)" >
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>

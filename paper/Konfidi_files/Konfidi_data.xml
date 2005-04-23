@@ -1,0 +1,1262 @@
+<VisioDocument xmlns="urn:schemas-microsoft-com:office:visio">
+	<DocumentProperties>
+		<Title>konfidi</Title>
+		<HyperlinkBase href=""></HyperlinkBase>
+	</DocumentProperties>
+	<Pages>
+		<Page ID="0" Name="Arch" NameU="Arch">
+			<Shapes>
+				<Shape ID="5" UniqueID="{BBC817E0-1EF1-46A2-B20D-D9B03C83522A}" Name="Rectangle.5" NameU="Rectangle.5" Master="5">
+					<XForm>
+						<PinX Unit="IN_F">3.243602362204724</PinX>
+						<PinY Unit="IN_F">9.503198818897637</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="6" UniqueID="{ADBE3FB2-B97C-4D31-9A22-4F3B3970894F}" Name="Rectangle.6" NameU="Rectangle.6" Master="5">
+					<XForm>
+						<PinX Unit="IN_F">3.238394028871390</PinX>
+						<PinY Unit="IN_F">8.417671423884514</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{A2D2EB10-C079-4B5C-9AA2-DA8D52890E4E}" Name="Rectangle.4" NameU="Rectangle.4" Master="5">
+					<XForm>
+						<PinX Unit="IN_F">3.197670603674540</PinX>
+						<PinY Unit="IN_F">7.875000000000001</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{03135FC1-0C0E-4BC9-A7C5-468C8FE68ACD}" Name="Rectangle.3" NameU="Rectangle.3" Master="5">
+					<XForm>
+						<PinX Unit="IN_F">3.274852362204724</PinX>
+						<PinY Unit="IN_F">9.031250000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{2A3F3BBB-850A-4376-81B8-512AC9D98ED9}" Name="Process.8" NameU="Process.8" Master="0">
+					<Text>PGP Pathfinder</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.329478346456693</PinX>
+						<PinY Unit="IN_F">9.031250000000000</PinY>
+					</XForm>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>Cost</Label>
+					</Prop>
+					<Prop ID="2" Name="Duration" NameU="Duration">
+						<Value></Value>
+						<Label>Duration</Label>
+					</Prop>
+					<Prop ID="3" Name="Resources" NameU="Resources">
+						<Value></Value>
+						<Label>Resources</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="9" UniqueID="{B3A6CBF4-0B5B-4499-9A28-CAD20C469631}" Name="Process.9" NameU="Process.9" Master="0">
+					<Text>TrustServer</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.343749999999999</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>Cost</Label>
+					</Prop>
+					<Prop ID="2" Name="Duration" NameU="Duration">
+						<Value></Value>
+						<Label>Duration</Label>
+					</Prop>
+					<Prop ID="3" Name="Resources" NameU="Resources">
+						<Value></Value>
+						<Label>Resources</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="10" UniqueID="{7CC7BBA3-EAB1-4134-8D0C-10041ED8048A}" Name="Sheet.10" NameU="Sheet.10" Master="2">
+					<Text>2. PGP Search</Text>
+					<XForm>
+						<PinX Unit="MM">4.364665354330708</PinX>
+						<PinY Unit="MM">9.414862204724409</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="12" UniqueID="{C9318A16-ABD5-47C4-BFF6-28546F7F35FA}" Name="Dynamic connector.12" NameU="Dynamic connector.12" Master="2">
+					<Text>4. Trust Search</Text>
+					<XForm>
+						<PinX Unit="MM">4.366592847769027</PinX>
+						<PinY Unit="MM">8.293973507217848</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{0D987FB3-C93B-4B70-A1DB-1C45A47C5FA9}" Name="Dynamic connector.13" NameU="Dynamic connector.13" Master="2">
+					<Text>5. Trust Result</Text>
+					<XForm>
+						<PinX Unit="IN_F">4.126681430446193</PinX>
+						<PinY Unit="MM">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{35D31AED-FC32-4DCE-AE56-1F20ACA24592}" Name="Dynamic connector.14" NameU="Dynamic connector.14" Master="2">
+					<Text>3. PGP Result</Text>
+					<XForm>
+						<PinX Unit="IN_F">4.118602362204724</PinX>
+						<PinY Unit="MM">9.031250000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{CDE89938-B6F8-48E5-AF70-85CAEC602DE9}" Name="Process.15" NameU="Process.15" Master="0">
+					<Text>FOAFServer</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.968750000000001</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>Cost</Label>
+					</Prop>
+					<Prop ID="2" Name="Duration" NameU="Duration">
+						<Value></Value>
+						<Label>Duration</Label>
+					</Prop>
+					<Prop ID="3" Name="Resources" NameU="Resources">
+						<Value></Value>
+						<Label>Resources</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="17" UniqueID="{A4F6E1ED-9301-4CFF-908B-3BF5001EDB80}" Name="Dynamic connector.17" NameU="Dynamic connector.17" Master="2">
+					<Text>Sync</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.156250000000000</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="18" UniqueID="{7EC1994B-4BBF-4E55-8B23-6AF735A0D34F}" Name="Rectangle" NameU="Rectangle" Master="5">
+					<Text>Frontend</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.625215518813390</PinX>
+						<PinY Unit="IN_F">8.673474409448819</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="19" UniqueID="{D22A9E86-4956-48BC-887F-7C2B934D3FE5}" Name="Process.19" NameU="Process.19" Master="0">
+					<Text>Client</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.645915354330707</PinX>
+						<PinY Unit="IN_F">10.454724409448819</PinY>
+					</XForm>
+					<Prop ID="1" Name="Cost" NameU="Cost">
+						<Value></Value>
+						<Label>Cost</Label>
+					</Prop>
+					<Prop ID="2" Name="Duration" NameU="Duration">
+						<Value></Value>
+						<Label>Duration</Label>
+					</Prop>
+					<Prop ID="3" Name="Resources" NameU="Resources">
+						<Value></Value>
+						<Label>Resources</Label>
+					</Prop>
+				</Shape>
+				<Shape ID="1" UniqueID="{8D11B799-A233-4DD5-966D-2CE1B5236B53}" Name="Dynamic connector.6" NameU="Dynamic connector.6" Master="2">
+					<Text>1. Client Request</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.635565436572048</PinX>
+						<PinY Unit="IN_F">9.909448818897637</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{8EAD7049-8168-48B1-A9F2-EB67C44F55E6}" Name="Dynamic connector.10" NameU="Dynamic connector.10" Master="10">
+					<Text>6. Response</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.389502444446064</PinX>
+						<PinY Unit="IN_F">9.071112204724409</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="4" Name="Trust Network" NameU="Trust Network">
+			<Shapes>
+				<Shape ID="46" UniqueID="{86A41456-78F2-405F-A370-8539F03F1B04}" Name="Sheet.46" NameU="Sheet.46">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="1" UniqueID="{B8958040-9E7A-456B-9248-A7B9A33B41B4}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{08054D48-B7B4-4EE7-AC5C-13FCA8B6EC8F}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{1A4C12B6-2B61-4E83-9C1D-8DBEE5960D0A}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{8B70045B-BC14-4828-B957-BDD01FFE361D}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="6" UniqueID="{5B32E1D3-4236-49F3-AE55-C7DFB2F81C0F}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{5D14C6B5-AC20-4562-B69B-1A29C1E6DDA3}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000000</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="9" UniqueID="{F27EC36E-0338-4E7E-A76A-4AE6AEAE9804}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{3E36175F-1C7F-4E6E-BC40-CFA6990B6DDD}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="12" UniqueID="{499802CB-CEF5-43BD-8315-49DDFDE61F0F}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{5458F0A0-8F90-46B0-B6BE-E097E05BA0F0}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.750000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{7B3B220D-E4A0-437B-AD3D-A78D261E0F4C}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.875000000000000</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{F515BC3D-6B92-4F77-8ADC-14CD20D050FB}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="16" UniqueID="{E9201F0A-7DC4-408B-8E01-949F196ED0CF}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="20" UniqueID="{A3494569-BEA7-4BFD-B03A-DFE96DB47600}" Name="Line-curve connector.20" NameU="Line-curve connector.20" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.812500000000000</PinX>
+						<PinY Unit="IN_F">9.562500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="21" UniqueID="{27CF0F11-32FF-4885-A88C-4C45C451A289}" Name="Line-curve connector.21" NameU="Line-curve connector.21" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="22" UniqueID="{BFC58570-63AC-4294-B521-F6846AE263E1}" Name="Line-curve connector.22" NameU="Line-curve connector.22" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="23" UniqueID="{2F42385F-1FC6-450B-A4A3-756A64C26549}" Name="Line-curve connector.23" NameU="Line-curve connector.23" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.937500000000000</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="24" UniqueID="{192C94DC-BADC-4556-9C69-AB2E0EBE3245}" Name="Line-curve connector.24" NameU="Line-curve connector.24" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">7.812500000000000</PinX>
+						<PinY Unit="IN_F">7.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="26" UniqueID="{0FD2A86C-532D-4007-8C27-F0F5D7FAE4B5}" Name="Line-curve connector.26" NameU="Line-curve connector.26" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="27" UniqueID="{83AFB3A6-A285-4224-B9C7-EC8C5EFA076C}" Name="Line-curve connector.27" NameU="Line-curve connector.27" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.437500000000000</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="28" UniqueID="{23628D3C-569D-4A4F-90AD-F3C65768634D}" Name="Line-curve connector.28" NameU="Line-curve connector.28" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">3.812500000000000</PinX>
+						<PinY Unit="IN_F">8.312500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="29" UniqueID="{9BFE2BE4-6075-45E1-9AA9-83A41F4B532C}" Name="Line-curve connector.29" NameU="Line-curve connector.29" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="30" UniqueID="{C4EB4700-959F-4461-925B-DB03BFA61E14}" Name="Line-curve connector.30" NameU="Line-curve connector.30" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="31" UniqueID="{6BE0E65A-DE8E-43DD-983B-86F52FDC8687}" Name="Line-curve connector.31" NameU="Line-curve connector.31" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="32" UniqueID="{A7EDA4B5-BCD5-4CFA-818E-F2766C48E128}" Name="Line-curve connector.32" NameU="Line-curve connector.32" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="33" UniqueID="{3518EED5-7C15-45F4-90BA-4D8E0D598C31}" Name="Line-curve connector.33" NameU="Line-curve connector.33" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="34" UniqueID="{BCF3FF36-D2B0-45DB-927F-02F548340F8B}" Name="Line-curve connector.34" NameU="Line-curve connector.34" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="35" UniqueID="{DABA4D17-E8AC-40A3-AD2E-5E43865187E7}" Name="Line-curve connector.35" NameU="Line-curve connector.35" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="38" UniqueID="{CF54EAAD-F2A7-415B-9713-57A1504234BE}" Name="Line-curve connector.38" NameU="Line-curve connector.38" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="39" UniqueID="{8B0335FF-8140-4BD4-894C-64F7F79CC2F9}" Name="Line-curve connector.39" NameU="Line-curve connector.39" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="40" UniqueID="{02C6D61A-DA96-4528-9989-15ED4C4232CB}" Name="Line-curve connector.40" NameU="Line-curve connector.40" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000000</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="41" UniqueID="{21FDFB8B-6097-4D92-A4E8-4E4CD98F4257}" Name="Line-curve connector.41" NameU="Line-curve connector.41" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000000</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="42" UniqueID="{A228C0B2-BC9E-4428-8D28-406E24EDC251}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="43" UniqueID="{C766F2DE-1DDD-4A5A-868E-265EAD407A43}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="44" UniqueID="{C35D0C1E-C0E6-4281-86E3-1F55EF18E340}" Name="Sheet.44" NameU="Sheet.44">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="45" UniqueID="{596603D0-468F-400D-9C04-481C2DB10377}" Name="Sheet.45" NameU="Sheet.45">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="49" UniqueID="{2AE0C297-6C1B-4ECE-BD8D-683EEEEE332D}" Name="Line-curve connector.49" NameU="Line-curve connector.49" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="50" UniqueID="{FE17F2E8-40A1-434F-BECD-976C4809F878}" Name="Line-curve connector.50" NameU="Line-curve connector.50" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="5" Name="PGP-Only" NameU="PGP-Only">
+			<Shapes>
+				<Shape ID="1" UniqueID="{4156B999-0F47-44A1-9DF9-0F73C5FB044B}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{0B93EC6E-A553-46F9-AAB2-10EDB4B673AD}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{D81845B2-8641-4656-8BAD-FF64B60D42C4}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{C773697A-82F6-429A-BBBE-70D6365E0343}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000001</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="5" UniqueID="{A3CB6152-BBD3-434B-B2B6-E639D57EBB07}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{D24099A1-811D-4E7A-A21C-88B83FEC0654}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{9658EEFD-7B5C-4149-B0C5-D023958A9A9E}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000001</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{49967706-780A-497A-82B7-B694E39DE1BA}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000001</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="11" UniqueID="{5EF7FCCB-2606-424B-9420-0D8F42E220DC}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000001</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="23" UniqueID="{0AFEC096-F1BF-4E1A-91EF-2E4B949B83AD}" Name="Line-curve connector.22" NameU="Line-curve connector.22" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="30" UniqueID="{26EE5A0A-7173-49CB-B213-B41920B3F358}" Name="Line-curve connector.29" NameU="Line-curve connector.29" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="31" UniqueID="{74D232C2-9B6D-4967-9B9B-B6135045F669}" Name="Line-curve connector.30" NameU="Line-curve connector.30" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="32" UniqueID="{F6C299BB-D800-4BED-92FC-D9EF7E72CFB7}" Name="Line-curve connector.31" NameU="Line-curve connector.31" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="33" UniqueID="{26C8AC1C-F807-4272-8E14-08E57FB754E1}" Name="Line-curve connector.32" NameU="Line-curve connector.32" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="34" UniqueID="{A548A7EC-3CDF-47DE-A602-70522E3642E0}" Name="Line-curve connector.33" NameU="Line-curve connector.33" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="35" UniqueID="{6FF1E632-8843-4143-91B6-0E9DC76FE08D}" Name="Line-curve connector.34" NameU="Line-curve connector.34" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="36" UniqueID="{069619AD-5391-4346-B1BD-E10CEEC5F1BE}" Name="Line-curve connector.35" NameU="Line-curve connector.35" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="39" UniqueID="{424CB556-3FE0-4C51-95CD-2F27EFB588C0}" Name="Line-curve connector.38" NameU="Line-curve connector.38" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="40" UniqueID="{8D28466E-2607-4ED2-92C2-031CA821CC95}" Name="Line-curve connector.39" NameU="Line-curve connector.39" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="41" UniqueID="{4CF2A1F1-010E-4135-A32F-ABC8F7D06CAD}" Name="Line-curve connector.40" NameU="Line-curve connector.40" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000001</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="42" UniqueID="{64E865E4-4CD7-40BD-A2FE-B1F16D9BFEF4}" Name="Line-curve connector.41" NameU="Line-curve connector.41" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000001</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="43" UniqueID="{4BA8E86E-3B15-4076-B147-0CF04356865C}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="44" UniqueID="{BC1611CC-EE09-400E-98CF-CAB3F0CAD6B8}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="45" UniqueID="{DD392D76-65CB-4572-AA03-DDEEC31C3C2D}" Name="Sheet.45" NameU="Sheet.45">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="46" UniqueID="{8E1BF07F-A65B-4FD3-8559-404CC8C3BDB0}" Name="Sheet.46" NameU="Sheet.46">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{1F72F819-1EAE-4FAB-8348-C61C7F5F3237}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{BDEBF9E5-91C6-4FFD-951B-E29985954433}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="6" Name="PGP-Path" NameU="PGP-Path">
+			<Shapes>
+				<Shape ID="1" UniqueID="{8E5DDFD6-6248-4569-80F5-0869F930B978}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{F0A12F3A-C880-48F3-A3FF-EDD15AFFACB5}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{982A5AD0-D51F-4419-B3D1-68689AD84409}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{6BC2710E-3A6A-4638-9888-C9FE1C505536}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="5" UniqueID="{0B3EEAA1-D78F-4047-AB0E-E77A68C8C487}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{EBD22312-3533-4DC6-9E46-515478A4EC42}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{EFEEB12D-4855-4EA0-AC2E-707B741A5B2E}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000000</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{81F7A719-B856-4918-A6D2-2BE2D4C5FA61}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="11" UniqueID="{B63B5A08-6BED-4CF1-823E-4D4BAC99D844}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="12" UniqueID="{01335E0F-43AC-4DDD-9016-FCE695D208A9}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{1D3A09A3-AA82-485B-A74A-ACDBFA2D2FB3}" Name="Line-curve connector.29" NameU="Line-curve connector.29" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{F10AAF4C-1412-4563-944F-DDDDF9B28816}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{75441BD9-E557-4C73-9E44-994BAC51083F}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="16" UniqueID="{2E59CADF-9259-469E-AB68-12A148CDA039}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="17" UniqueID="{7FFCB796-69C5-4D98-91D3-E8D8594D6112}" Name="Line-curve connector.17" NameU="Line-curve connector.17" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.625000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="18" UniqueID="{E078940B-B321-4E9A-BC1C-C73D2EF8616D}" Name="Line-curve connector.34" NameU="Line-curve connector.34" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="19" UniqueID="{1020362D-A6C6-4371-A538-879C0B7C7EAA}" Name="Line-curve connector.35" NameU="Line-curve connector.35" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">5.625000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="22" UniqueID="{AAE57BA0-0117-43B2-A361-19AFC0F60D31}" Name="Line-curve connector.38" NameU="Line-curve connector.38" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="23" UniqueID="{90608E59-5192-4EA8-9FEE-AA66E8FF2BED}" Name="Line-curve connector.39" NameU="Line-curve connector.39" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.375000000000000</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="24" UniqueID="{56110F00-A952-4638-9CA0-FD2166FF2AB9}" Name="Line-curve connector.40" NameU="Line-curve connector.40" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000000</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="25" UniqueID="{7FA9A362-99BD-4A01-BBBF-69708CE78786}" Name="Line-curve connector.41" NameU="Line-curve connector.41" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000000</PinX>
+						<PinY Unit="IN_F">9.625000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="26" UniqueID="{58D309A2-41EA-4724-AA0D-03F9A89E001D}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="27" UniqueID="{1F776803-EF36-4DA4-B9D8-0408D9CD4175}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="28" UniqueID="{858564C9-BF83-4690-B668-DAB43E667723}" Name="Sheet.28" NameU="Sheet.28">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="29" UniqueID="{0D2F3765-F2CD-4238-AC09-4D527C40B4F9}" Name="Sheet.29" NameU="Sheet.29">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="32" UniqueID="{B3670A32-F225-4722-811F-D4768872E423}" Name="Line-curve connector.32" NameU="Line-curve connector.32" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="33" UniqueID="{9C4A2446-CF4B-4144-AF2D-F20F5C363F07}" Name="Line-curve connector.33" NameU="Line-curve connector.33" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000000</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="7" Name="Trust-Only" NameU="Trust-Only">
+			<Shapes>
+				<Shape ID="1" UniqueID="{9383780B-A868-40E7-BA0D-2D6A5A0340F4}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{080579B3-E7DF-41E0-A0C5-DEB995F5BDB4}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{3DDC46F3-4CFC-4A5D-8644-926AF7BE4F6F}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{0E227971-07A8-42D2-8511-91662BAA449B}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000001</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="5" UniqueID="{54C5270E-4742-428B-8C25-6BB8D5148373}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{06BDDAEF-9E0C-4791-89E3-6706CC9058CB}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{59180658-B8E0-4105-8E0F-2F57EC109EA4}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000001</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{34FCADC9-80B4-4EDB-9DD6-327C4D30F0A3}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000001</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="11" UniqueID="{D2062B33-D338-4F2E-AF4C-9B6DCFD17A35}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000001</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{51F7CC54-EF44-483B-A5AE-820ED4784959}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{AB5BCDB9-E71E-48AD-8FA2-D39FF3ECC749}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.750000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{CDCCB23F-F8E2-4434-9C23-682BF91334E5}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.875000000000000</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="16" UniqueID="{3EE8E371-4414-4E16-A61C-14FBB4911FDF}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="17" UniqueID="{6D13912B-84BC-4C59-A531-6BC73427DE0C}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<Text>0.0
+Email</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000001</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="21" UniqueID="{49A3FBCE-555A-403E-AF9D-3C3744EF1EF2}" Name="Line-curve connector.20" NameU="Line-curve connector.20" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.812500000000000</PinX>
+						<PinY Unit="IN_F">9.562500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="22" UniqueID="{E44ACDBA-8C48-40B9-8212-754FBCD6D4FC}" Name="Line-curve connector.21" NameU="Line-curve connector.21" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="24" UniqueID="{76B5EDEC-93DB-44BD-B5A4-42592272C74F}" Name="Line-curve connector.23" NameU="Line-curve connector.23" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.937500000000001</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="25" UniqueID="{3D8894B7-EC71-4CF9-A8C6-7AD9ADBE4EDA}" Name="Line-curve connector.24" NameU="Line-curve connector.24" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">7.812500000000001</PinX>
+						<PinY Unit="IN_F">7.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="27" UniqueID="{16BF5F4C-E38F-4C68-961A-78530D627B0C}" Name="Line-curve connector.26" NameU="Line-curve connector.26" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="28" UniqueID="{2A77BC90-513C-489B-AB72-5C9D276E5EC6}" Name="Line-curve connector.27" NameU="Line-curve connector.27" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.437500000000000</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="29" UniqueID="{4DB64BAA-0E0B-4D43-BAE8-2542CE17FA25}" Name="Line-curve connector.28" NameU="Line-curve connector.28" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">3.812500000000000</PinX>
+						<PinY Unit="IN_F">8.312500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="43" UniqueID="{58C7B5AA-3597-4899-AAF7-D49C08AD7AB1}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="44" UniqueID="{D2706C2E-537A-4BF6-B104-BB37E1AB5EB5}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="45" UniqueID="{1C6265A7-217A-4AB6-B218-21AAD83D1911}" Name="Sheet.45" NameU="Sheet.45">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="46" UniqueID="{D52BFF74-BC17-4A51-8E78-00ED41D204CA}" Name="Sheet.46" NameU="Sheet.46">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="8" Name="Trust-Path-Joe" NameU="Trust-Path">
+			<Shapes>
+				<Shape ID="1" UniqueID="{EEAFE33E-B25D-43AD-8BE4-F81C131FD990}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{C18B7A60-F3E8-490E-BBF5-656409268969}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{8FC30C1C-CCAD-4899-97FF-2792B3DDE975}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{50B0FE3F-3F13-4695-A0F4-F24EF09D18CA}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000001</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="5" UniqueID="{476BA3AC-A8A7-4B6F-9B6A-2E907F3438A8}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{142828C0-74BB-4BB6-A494-BA15F863C09E}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{419357D3-9688-43A8-8FEC-EF9E53F44E90}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000001</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{565B359D-294F-44D1-89E7-7360D889B951}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000001</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="11" UniqueID="{E4892BD6-86C6-4D62-B89A-6FCC72C2443F}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000001</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{7F1C0452-C182-47D0-A633-44AB50F26D24}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{9C08E4FF-FA47-4E92-A1C4-CFED029DC0E2}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.750000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{E65B2C97-B3AE-4654-ACDA-208F1CD0E13F}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.875000000000000</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="16" UniqueID="{6A9B4FF0-659F-4009-8B4C-4A7C682A3AFA}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="17" UniqueID="{1EFFB3FE-83FC-4AA4-BB46-C12EBF489F20}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000001</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="21" UniqueID="{1D5F3DD0-F738-4A62-A9EA-309981ADC853}" Name="Line-curve connector.20" NameU="Line-curve connector.20" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.812500000000000</PinX>
+						<PinY Unit="IN_F">9.562500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="22" UniqueID="{41B732F6-D60B-4DD2-8CCC-4EB44ED9D133}" Name="Line-curve connector.21" NameU="Line-curve connector.21" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="23" UniqueID="{51D81B90-91D5-41D4-84F2-B3E1C0C3BED5}" Name="Line-curve connector.23" NameU="Line-curve connector.23" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.937500000000001</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="24" UniqueID="{FCD9CAB6-624C-415D-9D72-089DF94FDE68}" Name="Line-curve connector.24" NameU="Line-curve connector.24" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">7.812500000000001</PinX>
+						<PinY Unit="IN_F">7.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="26" UniqueID="{5BFC3A97-1250-4D67-9B8A-CD240B7CF8CB}" Name="Line-curve connector.26" NameU="Line-curve connector.26" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="27" UniqueID="{8E28674C-773E-4C23-8EEB-C9FB45001155}" Name="Line-curve connector.27" NameU="Line-curve connector.27" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.437500000000000</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="28" UniqueID="{13F29E5B-923F-4805-96AD-B29CDCAC3374}" Name="Line-curve connector.28" NameU="Line-curve connector.28" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">3.812500000000000</PinX>
+						<PinY Unit="IN_F">8.312500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="29" UniqueID="{7C42768F-A16B-42A4-8A20-A38CFACE119A}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="30" UniqueID="{EA83BF8F-DF07-431E-A278-3515685BA8CE}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="31" UniqueID="{028BF12F-57EF-4724-9EBC-0BBC91ABEB65}" Name="Sheet.31" NameU="Sheet.31">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="32" UniqueID="{2740B4CD-0D70-487B-A58B-7CB53DF45872}" Name="Sheet.32" NameU="Sheet.32">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+		<Page ID="9" Name="Trust-Path-Spammer" NameU="Trust-Path-Spammer">
+			<Shapes>
+				<Shape ID="1" UniqueID="{55C82679-AF23-4632-88F5-3C80171D51FE}" Name="Sheet.1" NameU="Sheet.1">
+					<XForm>
+						<PinX Unit="IN_F">1.812500000000000</PinX>
+						<PinY Unit="IN_F">9.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="2" UniqueID="{04751F1F-8946-450E-ACEB-BFC33E9987B4}" Name="Circle" NameU="Circle" Master="8">
+					<Text>Dave</Text>
+					<XForm>
+						<PinX Unit="IN_F">0.750000000000000</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="3" UniqueID="{EC4337D2-0D47-4853-852B-B3C0BC654673}" Name="Circle.2" NameU="Circle.2" Master="8">
+					<Text>Elaine</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.875000000000000</PinX>
+						<PinY Unit="IN_F">9.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="4" UniqueID="{855FF2D3-323D-423E-9FBC-346AFC81030A}" Name="Circle.3" NameU="Circle.3" Master="8">
+					<Text>Clara</Text>
+					<XForm>
+						<PinX Unit="IN_F">6.000000000000001</PinX>
+						<PinY Unit="IN_F">8.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="5" UniqueID="{979C58F3-E751-49FC-B97E-C0BCE1BFE027}" Name="Circle.4" NameU="Circle.4" Master="8">
+					<Text>Bob</Text>
+					<XForm>
+						<PinX Unit="IN_F">3.750000000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="7" UniqueID="{3B7BC9C9-CA0F-4176-BE5F-54B8ADF5C48D}" Name="Circle.6" NameU="Circle.6" Master="8">
+					<Text>Alice</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.750000000000000</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="8" UniqueID="{17215E83-670A-4410-8B61-3CBD25AD6D6F}" Name="Circle.7" NameU="Circle.7" Master="8">
+					<Text>Frank</Text>
+					<XForm>
+						<PinX Unit="IN_F">5.375000000000001</PinX>
+						<PinY Unit="IN_F">10.250000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="10" UniqueID="{9D1E7B54-C75C-4324-8142-9D7430A0F46E}" Name="Circle.9" NameU="Circle.9" Master="8">
+					<Text>Joe</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.750000000000001</PinX>
+						<PinY Unit="IN_F">9.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="11" UniqueID="{4CE31212-8268-4CFC-A15E-A16ED3603DCE}" Name="Circle.10" NameU="Circle.10" Master="8">
+					<Text>Spammer</Text>
+					<XForm>
+						<PinX Unit="IN_F">7.500000000000001</PinX>
+						<PinY Unit="IN_F">6.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="13" UniqueID="{90DE7890-EB6B-445B-9897-15A9175DBE20}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.062500000000000</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="14" UniqueID="{C92776BB-9190-4EF3-98DB-FB4C6199E3E8}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.750000000000000</PinX>
+						<PinY Unit="IN_F">7.062500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="15" UniqueID="{DA52C58F-6E88-4958-B901-354C4198B514}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.875000000000000</PinX>
+						<PinY Unit="IN_F">7.875000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="16" UniqueID="{B3F87E7E-2A91-431D-8E1C-3F0A8FFE4B24}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="17" UniqueID="{6183FA18-41D3-4C09-AB9C-29C7F2952D6C}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.562500000000001</PinX>
+						<PinY Unit="IN_F">7.375000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="21" UniqueID="{0F148BBF-D240-4F1E-BF8E-FA3DC63477B3}" Name="Line-curve connector.20" NameU="Line-curve connector.20" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">4.812500000000000</PinX>
+						<PinY Unit="IN_F">9.562500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="22" UniqueID="{5F761D5E-965D-47B0-ABFB-7192780BDCD8}" Name="Line-curve connector.21" NameU="Line-curve connector.21" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.812500000000000</PinX>
+						<PinY Unit="IN_F">8.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="23" UniqueID="{90D5DD70-CCDC-4A23-A094-198CD7E34095}" Name="Line-curve connector.23" NameU="Line-curve connector.23" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.937500000000001</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="24" UniqueID="{456B9F53-0328-451F-A0C4-2DC7F7D08045}" Name="Line-curve connector.24" NameU="Line-curve connector.24" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">7.812500000000001</PinX>
+						<PinY Unit="IN_F">7.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="26" UniqueID="{FF6DA1BD-F060-4A46-801A-3EC8533F7502}" Name="Line-curve connector.26" NameU="Line-curve connector.26" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">6.875000000000001</PinX>
+						<PinY Unit="IN_F">8.687500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="27" UniqueID="{78B7E286-CC03-4F6C-8177-17F22E5F5BE2}" Name="Line-curve connector.27" NameU="Line-curve connector.27" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.437500000000000</PinX>
+						<PinY Unit="IN_F">7.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="28" UniqueID="{5091ED1D-7B50-4BBB-97A1-6CBCC8FF3C9A}" Name="Line-curve connector.28" NameU="Line-curve connector.28" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">3.812500000000000</PinX>
+						<PinY Unit="IN_F">8.312500000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="29" UniqueID="{71B4C6A2-D799-4BD6-BC63-A33A6DAE1886}" Name="Line-curve connector.42" NameU="Line-curve connector.42" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="30" UniqueID="{B9DF4B84-3D51-4C5A-A66B-FD71A544133E}" Name="Line-curve connector.43" NameU="Line-curve connector.43" Master="9">
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">9.750000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="31" UniqueID="{2F100A1C-1DF9-4176-8A66-96B153D3B3BD}" Name="Sheet.31" NameU="Sheet.31">
+					<Text>Trust Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">1.250000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+				<Shape ID="32" UniqueID="{C16D7F48-EF27-481B-8CC2-94AC09D2C438}" Name="Sheet.32" NameU="Sheet.32">
+					<Text>PGP Link</Text>
+					<XForm>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">10.000000000000000</PinY>
+					</XForm>
+				</Shape>
+			</Shapes>
+		</Page>
+	</Pages>
+</VisioDocument>
