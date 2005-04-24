@@ -30,7 +30,7 @@
 \def\fileversion{V2.7SP}          % for ACM's tracking purposes
 \def\filedate{October 15, 2004}    % Gerry Murray's tracking data
 \def\docdate {Friday 15th. October 2004} % Gerry Murray (with deltas to doc}
-\usepackage{epsfig}
+%\usepackage{epsfig}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsfonts}
