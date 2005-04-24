@@ -41,7 +41,7 @@ We ought to write this last.
 \section{Introduction}
 As more and more information becomes available on the internet, there is a growing problem determining which information is reliable and accurate.  A person may, over time, develop a reputation in a certain community as a reliable source of information for a certain topic, however, someone outside that community will likely be unfamiliar with that reputation, and so may not know how much trust she should have in that person.  
 
-Ratings system for reputation within certain domains (eBay auctions, for example), may be of some limited use.  However, unless some system of rater verification is in place, they may be susceptible to manipulative ratings.  Even if such systems can be guarded against such attacks, why should someone base whether they trust another person on opinions given by others that they neither know nor trust?
+Ratings system for reputation within certain domains (eBay auctions, for example), may be of some limited use.  However, unless some there is a system to verify the raters, they may be susceptible to manipulative ratings.  Even if such systems can be guarded against such attacks, why should someone base whether they trust another person on opinions given by others that they neither know nor trust?
 
 One solution growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems too can subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity; however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.
 
@@ -52,24 +52,25 @@ In this paper, we will describe some difficulties in integrating reputation-base
 % I think, by specifying them here, we can help keep those sections to a reasonable size
 
 \subsection{Representing Trust Relationships}
-There seems to be a general lack of psychological research on ways of representing trust relationships and procedures for making inferences for unspecified relationships. In fact, most work in the fields of mathematics and computer science seems to adopt some arbitrary model or other appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
+There seems to be a general lack of psychological research on ways of representing trust relationships and procedures for making inferences for unspecified relationships. In fact, most work in the fields of mathematics and computer science seems to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
 
 % we should talk about this later, if at all
 %For Konfidi, we have likewise has chosen an arbitrary model, but in designing the system we have made every effort to allow for adaptation to different models as research in this area develops. 
 
 \subsection{Trust Networks and Inferences}
-There are a number of papers about different propagation strategies for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and do not have much in the way of practical application.  While they are of interest and relevance, they concern only the subsystem and do not inform the design of a larger infrastructure.
+There are a number of papers about different propagation strategies for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and do not have much in the way of practical application.  While they are of interest and relevance, they concern only the subsystem and do not discuss the design of a larger infrastructure.
 
 Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\cite{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers and created TrustMail\cite{trustMail}, a modified email client that uses the trust network that she is building.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help research other applications and implications of semantic social networks.
 
 Golbeck suggested an important distinction between belief in statements and trust in people\cite{golbeck:accuracy}.  While networks of both kinds can be created, the latter are usually smaller and more connected.  Golbeck argues that using a network of trust in people is equivalent to one of belief in statements and allows for simpler traversal.
+% What about the issue of statements about yahoo.com.  How could a person-only network be equivalent?)
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
 \subsubsection{Friend of a Friend (FOAF)}
 \label{foaf}
-The FOAF project\cite{foafProject} is a Resource Description Framework (RDF) vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF uniform resource indicators (URIs) describe an individual object.
+The FOAF project\cite{foafProject} is a Resource Description Framework (RDF) vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing Person objects which can specify name, email address, and so on, but more importantly, they can express relationships between Person objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF often uses uniform resource indicators (URIs) to describe an individual object.
 
 \subsubsection{FOAF Whitelisting}
 Dan Brickley has made a practical attempt to investigate the use of FOAF, particularly the mbox\_sha1 property, to automatically generate email whitelists. By hashing the sender's address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of non-spam emailers. Then for all incoming mail, the sender's address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is decentralized, it is difficult for updates to propagate\cite{foafWhitelisting}. No effort was taken in this project to verify the sender's identity.
@@ -136,6 +137,7 @@ Suppose also that, given only the above trust ratings, the system tried to make 
 \label{rating}
 % "Rating System" seems inappropriate.  How about "Data structure" or something?
 % how about "rating values?"
+% the first half of this paragraph is about the relationship-based model, the second half is about the ratings, and the 2nd paragraph is about attributes.  We need a more general title if we're going to have all these concepts in one section
 With these considerations in mind, we found that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each item is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
@@ -222,10 +224,11 @@ function findRating(source, sink):
   until the sink is found
     find the path with the highest rating
     find the link not already seen
-      concatenate path's and the link's rating
+      concatenate ratings from path and link
       add the path with its rating to the queue
   return the rating of the path to the sink
 \end{verbatim}
+% sentence may be interpreted as "return (the rating of the path) to the sink"
 
 One such concatenation algorithm is a simple strategy like the following, which simply multiplies trust ratings along each step in the path:
 
@@ -251,7 +254,7 @@ Multiple FOAF Servers will be available for public use and will synchronize thei
 
 Since the primary function of the FOAF Server is data storage, it may hold FOAF files that are not related to trust.  A FOAF server may be configurable to act as one that is used for trust relationships, pet information, or résumés.  Moreover, RDF features a \texttt{seeAlso} tag so a single FOAF file hosted on a FOAF server may refer to more FOAF data hosted elsewhere.  This gives the owner flexibility, including encrypting or limiting access to the FOAF file.
 
-Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \texttt{http://domain.org\-/foaf\-server\-/EAB0FABE\-DEA81AD4\-086902FE\-56F0526F\-9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
+Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \texttt{http://\linebreak[0]domain\linebreak[0].org\linebreak[0]/foaf\linebreak[0]server\linebreak[0]/EAB0FABE\linebreak[0]DEA81AD4\linebreak[0]086902FE\linebreak[0]56F0526F\linebreak[0]9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: \linebreak[0]multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
 
 Synchronization has not been implemented yet.
 
