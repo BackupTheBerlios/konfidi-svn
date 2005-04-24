@@ -1,9 +1,6 @@
 \documentclass{acm_proc_article-sp}
 
 \begin{document}
-%
-% --- Author Metadata here ---
-%\conferenceinfo{WOODSTOCK}{'97 El Paso, Texas USA}
 
 \setpagenumber{50}
 
@@ -12,8 +9,7 @@
 % --- End of Author Metadata ---
 
 \title{Konfidi\titlenote{\textit{Konfidi} is the Esperanto term for trust.  
-A universal concept in a universal language seemed appropriate for what we hope will become a universal system.}\titlenote{The name Konfidi applies to our system as a whole.  The various components, FOAFServer, TrustServer, and Clients, will be called by their individual names.}: Trust Networks Using PGP and RDF}
-% the first note is cheesy, I admit.  can you think of a better way to say it?
+A universal concept in a universal language seemed appropriate for what we hope will become a universal system.}: Trust Networks Using PGP and RDF}
 % There's probably a better way to say this stuff (second stuff).  do you get the idea?
 % why don't we just say the 2nd stuff at the beginning of the Konfidi section?  or not at all.  do you suspect confusion?
 
@@ -53,6 +49,7 @@ A solution growing in popularity is that of creating a network of trust between 
 In this paper, we will describe some difficulties in integrating these two kinds of trust networks, and how we designed a system to overcome them.  We will then describe our structure for representing trust data, and our methods for making trust inferences on this data.  Finally, we will discuss the software we have begun to develop so that this trust network can be put to use.
 
 \section{Related Work}
+% do we really need to cover OWL, FOAF, The Semantic Web, wotsap, here?  They are more like building blocks that we can talk about in the relavant subsections of Konfidi
 
 \subsection{Representing Trust Relationships}
 There seems to be a general lack of psychological research on representing trust relationships and making inferences for unspecified relationships. In fact, most work in the fields of mathematics and computer science seem to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out\cite{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
@@ -64,7 +61,7 @@ There are a number of papers about different propagation strategies for weighted
 
 Belief in statements vs. trust in people.
 
-Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\cite{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\cite{trustMail}, a modified email client that uses the trust network that she is building.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help determine a good system of standards in the area.
+Jennifer Golbeck, at the University of Maryland, is doing graduate research on trust and reputation systems\cite{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has written a number of papers\footnote{list of Golbeck papers here}, and created TrustMail\cite{trustMail}, a modified email client that uses the trust network that she is building.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help research other applications and implications of semantic social networks.
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
@@ -97,21 +94,19 @@ Talk about wotsap a bit.
 So, for our idea to be viable, it must first deal with these two issues, namely, representing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
 
 \section{Konfidi}
+
+Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.
+
 \begin{figure*}
 \centering
 \epsfig{file=arch.eps}
 \caption{The Konfidi Architecture}
 \end{figure*}
 
-\begin{figure*}
-\centering
-\psfig{file=arch.ps}
-\caption{The Konfidi Architecture}
-\end{figure*}
-
 \subsection{Trust Ontology}
 % representation is seperate from algorithm result, right?  Need to fix this paragraph if so
 % what do you mean?  I suppose the algorithm can perform whatever operation on the values it wants, but I think the point is that the domain and range of the network is the same:  an inferred trust rating should look no different from an explicit one.  maybe this is unclear...
+% Right.  Then with discrete values for levels of trust, the output should be one of those discrete levels, not a binary yes/no.  The binary yes/no is a client threshold decision that would be done for both continuous and discrete outputs.
 In the current research on trust inference networks, there seem to be two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  Further, the inferred trust values returned by searches would be similar to the explicit trust values users provided when specifying trust relationships.  This makes it easier to evaluate such results on a scale that has some familiarity.
 
 \subsubsection{Distrust}
@@ -139,7 +134,7 @@ Suppose also that, given only the above trust ratings, the system tried to make 
 \subsubsection{Rating System}
 \label{rating}
 % "Rating System" seems inappropriate.  How about "Data structure" or something?
-With these considerations in mind, we found that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each items is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
+With these considerations in mind, we found that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such\footnote{Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.}.  Trust relationships also have trust items specified.  Each item is composed of a topic and a numerical rating.  Each rating is on a scale from 0 to 1 inclusive, with 0 representing complete distrust, 1 representing complete trust, and 0.5 representing neutral.
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
 
@@ -150,10 +145,11 @@ As the FOAF project grows in popularity, an infrastructure is growing to support
 Konfidi uses the Web Ontology Language (OWL)\cite{owl} to define the RDF elements that make up the Konfidi trust ontology.  OWL builds on the existing RDF specification by providing a vocabulary to describe properties and classes, and their relations.  The Konfidi trust ontology provides two objects and five properties, which, in conjunction with the existing FOAF and WOT vocabularies, are sufficient to describe the trust relationships that Konfidi requires.
 
 % how should we describe the ontology?  how about this for now?
+% seems fine to me except what about trusting something other than a person?  Doesn't the schema allow that now, although the software doesn't?
 
 The primary element is \texttt{Relationship}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.}, which represents a relationship of trust that holds between two people.  There are two properties required for every \texttt{Relationship}, \texttt{truster} and \texttt{trusted}, which indicate the two parties to the relationship.  Both \texttt{truster} and \texttt{trusted} have \texttt{foaf:Person} objects as their targets\footnote{These \texttt{Person} objects should also contain at least one \texttt{wot:fingerprint} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Person} describes.  This property is required for verification; if no \texttt{fingerprint} is available, then Konfidi cannot use the relationship.}, which may be defined in the same file, inline, or in external documents indicated by their resource URIs\footnote{Because it does not matter where the \texttt{foaf:Person} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to prevent spoofing, any file containing one or more \texttt{Relationship} objects must have a valid signature from a public key \texttt{fingerprint} corresponding to each \texttt{Person} listed as a \texttt{truster} in that file.  As described in \ref{foafserver}, flexibility in data location can have a number of advantages. }.  
 
-In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Relationship} to a trust \texttt{Item}\footnote{A \texttt{Relationship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it, etc. may be recorded without having an effect on the requirements of Konfidi.}.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale specified in Section~\ref{rating} of the trust assigned to the relationship on that topic.  
+In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Relationship} to a trust \texttt{Item}\footnote{A \texttt{Relationship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it, etc. may be recorded without having an effect on the requirements of Konfidi.}.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
 
 A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  For example, remember the example given above, in which Alice trusts Bob highly about cooking, and distrusts him somewhat about the weather.  This might be represented in our ontology as something like the following\footnote{That is, supposing that the objects \texttt{alice123}, \texttt{bob1812}, \texttt{cooking}, and \texttt{weather} are all defined elsewhere in the same file.}.  For a more in-depth example, see Appendix~\ref{trustExample}.:
 
@@ -178,27 +174,11 @@ A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  
 
 See Appendix~\ref{schemaCode} for the full OWL source code.
 
-\subsection{FOAFServer}
-\label{foafserver}
-% in the "owl schema" section, I say that this section talks about the advantages of having distributed FOAF and RDF records, so be sure to cover that here as part of hte motivation of the Foafserver.  you remember what I mean, right?
-
-% explain that this is not part of Konfidi proper, but a requisite system like PGP keyservers are
-
-As Konfidi developed, it seemed that two important but separate components were needed to fulfill the two major needs of our project.  First, we needed a way to store data specifying trust relationships.  Second, we needed a way to represent the network specified in the data, and traverse it to calculate trust values.
-
-One need was for a system to store trust network data, verify signatures on that data, and allow for updates of existing files and their signatures.
-
-If Konfidi were to be useful as a system of trust management, then the operations it performs and the results it returns must be trusted by the users.  Thus, to prevent malicious users from submitting faulty or incorrect trust data for others, Konfidi will require every file submitted to be digitally signed by the key of the user who is indicated as the trusting party.  Konfidi will then verify the signature before accepting the data as legitimate and passing it along to the trust management system.
-
-URI based lookup
-
-communications with trust server and the requirements for a completely trusted system (e.g., signed communication at every step, or something)
-
 \subsection{TrustServer}
 This part of the design is the core element of Konfidi.  Storing and managing the data would not be of much use in this context unless we did something with it.  So, the TrustServer would handle requests for trust ratings, verify that a PGP connection exists, and traverse the internal representation to find a path.  Since these three tasks are so distinct, all of Konfidi is divided into three parts, a frontend which listens for requests and dispatches them, and two backend components, one to search the PGP web-of-trust and another to query against Konfidi's own trust network.  This separation, in addition to simpilifying the design by encapsulating the different functions, also allows for increased flexibility and scalability.  Each part is loosely coupled to the other parts, with a simple API for handling communications between them.
 
 \subsubsection{Frontend}
-Like the FOAFServer, the TrustServer's frontend uses the REST architecture to provide a versatile system for receiving and answering queries. 
+Like the FOAFServer, the TrustServer's frontend is a web service, using the REST architecture to receiving and answering queries. 
 %more here tying specifics of REST in as advantages, as outlined in the FOAFServer
 It also runs on the Apache web server, using the mod\_python framework.  Queries are passed in using HTTP's GET method, and responses are returned in XML, which a client application may parse to retrieve the desired data.
 
@@ -208,7 +188,7 @@ When a query is received, the Frontend passes the source and sink fingerprints t
 This simple, but powerful blah blah blah
 % more rhetoric here, perhaps.
 
-\subsubsection{PGP Backend}
+\subsubsection{PGP Pathfinder}
 As mentioned in Section~\ref{earlierPGP}, the PGP web-of-trust is not sufficient for determining trust.  However, it is necessary for the proper operation of Konfidi because it plays a very important role in verifying the identity of the sink.  If the author of a document were not identified correctly, someone might forge the trust data, and Konfidi would return a deceptive result.  Verifying that the document's signing key matches the key of the sink in the Konfidi trust network ensures that when Konfidi finds a topical trust inference path from source to the sink, it is valid.
 
 Since one purpose of Konfidi is to provide trust information over and above the PGP web-of-trust, it may seem natural to keep the Konfidi trust network tightly coupled to it.  In other words, every trust link specified using the Konfidi trust ontology corresponds to a link in the PGP web-of-trust made by signing the appropriate key.  However, there are compelling reasons not to do this.  First, the set of people one might wish to indicate trust for in Konfidi will likely not be the same as the set of those whose keys you are able to sign.  For example, a researcher in Sydney may work closely with another in Oslo, and so trust that person's opinion highly in matters relating to their research.  But unless they are able to meet at a conference some time, or are willing to fly halfway around the world, it is unlikely that they will be able to sign each other's keys directly.  However, a valid path in the PGP web-of-trust may already exist connecting them.
@@ -228,6 +208,7 @@ The current version utilizes a pathfinder known as Wotsap \cite{wotsap}, which d
 The Konfidi trust backend is responsible for storing the internal representation of the Konfidi trust network, incorporating updates into the network, and responding to queries about the nodes in the network.
 
 The backend can register with a FOAFServer as a mirror to receive notification whenever a FOAF record with trust information is added or altered.  It needn't ever notify the FOAFServer of any updates to its records, for the FOAFServer would be the only source of new information.  This allows also for it to syncronize with the FOAFServer after a period of down time in which new records have been added.  The backend currently assumes that the FOAFServer has verified the signatures of the FOAF records it stores, freeing it from the computational burden of fetching the signing keys and verifying the signature.
+% change above?
 
 When the TrustServer updates a record, the backend parses the RDF input data and adds the relevant information to its internal representation of the trust network, which is a list of all \texttt{foaf:Person} records indexed by fingerprint and links to each \texttt{Person} marked as trusted, along with topic and rating data.  The updated data will then be available for subsequent queries.  This scheme accomplishes the goal of having trust links available in the proper direction, from source to sink, and avoiding one species of bogus data attack, as discussed in Section~\ref{earlierPGP}.  
 
@@ -261,6 +242,22 @@ where $Rating$ returns the rating between two nodes in the network.
 Dave'll do this section, since he wrote it.
 \subsubsection{Simple Web Client}
 Just an HTML form built into the frontend which makes searching marginally easier.
+
+\section{FOAF Server}
+\label{foafserver}
+% in the "owl schema" section, I say that this section talks about the advantages of having distributed FOAF and RDF records, so be sure to cover that here as part of hte motivation of the Foafserver.  you remember what I mean, right?
+
+The Konfidi server uses data from PGP keyservers to act on identity trust.  To act on topical trust, we need a similar data store.  This is not necessarily within the scope Konfidi, but is a necessary prerequisite.  We created the FOAF Server to fulfill this need.
+
+The FOAF Server is a web service that stores and serves FOAF files that include trust relationships as specified by our trust ontology.  A seperate FOAF file is stored for each person, identified by their PGP fingerprint.  All FOAF files must be PGP signed by the owner to prevent false data from being submitted and to prevent unauthorized modification of someone else's data.  When a FOAF file is requested, the PGP signature is included also so that it may be verified by a client.
+
+Multiple FOAF Servers will be available for public use and will synchronize their contents.  Like the SKS PGP Keyserver\footnote{http://www.nongnu.org/sks/}, anti-entropy reconciliation\footnote{At each time of synchronization, servers synchronize the entire database no matter what the current states are.  There is a trade-off between computation and communication expenses.} will be used, rather than the rumor-mongering reconciliation\footnote{Only the most recent updates are pushed to other servers; this does not allow servers to be out of communication for an extended period of time.} used by traditional PGP keyservers.  Synchronization will be PGP signed to maintain trusted secure communication channels everywhere.
+
+Since the primary function of the FOAF Server is data storage, it may hold FOAF files that are not related to trust.  A FOAF server may be configurable to act as one that is used for trust relationships, pet information, or résumés.  Moreover, RDF features a \texttt{seeAlso} tag so a single FOAF file hosted on a FOAF server may refer to more FOAF data hosted elsewhere.  This gives the owner flexibility, including encrypting or limiting access to the FOAF file.
+
+Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Clients retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \texttt{http://domain.org/foafserver/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
+
+Synchronization has not been implemented yet.
 
 \section{Future Work}
 There are a number of things to be done to develop Konfidi from a proof-of-concept to a useful system.  As we've mentioned above, one thing we need most is a good base of psychological research backing up our trust representation and propagation, or suggesting a new one.  Unfortunately, we must leave this to the experts in psychology, and so it is hard to say when it will be there.  The rest of the system can be developed in its absence, so long as it is understood that we have just approximated how trust might work.
