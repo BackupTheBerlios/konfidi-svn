@@ -18,7 +18,7 @@ const char* header_sig = "X-PGP-Signature";
 const char* header_sig_finger = "X-PGP-Fingerprint";
 const char* header_trust_num = "X-Trust-Email-Rating";
 const char* header_trust_level = "X-Trust-Email-Level";
-const char* header_this_app = "X-Dmail-Client";
+const char* header_this_app = "X-Konfidi-Client";
 const char* header_this_app_value = "cli-filter 0.1";
 
 #define fail_if_err(err)                                        \
