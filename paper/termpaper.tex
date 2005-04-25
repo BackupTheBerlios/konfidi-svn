@@ -256,7 +256,7 @@ Since the primary function of the FOAF Server is data storage, it may hold FOAF 
 
 Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \texttt{http://\linebreak[0]domain\linebreak[0].org\linebreak[0]/foaf\linebreak[0]server\linebreak[0]/EAB0FABE\linebreak[0]DEA81AD4\linebreak[0]086902FE\linebreak[0]56F0526F\linebreak[0]9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: \linebreak[0]multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
 
-Synchronization has not been implemented yet.
+Synchronization has not been implemented yet.  Currently the Trust Server listens on a port for filenames that it should load into its memory.  When someone updates a file with the FOAF Server, it sends the filename to the Trust Server update listening port and it reloads it.  Thus currently the FOAF Server and Trust Server must run on systems with access to the same filesystem.
 
 \section{Future Work}
 There are a number of things to be done to develop Konfidi from a proof-of-concept to a useful system.  As we've mentioned above, one thing we need most is a good base of psychological research backing up our trust representation and propagation, or suggesting a new one.  Unfortunately, we must leave this to the experts in psychology, and so it is hard to say when it will be there.  The rest of the system can be developed in its absence, so long as it is understood that we have just approximated how trust might work.
