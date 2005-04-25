@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+<!ENTITY subject "http://www.abundantplunder.com/trust/subjects">
+]>
+<rdf:RDF
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns="http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:wot="http://xmlns.com/wot/0.1/"
+    >
+
+<foaf:Person rdf:nodeID="me"> 
+    <foaf:name>Clara</foaf:name>
+    <foaf:mbox>demo-clara@brondsema.net</foaf:mbox>
+    <wot:fingerprint>BB5B 0D92 A23D 31CA 559C 3D86 FF9B D44A DCD8 155F</wot:fingerprint>
+</foaf:Person>
+
+
+<foaf:Person rdf:nodeID="spammer">
+    <foaf:mbox>demo-spammer@brondsema.net</foaf:mbox>
+    <wot:fingerprint>ACC2 6799 2DDC 9AF0 05D4 E24F 5013 CB50 882E C55C</wot:fingerprint>
+</foaf:Person>
+
+<Relationship>
+	<truster rdf:nodeID="me"/>
+	<trusted rdf:nodeID="spammer"/>
+	<about>
+		<Item>
+			<topic rdf:resource="&subject;#email"/>
+			<rating>0</rating>
+		</Item>
+	</about>
+</Relationship>
+
+</rdf:RDF>
