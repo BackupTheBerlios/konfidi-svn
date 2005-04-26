@@ -1,0 +1,12 @@
+# based on the (old) http://forrest.apache.org/dtd/.htaccess file
+
+# Get the content straight out of ViewCVS and use the appropriate media type:
+# See http://www.faqs.org/rfcs/rfc3023.html
+# http://www.w3.org/TR/owl-ref/#MIMEType
+#
+
+RewriteEngine On 
+
+# viewcvs doesn't support application/rdf+xml, so we fall back to application/xml
+RewriteRule "trust/(.*)/(.*)\.owl$" "http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/tags/release-$1/$2.owl?content-type=application/xml"
+

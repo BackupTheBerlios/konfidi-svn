@@ -1,0 +1,12 @@
+Redirect /index.html http://konfidi.org/wiki/Main_Page
+
+# close the php security hole... 
+#  not actually needed but probablly a good idea anyway
+php_flag register_globals off
+
+# first, enable the processing - Unless your ISP has it enabled
+# already.  That might cause weird errors.
+RewriteEngine on
+
+# do the rewrite
+RewriteRule ^wiki/?(.*)$ /w/index.php?title=$1 [L]
