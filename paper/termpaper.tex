@@ -1,14 +1,12 @@
 \documentclass{acm_proc_article-sp}
 
+\usepackage{url}
 \usepackage[square,authoryear]{natbib}
 \usepackage[dvips]{graphics}
-%\usepackage{cite}
 
 \pagenumbering{arabic}
 
 \begin{document}
-
-%\setpagenumber{50}
 
 \title{Konfidi:\titlenote{\textit{Konfidi} is the Esperanto term for trust.  
 A universal concept in a universal language seemed appropriate for what we hope will become a universal system.} Trust Networks Using PGP and RDF}
@@ -38,27 +36,27 @@ We ought to write this now!
 \keywords{Semantic Web, trust network, FOAF, RDF, PGP, GPG, reputation, propogation, distributed, inference, delegation, social network}
 
 \section{Introduction}
-As more and more information becomes available on the internet, there is a growing problem determining which information is reliable and accurate.  A person may, over time, develop a reputation in a certain community as a reliable source of information for a certain topic, however, someone outside that community will likely be unfamiliar with that reputation, and so may not know how much trust she should have in that person.  
+As internet-based communication grows, there has been rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to unsuspecting users.  This gives rise to two questions: 
+%it would be nice to rephrase these:
+How can I be sure that a message really comes from who it says it does?  How can I be sure that what the sender has to say is accurate?
 
-Ratings system for reputation within certain domains (eBay auctions, for example), may be of some limited use.  However, unless some there is a system to verify the raters, they may be susceptible to manipulative ratings.  Even if such systems can be guarded against such attacks, why should someone base whether they trust another person on opinions given by others that they neither know nor trust?
+There have been a number of attempts to answer either one question or the other.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity;  however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.  As for the second question, one answer that is growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems can subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  Ratings system for reputation within certain domains\footnote{such as eBay online auctions} may be of some limited use.  However, unless some there is a system to verify the raters, they may also be susceptible to malicious users who manipulate ratings.  Even if such systems can be guarded against such attacks, why should someone base whether they trust another person on opinions given by others that they neither know nor trust?
 
-One solution growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems too can subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity; however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.
-
-In this paper, we describe some difficulties in integrating reputation-based trust networks with the PGP web-of-trust, and how it might be possible to overcome them.  We then describe our structure for representing trust data, and our methods for making trust inferences on this data.  Finally, we discuss the our proof-of-concept software for putting this trust to use.
+In this paper, we present a system that combines the a trust network with the PGP web-of-trust.  We describe some difficulties in integrating such reputation-based trust networks with the PGP web-of-trust, and how it might be possible to overcome them.  We then describe our structure for representing trust data, and our methods for making trust inferences on this data.  Finally, we discuss the our proof-of-concept software for putting this trust to use.
 
 \section{Related Work}
-%There are a number of technologies designed to serve various purposes.  When they are combined:  KONFIDI.  Talk a little about this here, andy
+Rather than creating an entirely new system from the ground up, we have leveraged %ha!
+a number of existing technologies designed to serve various purposes, perhaps in ways compatible with but unanticipated by the original creators.  We introduce them here, and explain later in the paper how we have integrated them.  We also discuss here  related academic research on the relevant topics.
 
 \subsection{Representing Trust Relationships}
-There seems to be a general lack of psychological research on ways of representing trust relationships and procedures for making inferences for unspecified relationships. In fact, most work in the fields of mathematics and computer science seems to adopt an arbitrary model appropriate to the algorithm under consideration. As Guha points out  \citep{guha04propagation}, there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
+There seems to be a general lack of psychological research on ways of representing trust relationships between individuals and procedures for inferring unspecified trust values.  We found no recommendations for a particular scheme for modeling trust relationships or networks mathematically.  Most work on this topic in the fields of mathematics and computer science adopts an arbitrary model appropriate to the algorithm under consideration. Guha points out \citep{guha04propagation} that there are compelling reasons for a trust representation scheme to express explicit distrust as well as trust.
 
 \subsection{Trust Networks and Inferences}
 There are a number of papers about different propagation strategies for weighted, directed graphs\footnote{See such-and-such, and so-and-so, for example}.  For the most part, however, they are concerned with describing the networks mathematically, and do not have much in the way of practical application.  While they are of interest and relevance, they concern only the subsystem and do not discuss the design of a larger infrastructure.
 
-Jennifer Golbeck, at the University of Maryland, is doing work on trust and reputation systems  \citep{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and are ratings are different in significant ways, which we will address later.}.  She has created TrustMail  \citep{trustMail}, a modified email client that uses her trust network.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help research other applications and implications of semantic social networks.
+Jennifer Golbeck, at the University of Maryland, is doing work on trust and reputation systems  \citep{golbeckSite} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and ratings are different in significant ways, which we will address later.}.  She has created TrustMail  \citep{trustMail}, a modified email client that uses her trust network.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help research other applications and implications of semantic social networks.
 
-Golbeck suggested an important distinction between belief in statements and trust in people \citep{golbeck:accuracy}.  While networks of both kinds can be created, the latter are usually smaller and more connected.  Golbeck argues that using a network of trust in people is equivalent to one of belief in statements and allows for simpler traversal.
-% What about the issue of statements about yahoo.com.  How could a person-only network be equivalent?)
+Golbeck suggests an important distinction between belief in statements and trust in people \citep{golbeck:accuracy}.  While networks of both kinds can be created, the latter are usually smaller and more connected.  Golbeck argues that in a combined network of trust in people and of belief in statements, a path composed of trust edge and terminating with a belief edge is equivalent to one composed entirely of belief edges, and is on average smaller.  Thus, a trust network comprising mostly trust edges allows for simpler traversal.
 
 \subsection{The Semantic Web}
 In addition to Golbeck's work, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
@@ -79,7 +77,7 @@ Boykin and Roychowdhury discuss ways to infer a relationship based on existing d
 
 \subsection{Trust Inference Using PGP}
 \label{earlierPGP}
-% an approach to what?
+% an approach to what? we should rework this section.
 One possible approach is to use the PGP web-of-trust to filter email spam at the client's end. For example, a mail client plugin could filter incoming mail, and attempt to find a path from the sender to the recipient\footnote{In the web-of-trust, nodes are PGP keys and edges are key signatures.  Paths are made when the recipient had signed someone's key, who had signed another key, and so on until a signature is found on the sender's key}. If a path could be found under a specified length, the message would be marked as trusted.  Otherwise, it would be marked as not trusted. This approach requires that most users digitally sign email messages, and it depends on users to be aware of known spammers and avoid signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Furthermore, if the identification requirements for keysigning are met, even by a spammer, it would be unfair to refrain from signing that spammer's key\footnote{In fact, such positive identification might be of use.}.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so the web-of-trust would be inadequate to encode such information.
 
 A more serious flaw in this approach is this:  because information about key signatures is stored with the key that was signed, and not that of the signer, paths between users can only be constructed from the sender backward to the recipient. When a key is retrieved from a keyserver, all of the signatures on that key are included with it, showing which keys have signed that key, and providing a number of possible links in a chain. However, using the existing keyserver infrastructure without a transformation of some kind, there is no easy way to tell which other keys a particular key has signed. If these paths are built backward using a breadth-first search from the sender to the recipient, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign the sender's key. By adding this artificial information, the client's searching capabilities would be crippled, and the web-of-trust would be filled with fabricated keys, users, and signatures, quickly becoming useless. The PGP system of key-signing and verification was designed to be robust against this sort of impersonation, by requiring photo-identification and fingerprint exchange before any key-signing, but a deluge of false information would put undue strain on the keyserver infrastructure, and would amount to a denial-of-service, of sorts.
@@ -90,11 +88,12 @@ A more serious flaw in this approach is this:  because information about key sig
 Talk about wotsap a bit.
 
 \subsection{Summary}
-% I asked Vlinden about this, but no response yet.
-So, for our idea to be viable, it must first deal with these two issues, namely, representing trust information not directly in the PGP web-of-trust but rather in some other system closely coupled with it, and not being susceptible to denial-of-service attacks caused by generated false webs. We had other requirements, too. A system like this must be widely (even universally) adopted in order to be useful. As such, it must be easy for the technically unsavvy, like Aunt Sally, to use, while at the same time avoiding any diminished security stemming from being easy-to-use. It must also be available in any of the many widely-used email clients. 
+To make Konfidi, we extend FOAF to represent trust relationships in RDF.  We combine this trust network with the PGP web-of-trust so that the validity of the RDF data can be verified.  
+% say some more here about how we'll change the related work, and why
 
 \section{Konfidi}
-% say what konfidi does, and explain diagram
+% say what konfidi does, and explain why.
+% also, explain diagram
 Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.
 
 \begin{figure*}
@@ -245,7 +244,7 @@ Multiple FOAF Servers will be available for public use and will synchronize thei
 
 Since the primary function of the FOAF Server is data storage, it may hold FOAF files that are not related to trust.  A FOAF server may be configurable to act as one that is used for trust relationships, pet information, or résumés.  Moreover, RDF features a \texttt{seeAlso} tag so a single FOAF file hosted on a FOAF server may refer to more FOAF data hosted elsewhere.  This gives the owner flexibility, including encrypting or limiting access to the FOAF file.
 
-Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \texttt{http://\linebreak[0]domain\linebreak[0].org\linebreak[0]/foaf\linebreak[0]server\linebreak[0]/EAB0FABE\linebreak[0]DEA81AD4\linebreak[0]086902FE\linebreak[0]56F0526F\linebreak[0]9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: \linebreak[0]multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
+Our FOAF Server is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \url{http://domain.org/foafserver/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: \linebreak[0]multipart/signed} and requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
 
 Synchronization has not been implemented yet.  Currently the Trust Server listens on a port for filenames that it should load into its memory.  When someone updates a file with the FOAF Server, it sends the filename to the Trust Server update listening port and it reloads it.  Thus currently the FOAF Server and Trust Server must run on systems with access to the same filesystem.
 
@@ -302,23 +301,22 @@ As the scope of Konfidi naturally expands to include things other than email, ot
 
 For trust topics to be really useful, some sort of hierarchy is in order.  Topics ought to standardized so that it is clear in what circumstances they apply, and how they relate to one another.  So, for example, if Alice trusts Bob about internet communication in general, then if a query is made about email (a descendent of internet communication) and no explicit email rating is given, then Konfidi traverses up the heirarchy until some more general trust rating is found, and applies that.
 
-\section{Other Issues}
-\subsection{Anonymity}
-Since authentication is a key part of Konfidi, it is effectively impossible to act anonymously within the system.  To enter the PGP web of trust you must prove your identity to someone.  Political and religious discussions (especially in intolerant countries), corporate whistleblowing, crisis hotlines, and other sensitive discussions have grave reasons to be conducted anonymously.  If authentication becomes a defacto standard of communication it will be difficult to conduct these communications.  Two potential alleviations would be to 1) have policies regarding when documents will be signed and when they won't (e.g. banks will always sign) and 2) using an anonymizing proxy service that is trusted by most people.  There are obvious drawbacks to both of these. \citep{fenton05iim}
+%\section{Other Issues}
+%\subsection{Anonymity}
+%Since authentication is a key part of Konfidi, it is effectively impossible to act anonymously within the system.  To enter the PGP web of trust you must prove your identity to someone.  Political and religious discussions (especially in intolerant countries), corporate whistleblowing, crisis hotlines, and other sensitive discussions have grave reasons to be conducted anonymously.  If authentication becomes a defacto standard of communication it will be difficult to conduct these communications.  Two potential alleviations would be to 1) have policies regarding when documents will be signed and when they won't (e.g. banks will always sign) and 2) using an anonymizing proxy service that is trusted by most people.  There are obvious drawbacks to both of these. \citep{fenton05iim}
 
-\subsection{Privacy}
-Should there be any?  How will it be controlled?
-Encrypted FOAFs.
+%\subsection{Privacy}
+%Should there be any?  How will it be controlled?
+%Encrypted FOAFs.
 
-\subsection{Ethics}
-Dependency on a trust system, trust in the system, trust in admins, etc.
+%\subsection{Ethics}
+%Dependency on a trust system, trust in the system, trust in admins, etc.
 
 \section{Conclusions}
 
 \section{Acknowledgments}
 We would like to thank Jim Laing for assisting with test data, Prof. Vander Linden for advising us on this project, and Profs. Fife, Frens and Plantinga for their advice on specific matters.
 
-%\bibliographystyle{abbrv}
 \bibliographystyle{authordate1}
 \bibliography{termpaper}  
 

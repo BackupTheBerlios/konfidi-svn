@@ -8,32 +8,32 @@
 			<Shapes>
 				<Shape ID="5" UniqueID="{BBC817E0-1EF1-46A2-B20D-D9B03C83522A}" Name="Rectangle.5" NameU="Rectangle.5" Master="5">
 					<XForm>
-						<PinX Unit="IN_F">3.243602362204724</PinX>
-						<PinY Unit="IN_F">9.503198818897637</PinY>
+						<PinX Unit="IN_F">3.000000000000000</PinX>
+						<PinY Unit="IN_F">9.507812500000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="6" UniqueID="{ADBE3FB2-B97C-4D31-9A22-4F3B3970894F}" Name="Rectangle.6" NameU="Rectangle.6" Master="5">
 					<XForm>
-						<PinX Unit="IN_F">3.238394028871390</PinX>
-						<PinY Unit="IN_F">8.417671423884514</PinY>
+						<PinX Unit="IN_F">2.994791666666666</PinX>
+						<PinY Unit="IN_F">8.422285104986877</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="4" UniqueID="{A2D2EB10-C079-4B5C-9AA2-DA8D52890E4E}" Name="Rectangle.4" NameU="Rectangle.4" Master="5">
 					<XForm>
-						<PinX Unit="IN_F">3.197670603674540</PinX>
-						<PinY Unit="IN_F">7.875000000000001</PinY>
+						<PinX Unit="IN_F">2.954068241469816</PinX>
+						<PinY Unit="IN_F">7.879613681102364</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="3" UniqueID="{03135FC1-0C0E-4BC9-A7C5-468C8FE68ACD}" Name="Rectangle.3" NameU="Rectangle.3" Master="5">
 					<XForm>
-						<PinX Unit="IN_F">3.274852362204724</PinX>
-						<PinY Unit="IN_F">9.031250000000000</PinY>
+						<PinX Unit="IN_F">3.031250000000000</PinX>
+						<PinY Unit="IN_F">9.035863681102363</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="8" UniqueID="{2A3F3BBB-850A-4376-81B8-512AC9D98ED9}" Name="Process.8" NameU="Process.8" Master="0">
 					<Text>PGP Pathfinder</Text>
 					<XForm>
-						<PinX Unit="IN_F">5.329478346456693</PinX>
+						<PinX Unit="IN_F">4.710875984251969</PinX>
 						<PinY Unit="IN_F">9.031250000000000</PinY>
 					</XForm>
 					<Prop ID="1" Name="Cost" NameU="Cost">
@@ -52,7 +52,7 @@
 				<Shape ID="9" UniqueID="{B3A6CBF4-0B5B-4499-9A28-CAD20C469631}" Name="Process.9" NameU="Process.9" Master="0">
 					<Text>TrustServer</Text>
 					<XForm>
-						<PinX Unit="IN_F">5.343749999999999</PinX>
+						<PinX Unit="IN_F">4.742125984251969</PinX>
 						<PinY Unit="IN_F">7.875000000000000</PinY>
 					</XForm>
 					<Prop ID="1" Name="Cost" NameU="Cost">
@@ -71,35 +71,35 @@
 				<Shape ID="10" UniqueID="{7CC7BBA3-EAB1-4134-8D0C-10041ED8048A}" Name="Sheet.10" NameU="Sheet.10" Master="2">
 					<Text>2. PGP Search</Text>
 					<XForm>
-						<PinX Unit="MM">4.364665354330708</PinX>
-						<PinY Unit="MM">9.414862204724409</PinY>
+						<PinX Unit="MM">3.933562992125984</PinX>
+						<PinY Unit="MM">9.417169045275591</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="12" UniqueID="{C9318A16-ABD5-47C4-BFF6-28546F7F35FA}" Name="Dynamic connector.12" NameU="Dynamic connector.12" Master="2">
 					<Text>4. Trust Search</Text>
 					<XForm>
-						<PinX Unit="MM">4.366592847769027</PinX>
-						<PinY Unit="MM">8.293973507217848</PinY>
+						<PinX Unit="MM">3.943979658792650</PinX>
+						<PinY Unit="MM">8.296280347769029</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="13" UniqueID="{0D987FB3-C93B-4B70-A1DB-1C45A47C5FA9}" Name="Dynamic connector.13" NameU="Dynamic connector.13" Master="2">
 					<Text>5. Trust Result</Text>
 					<XForm>
-						<PinX Unit="IN_F">4.126681430446193</PinX>
-						<PinY Unit="MM">7.875000000000000</PinY>
+						<PinX Unit="IN_F">3.704068241469816</PinX>
+						<PinY Unit="MM">7.877306840551182</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="14" UniqueID="{35D31AED-FC32-4DCE-AE56-1F20ACA24592}" Name="Dynamic connector.14" NameU="Dynamic connector.14" Master="2">
 					<Text>3. PGP Result</Text>
 					<XForm>
-						<PinX Unit="IN_F">4.118602362204724</PinX>
-						<PinY Unit="MM">9.031250000000000</PinY>
+						<PinX Unit="IN_F">3.687500000000000</PinX>
+						<PinY Unit="MM">9.033556840551182</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="15" UniqueID="{CDE89938-B6F8-48E5-AF70-85CAEC602DE9}" Name="Process.15" NameU="Process.15" Master="0">
 					<Text>FOAFServer</Text>
 					<XForm>
-						<PinX Unit="IN_F">6.968750000000001</PinX>
+						<PinX Unit="IN_F">6.273375984251969</PinX>
 						<PinY Unit="IN_F">7.875000000000000</PinY>
 					</XForm>
 					<Prop ID="1" Name="Cost" NameU="Cost">
@@ -118,22 +118,22 @@
 				<Shape ID="17" UniqueID="{A4F6E1ED-9301-4CFF-908B-3BF5001EDB80}" Name="Dynamic connector.17" NameU="Dynamic connector.17" Master="2">
 					<Text>Sync</Text>
 					<XForm>
-						<PinX Unit="IN_F">6.156250000000000</PinX>
-						<PinY Unit="IN_F">7.875000000000000</PinY>
+						<PinX Unit="MM">5.507750984251969</PinX>
+						<PinY Unit="MM">7.875000000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="18" UniqueID="{7EC1994B-4BBF-4E55-8B23-6AF735A0D34F}" Name="Rectangle" NameU="Rectangle" Master="5">
 					<Text>Frontend</Text>
 					<XForm>
-						<PinX Unit="IN_F">2.625215518813390</PinX>
-						<PinY Unit="IN_F">8.673474409448819</PinY>
+						<PinX Unit="IN_F">2.375000000000000</PinX>
+						<PinY Unit="IN_F">8.625000000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="19" UniqueID="{D22A9E86-4956-48BC-887F-7C2B934D3FE5}" Name="Process.19" NameU="Process.19" Master="0">
 					<Text>Client</Text>
 					<XForm>
-						<PinX Unit="IN_F">2.645915354330707</PinX>
-						<PinY Unit="IN_F">10.454724409448819</PinY>
+						<PinX Unit="IN_F">2.367125984251969</PinX>
+						<PinY Unit="IN_F">10.329724409448819</PinY>
 					</XForm>
 					<Prop ID="1" Name="Cost" NameU="Cost">
 						<Value></Value>
@@ -151,15 +151,15 @@
 				<Shape ID="1" UniqueID="{8D11B799-A233-4DD5-966D-2CE1B5236B53}" Name="Dynamic connector.6" NameU="Dynamic connector.6" Master="2">
 					<Text>1. Client Request</Text>
 					<XForm>
-						<PinX Unit="IN_F">2.635565436572048</PinX>
-						<PinY Unit="IN_F">9.909448818897637</PinY>
+						<PinX Unit="IN_F">2.371062992125984</PinX>
+						<PinY Unit="IN_F">9.822711614173228</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="2" UniqueID="{8EAD7049-8168-48B1-A9F2-EB67C44F55E6}" Name="Dynamic connector.10" NameU="Dynamic connector.10" Master="10">
 					<Text>6. Response</Text>
 					<XForm>
-						<PinX Unit="IN_F">2.389502444446064</PinX>
-						<PinY Unit="IN_F">9.071112204724409</PinY>
+						<PinX Unit="IN_F">2.125000000000000</PinX>
+						<PinY Unit="IN_F">8.984375000000000</PinY>
 					</XForm>
 				</Shape>
 			</Shapes>
@@ -853,8 +853,6 @@
 					</XForm>
 				</Shape>
 				<Shape ID="17" UniqueID="{6D13912B-84BC-4C59-A531-6BC73427DE0C}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
-					<Text>0.0
-Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">6.562500000000001</PinX>
 						<PinY Unit="IN_F">7.375000000000000</PinY>
@@ -995,24 +993,32 @@ Email</Text>
 					</XForm>
 				</Shape>
 				<Shape ID="13" UniqueID="{7F1C0452-C182-47D0-A633-44AB50F26D24}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<Text>0.8
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">1.062500000000000</PinX>
 						<PinY Unit="IN_F">7.375000000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="14" UniqueID="{9C08E4FF-FA47-4E92-A1C4-CFED029DC0E2}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<Text>0.9
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">2.750000000000000</PinX>
 						<PinY Unit="IN_F">7.062500000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="15" UniqueID="{E65B2C97-B3AE-4654-ACDA-208F1CD0E13F}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<Text>0.7
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">4.875000000000000</PinX>
 						<PinY Unit="IN_F">7.875000000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="16" UniqueID="{6A9B4FF0-659F-4009-8B4C-4A7C682A3AFA}" Name="Line-curve connector.15" NameU="Line-curve connector.15" Master="9">
+					<Text>0.75
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">6.875000000000001</PinX>
 						<PinY Unit="IN_F">8.687500000000000</PinY>
@@ -1159,18 +1165,24 @@ Email</Text>
 					</XForm>
 				</Shape>
 				<Shape ID="13" UniqueID="{90DE7890-EB6B-445B-9897-15A9175DBE20}" Name="Line-curve connector.12" NameU="Line-curve connector.12" Master="9">
+					<Text>0.8
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">1.062500000000000</PinX>
 						<PinY Unit="IN_F">7.375000000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="14" UniqueID="{C92776BB-9190-4EF3-98DB-FB4C6199E3E8}" Name="Line-curve connector.13" NameU="Line-curve connector.13" Master="9">
+					<Text>0.7
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">2.750000000000000</PinX>
 						<PinY Unit="IN_F">7.062500000000000</PinY>
 					</XForm>
 				</Shape>
 				<Shape ID="15" UniqueID="{DA52C58F-6E88-4958-B901-354C4198B514}" Name="Line-curve connector.14" NameU="Line-curve connector.14" Master="9">
+					<Text>0.9
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">4.875000000000000</PinX>
 						<PinY Unit="IN_F">7.875000000000000</PinY>
@@ -1183,6 +1195,8 @@ Email</Text>
 					</XForm>
 				</Shape>
 				<Shape ID="17" UniqueID="{6183FA18-41D3-4C09-AB9C-29C7F2952D6C}" Name="Line-curve connector.16" NameU="Line-curve connector.16" Master="9">
+					<Text>0.0
+Email</Text>
 					<XForm>
 						<PinX Unit="IN_F">6.562500000000001</PinX>
 						<PinY Unit="IN_F">7.375000000000000</PinY>
