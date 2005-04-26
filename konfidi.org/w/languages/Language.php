@@ -1682,8 +1682,7 @@ ta[\'ca-nstab-category\'] = new Array(\'c\',\'View the category page\');
 'browsesvn' => 'Browse SVN',
 'svn-url' => 'http://svn.berlios.de/viewcvs/konfidi',
 'berliosproject' => 'Berlios Project',
-'berlios-project-url' => 'http://developer.berlios.de/project/konfidi',
-'mw-help' => 'http://meta.wikimedia.org/wiki/Help:Help'
+'berlios-project-url' => 'http://developer.berlios.de/projects/konfidi/'
 
 );
 
