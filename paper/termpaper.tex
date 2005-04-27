@@ -88,8 +88,8 @@ A more serious flaw in this approach is this:  because information about key sig
 \label{wotsap}
 Wotsap\citep{wotsap} is a tool to work with the PGP web-of-trust.  From a keyserver it creates a data file with all the names and signature connections, but no cryptographic data.  A python script is available to use this data file to find paths between keys, generate graphics, and generate statistics.
 
-% renamed from 'Summary' since it's not a summary.  very concise
-\subsection{Desiderata}
+% looked at KVL's notes.  changed back to summary.  We can expand on what I wrote here, certainly we need some "why"
+\subsection{Summary}
 These related works form many of the building blocks, both technically and theoretical, for our work.  The system should determine authenticity through a decentralized network and determine trust in a topic through a similar network topology.  We leverage PGP, RDF and FOAF, and design ideas from Golbeck, Guha, and others.
 
 \section{Konfidi}
@@ -101,16 +101,21 @@ These related works form many of the building blocks, both technically and theor
 \label{fig:Arch}
 \end{figure*}
 
-Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.  Figure~\ref{fig:Arch} shows the components of the Konfidi architecture and how they relate to external components and one another.  The numbered paths indicate the steps in the process:  first, a client makes a request using the Konfidi URL query language, indicating the source, usually the person making the inference, and the sink, the person that the path leads to, the trusted party.
+Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.  Figure~\ref{fig:Arch} shows the components of the Konfidi architecture and how they relate to external components and one another.  The numbered paths indicate the steps in the process.  First, a client makes a request to the Konfidi server, indicating the source and sink, usually the person making the request and the person to which the path leads, respectively.
 % is it really a language?  what else should I call it?
+% I removed that 'how' part.  too much detail for here.
+
 % can you think of better ways to describe source and sink for these purposes?
+% i changed the grammar a bit, don't know if it helps any
+
 Then, the frontend passes the request to the PGP Pathfinder, which verifies that some path exists from the source to the sink in the PGP web-of-trust.  After this, the frontend passes the request to the TrustServer, which checks the Konfidi trust network that is built from data kept up-to-date by the FOAFServer.  The TrustServer traverses the trust network and constructs a response with the inferred trust value or an appropriate error message.  The Frontend combines the responses of the Pathfinder and the TrustServer, and sends it along to the client.  In the remainder of this section, we discuss the underlying data structure for representing trust, how it is implemented in these steps, and the rationale for the system design.
 
 \subsection{Trust Ontology}
 % representation is seperate from algorithm result, right?  Need to fix this paragraph if so
 % what do you mean?  I suppose the algorithm can perform whatever operation on the values it wants, but I think the point is that the domain and range of the network is the same:  an inferred trust rating should look no different from an explicit one.  maybe this is unclear...
 % Right.  Then with discrete values for levels of trust, the output should be one of those discrete levels, not a binary yes/no.  The binary yes/no is a client threshold decision that would be done for both continuous and discrete outputs.
-In the current research on trust inference networks, there seem to be two general kinds of representations:  one that used discrete values for varying levels of trust and returned a discrete binary (yes or no) answer, or one which used a (theoretically) continuous range of trust values and returned an answer within that range.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  Further, the inferred trust values returned by searches would be similar to the explicit trust values users provided when specifying trust relationships.  This makes it easier to evaluate such results on a scale that has some familiarity.
+% I'm taking the liberty of correcting it how i think it should be
+In the current research on trust inference networks, there seem to be two general kinds of representations:  one that uses discrete values for varying levels of trust, and one which uses a continuous range of trust values.  Both return an answer in the same range as their domain.  Now, either kind of representation could be roughly mapped onto the other, however, a continuous range would allow more finely-grained control over the data.  Further, the inferred trust values returned by searches would not have to be rounded to a discrete level, which would lose precision.
 
 \subsubsection{Distrust}
 The choice of representation is closely related to another important concern, that the representation give some account of distrust.  If the trust network contained values ranging from neutral trust to complete trust, then everyone in the network is trusted, explicitly, or by inference on some level at or above neutral.  If the system makes a trust inference between Alice and Bob at one level, but Alice really trusts Bob at a different level, she can explicitly state this previously implicit trust to have a more accurate result (for herself and for others who build inference paths of whom she is a member).  But, suppose that Alice feels strong negative feelings about Bob.  In this case, she would still only be able to represent this relationship as one of neutral trust.  So, the trust network must account for distrust in some reasonable way.
@@ -122,11 +127,12 @@ One solution to this problem is simply to not traverse beyond a relationship of 
 
 We decided on a model that corresponds to another intuition about how trust works between people, that it is more of a continuum of both trust and distrust than a measure of just one or the other.  For example, if Alice trusts Bob at some moderate level (say, .75 of a scale of 0 to 1), then it seems that she also \textit{distrusts} him at some minimal level (say, .25).  If Alice trusts Bob neutrally, then she trusts him about as much as she distrusts him.  If she distrusts him completely, then she doesn't trust him at all.  But in all of these cases, there is a trade-off between trust and distrust.  Only in the extremes is either of them eliminated completely.  So, we decided that our trust model should represent a range of values from 0 to 1, treating 0 as complete distrust, 1 as complete trust, and 0.5 as neutral, and calculate trust inferences accordingly\footnote{This also makes many propagation algorithms simpler, as we'll discuss later.}.
 
-\subsubsection{Rating Values}
+\subsubsection{Data Structure}
 \label{rating}
 % "Rating System" seems inappropriate.  How about "Data structure" or something?
 % how about "rating values?"
 % the first half of this paragraph is about the relationship-based model, the second half is about the ratings, and the 2nd paragraph is about attributes.  We need a more general title if we're going to have all these concepts in one section
+% I change the title
 With these considerations in mind, we found that a relationship-based model would meet our needs while avoiding some of the disadvantages of other representations.  According to this system, each trust relationship is an object, and the trusting person and the trusted entity (typically a person) are specified as such.  Thus, each relationship is one-way, but since the truster is responsible for the accuracy of the information, that is fine.  Trust relationships also have trust items specified. 
 
 Because the trust relationship is represented as its own object, other attributes may be added later, such as the dates the relationship began, annotations, etc. as the need arises.
@@ -251,9 +257,11 @@ Our FOAF Server is built with the Apache HTTP Server and mod\_python using princ
 Synchronization has not been implemented yet.  Currently the Trust Server listens on a port for filenames that it should load into its memory.  When someone updates a file with the FOAF Server, it sends the filename to the Trust Server update listening port and it reloads it.  Thus currently the FOAF Server and Trust Server must run on systems with access to the same filesystem.
 
 \section{Clients}
+The PGP, FOAF, and Konfidi servers each have clients which end-users use to view and modify the data.
+
 \subsection{PGP Clients}
 Many clients have already been written to interact with PGP keyservers with the Horowitz Key
-Protocol (HKP)\footnote{A standard, yet undocumented, set of filenames and conventions using HTTP}.  It may be useful to integrate a PGP client with other Konfidi clients to provide a more cohesive user interface to the system.
+Protocol (HKP)\footnote{A standard, yet undocumented, set of filenames and conventions using HTTP}.  The server itself also provides web forms to search for and view keys.  It may be useful to integrate a PGP client with other Konfidi clients to provide a more cohesive user interface to the system.
 
 \subsection{FOAF Clients}
 The FOAF Server provides some web forms to allow users to upload FOAF documents and PGP signatures.  We plan to develop desktop software for users to create, sign, and upload their FOAF documents.  See Section~\ref{foafserver} for a summary of the FOAF Server HTTP interface.
