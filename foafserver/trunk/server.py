@@ -1,5 +1,5 @@
 #  Copyright (C) 2005-2005 Dave Brondsema, Andrew Schamp
-#  This package is part of Konfidi http://konfidi.org/
+#  This file is part of Konfidi http://konfidi.org/
 #  It is licensed under two alternative licenses (your choice):
 #      1. Apache License, Version 2.0
 #      2. GNU Lesser General Public License, Version 2.1
