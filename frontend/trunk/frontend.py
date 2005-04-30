@@ -50,8 +50,6 @@ class Frontend:
 			return self.map(self.req)
 		if (page == "form"):
 			return self.form(self.req)
-//		if (page == "command"):
-//			return self.command(self.req)
 		if (page == ""):
 			return self.index(self.req)
 		else:
@@ -103,47 +101,6 @@ class Frontend:
 		""")
 		return apache.OK
 		
-/*	--this whole business is just awful.  let's leave it out until we can do it right. --ams5
-	def command(self, req):
-		if (req.method == "POST" or req.method == "GET"):
-			form = util.FieldStorage(req, 1)
-			cmd = form["cmd"]
-			if (cmd == "start"):
-				(stdin, stdout, stderr) = os.popen3("/home/ams5/public_html/trustserver/trustserver.sh start")
-				#req.write("std out: %s\n" % stdout.read())
-				#req.write("std err: %s\n" % stderr.read())
-				req.write("Did something.")
-			elif (cmd == "stop"):
-				(stdin, stdout, stderr) = os.popen3("kill -9 1456 1459 ")
-				#(stdin, stdout, stderr) = os.popen3("kill -9 `pidof python`")
-				#(stdin, stdout, stderr) = os.popen3("/home/ams5/public_html/trustserver/trustserver.sh stop")
-				#req.write("std out: %s\n" % stdout.read())
-				#req.write("std err: %s\n" % stderr.read())
-				req.write("Did something.")
-			elif (cmd == "load1"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/prototype && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
-				req.write("std out: %s\n" % stdout.read())
-				req.write("std err: %s\n" % stderr.read())
-			elif (cmd == "load2"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/small/ && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
-				req.write("std out: %s\n" % stdout.read())
-				req.write("std err: %s\n" % stderr.read())
-			elif (cmd == "load3"):
-				(stdin, stdout, stderr) = os.popen3("cd /home/ams5/public_html/tests/edgecases/ && svn cat svn://svn.berlios.de/konfidi/clients/simple/load_rdf.py | python")
-				req.write("stdout: %s\n" % stdout.read())
-				req.write("stderr: %s\n" % stderr.read())
-			else:
-
-				pass
-			return apache.OK
-		else:
-			# hmm, something went horribly wrong.
-			req.status = apache.HTTP_METHOD_NOT_ALLOWED
-			req.content_type = "text/html"
-			req.write("405: HTTP_METHOD_NOT_ALLOWED: %s" % req.method)
-			return apache.OK
-*/	
-
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
