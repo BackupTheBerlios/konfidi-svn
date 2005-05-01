@@ -107,6 +107,26 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
 <h1>Topical Trust with RDF</h1>
 <div class="handout" style="font-style:italic">andy</div>
+<ul>
+<li>Person A trusts Person B</li>
+  <ul>
+  <li>on topic T</li>
+  <li>at value X</li>
+  </ul>
+<li>RDF</li>
+  <ul>
+  <li>XML markup</li>
+  <li>Subject-predicate-object statements</li>
+  <li>FOAF subjects</li>
+  <li>Trust schemas</li>
+  <li>no servers</li>
+  </ul>
+</ul>
+</div>
+
+<div class="slide">
+<h1>Topical Trust with RDF</h1>
+<div class="handout" style="font-style:italic">andy</div>
 <div style="position:absolute;top:20%;margin-right: 10px;left:50%;white-space:pre;font-size:0.5em;filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;background: white;border: 2px solid black;padding: 10px">&lt;Relationship>
         &lt;truster rdf:nodeID="person9BB3CE70"/>
         &lt;trusted>
@@ -140,25 +160,34 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
-<h1>System Architecture</h1>
-<div class="handout" style="font-style:italic">andy</div>
-<ul>
-<li>diagram here</li>
-</ul>
-</div>
-
-<div class="slide">
 <h1>FOAF Server</h1>
 <div class="handout" style="font-style:italic">dave</div>
 <ul>
 <li>Public server, like PGP keyserver</li>
 <li>Stores FOAF and related RDF data (e.g. trust)</li>
 <li>You must PGP sign your file</li>
+<li>Synchronization</li>
 </ul>
 </div>
 
 <div class="slide">
-<h1>Trust Server</h1>
+<h1>System Architecture</h1>
+<div class="handout" style="font-style:italic">andy</div>
+<img src="arch_700.png" alt="" title="Konfidi System Architecture" />
+</div>
+
+
+<div class="slide">
+<h1>PGP Pathfinder</h1>
+<div class="handout" style="font-style:italic">dave</div>
+<ul>
+<li>Verify identity before trust computation</li>
+<li>Use wotsap data files</li>
+</ul>
+</div>
+
+<div class="slide">
+<h1>TrustServer</h1>
 <div class="handout" style="font-style:italic">andy</div>
 <ul>
 <li>Data synchronized from FOAF server
@@ -173,34 +202,19 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
-<h1>PGP Pathfinder</h1>
-<div class="handout" style="font-style:italic">dave</div>
-<ul>
-<li>Verify identity before trust computation</li>
-<li>Use wotsap data files</li>
-</ul>
-<h1>Frontend</h1>
-<div class="handout" style="font-style:italic">andy</div>
-<ul>
-<li>Public API for client queries</li>
-<li>Invokes pathfinder</li>
-<li>Invokes trust server</li>
-</ul>
-</div>
-
-<div class="slide">
 <h1>Clients</h1>
 <div class="handout" style="font-style:italic">dave</div>
 <ul>
 <li>PGP and Gnu Privacy Guard
 <li>"Trust-o-matic" for FOAF server</li>
-<li>MUAs</li>
+<li>Email clients</li>
   <ul>
   <li>Sign outgoing emails</li>
   <li>Validate incoming signatures</li>
-  <li>Query frontend with PGP fingerprints of sender &amp; recipient</li>
+  <li>Query Konfidi Server with PGP fingerprints of sender &amp; recipient</li>
   <li>Add headers</li>
   <li>Filter - integrate with other techniques</li>
+  <li>MTAs</li>
   </ul>
 </ul>
 </div>
@@ -208,9 +222,7 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
 <h1>Review System Architecture</h1>
 <div class="handout" style="font-style:italic">andy</div>
-<ul>
-<li>diagram here</li>
-</ul>
+<img src="arch_900.png" alt="" title="Konfidi System Architecture" />
 </div>
 
 <div class="slide">
@@ -226,14 +238,14 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
-<h1>Applications to other Topics</h1>
+<h1>Other Applications</h1>
 <div class="handout" style="font-style:italic">andy</div>
 <ul>
-<li>Web communication in general</li>
+<li>Digital communication in general</li>
   <ul>
   <li>wiki spam</li>
   <li>blog spam</li>
-  <li>IM spam</li>
+  <li>phishing</li>
   </ul>
 <li>P2P online sales (eBay)</li>
   <ul>
@@ -243,7 +255,7 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
-<h1>Applications to other Topics</h1>
+<h1>Other Applications</h1>
 <div class="handout" style="font-style:italic">dave</div>
 <li>Websites</li>
   <ul>
@@ -275,7 +287,7 @@ img#me05 {top: 43px;left: 36px;}
 <li>Topic hierarchy</li>
 <li>FOAFServer synch</li>
 <li>Trust Server: test strategies</li>
-<li>MUA Plugins</li>
+<li>Email plugins, webmail</li>
 <li>Trust-o-matic</li>
 </ul>
 </div>
@@ -287,7 +299,6 @@ img#me05 {top: 43px;left: 36px;}
 <li>A huge invitation-only network</li>
 <li>Relative to each participant and responsive to problems</li>
 <li>Integrate with existing spam filters until widespread</li>
-<li>May prevent phishing</li>
 </ul>
 
 <div class="handout">
@@ -295,7 +306,7 @@ img#me05 {top: 43px;left: 36px;}
 <ul>
 <li>show keys on keyserver</li>
 <li>show FOAFs</li>
-<li>add Dave's FOAF</li>
+<li>sign &amp; add Dave's FOAF</li>
 <li>show trustserver query<li>
 <li>send emails to dave, show client</li>
 </ul>
