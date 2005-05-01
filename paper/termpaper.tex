@@ -3,7 +3,6 @@
 \usepackage{epsfig}
 \usepackage{url}
 \usepackage[square,authoryear]{natbib}
-%\usepackage[dvips]{graphics}
 
 \pagenumbering{arabic}
 
@@ -40,7 +39,7 @@ We ought to write this now!
 As internet-based communication grows, there has been rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to users.  This gives rise to two questions: 
 How can one be sure that a message really comes from the indicated sender?  How can one be sure that the sender can be trusted to send good messages?
 
-There have been a number of attempts to answer either one question or the other.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity;  however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.  As for the second question, one answer that is growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems can be subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  A rating system for reputation within certain domains, such as eBay online auctions, may be of some limited use.  However, unless some there is a system to verify the raters, they may also be susceptible to malicious users who manipulate ratings.  Even if such systems can be guarded against such attacks, why should someone base their trust in another person on ratings given by people that they neither know nor trust?
+There have been a number of attempts to answer either one question or the other.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity;  however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.  As for the second question, one answer that is growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems can be subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  A simple rating system for reputation within certain domains, such as eBay online auctions, may be of some limited use.  However, unless some there is a system to verify the raters, they may also be susceptible to malicious users who manipulate ratings.  Even if such systems can be guarded against such attacks, why should someone base their trust in another person on ratings given by people that they neither know nor trust?
 
 In this paper, we present a system that combines the a trust network with the PGP web-of-trust.  We describe some difficulties in integrating the networks, and how it might be possible to overcome them.  We then describe our structure for representing trust data, and our methods for making trust inferences on this data.  Finally, we discuss the our proof-of-concept software for putting this trust to use.
 
@@ -61,7 +60,7 @@ Golbeck suggests an important distinction between belief in statements and trust
 In addition to Golbeck, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
 \label{foaf}
-The FOAF project \citep{foafProject} is a Resource Description Framework (RDF) vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing \texttt{Person} objects which can specify name, email address, and so on, but more importantly, they can express relationships between \texttt{Person} objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF often uses uniform resource indicators (URIs) to identify each individual object.
+The FOAF project \citep{foafProject} is a Resource Description Framework (RDF) vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing \texttt{Person}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.} objects which can specify name, email address, and so on, but more importantly, they can express relationships between \texttt{Person} objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF often uses uniform resource indicators (URIs) to identify each individual object.
 
 Dan Brickley has made a practical attempt to investigate the use of FOAF, particularly the \texttt{mbox\_sha1} property, to automatically generate email whitelists. By hashing the sender's email address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of \texttt{mbox\_sha1}s of addresses they know not to send spam. Then for all incoming mail, the sender's address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is decentralized, it is difficult for updates to propagate \citep{foafWhitelisting}. No effort is taken in this project to verify the sender's identity.
 
@@ -125,7 +124,7 @@ The choice of representation is closely related to the concern that it an accoun
 \label{fig:trust}
 \end{figure}
 
-One of the difficulties of using explicit distrust in an inference network is that it is unclear how inferences should proceed once a link of distrust has been encountered.  Consider a trust network like that depicted in Figure~\ref{fig:trust}.  Suppose Alice distrusts Bob, and Bob distrusts Clara.  As Guha points out \citep{guha04propagation}, there are at least two interpretations of this situation.  On the one hand, Alice might think something like ``the enemy of my enemy is my friend" and so decide to put trust in Clara.  On the other hand, she might realize that if someone as scheming as Bob distrusts Clara, then Clara must \textit{really} be an unreliable character, and so decide to distrust her.  Further, suppose Bob expressed trust for Elaine.  At first consideration, it might seem reasonable to simply distrust everyone that Bob distrusts, including Elaine.  But suppose there were another path through different nodes indicating some minimal level of trust for Elaine.  Which path should be chosen as one which provides the correct inference?  When Konfidi encounters a link of distrust, it simply stops traversing in that direction and seeks an alternate path.  Since There is no clear answer regarding the statements a distrusted person makes, we think it is best not to consider them at all.
+One of the difficulties of using explicit distrust in an inference network is that it is unclear how inferences should proceed once a link of distrust has been encountered.  Consider a trust network like that depicted in Figure~\ref{fig:trust}.  Suppose Alice distrusts Bob, and Bob distrusts Clara.  As Guha points out \citep{guha04propagation}, there are at least two interpretations of this situation.  On the one hand, Alice might think something like ``the enemy of my enemy is my friend" and so decide to put trust in Clara.  On the other hand, she might realize that if someone as scheming as Bob distrusts Clara, then Clara must \textit{really} be an unreliable character, and so decide to distrust her.  Further, suppose Bob expressed trust for Elaine.  At first consideration, it might seem reasonable to simply distrust everyone that Bob distrusts, including Elaine.  But suppose there were another path through different nodes indicating some minimal level of trust for Elaine.  Which path should be chosen as one which provides the correct inference?  Since Konfidi represents trust on an interval, and concatinates (combines trust path ratings) values by multiplication, any distrust will make the computed score drop quickly below the minimum threshold.  This effectively stops propagation along a path when distrust is encountered.
 
 \subsubsection{Data Structure}
 \label{rating}
@@ -148,7 +147,7 @@ As the FOAF project grows in popularity, an infrastructure is growing to support
 
 Konfidi uses the Web Ontology Language (OWL) \citep{owl} to define the RDF elements that make up the Konfidi trust ontology.  OWL builds on the existing RDF specification by providing a vocabulary to describe properties and classes, and their relations.  The Konfidi trust ontology provides two objects and five properties, which, in conjunction with the existing FOAF and WOT vocabularies, are sufficient to describe the trust relationships that Konfidi requires.
 
-The primary element is \texttt{Relationship}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.}, which represents a relationship of trust that holds between two persons.  There are two properties required for every \texttt{Relationship}, \texttt{truster} and \texttt{trusted}, which indicate the two parties to the relationship.  Both \texttt{truster} and \texttt{trusted} have \texttt{foaf:Person} objects as their targets.  These \texttt{Person} objects should also contain at least one \texttt{wot:fingerprint} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Person} describes.  This property is required for verification; if no \texttt{fingerprint} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trusted} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:Person} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Relationship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fingerprint} of each \texttt{Person} listed as a \texttt{truster} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
+The primary element is \texttt{Relationship}, which represents a relationship of trust that holds between two persons.  There are two properties required for every \texttt{Relationship}, \texttt{truster} and \texttt{trusted}, which indicate the two parties to the relationship.  Both \texttt{truster} and \texttt{trusted} have \texttt{foaf:Person} objects as their targets.  These \texttt{Person} objects should also contain at least one \texttt{wot:fingerprint} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Person} describes.  This property is required for verification; if no \texttt{fingerprint} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trusted} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:Person} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Relationship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fingerprint} of each \texttt{Person} listed as a \texttt{truster} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
 
 In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Relationship} to a trust \texttt{Item}.  A \texttt{Relationship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it and so on may be recorded without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
 
@@ -173,7 +172,7 @@ A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  
 </Relationship>
 \end{verbatim}
 
-For RDF corresponding to the network depicted in Figure~\ref{fig:trust}, see Appendix~\ref{app:trustExample}.  See Appendix~\ref{app:schemaCode} for the full OWL source code.
+For RDF corresponding to the network depicted in Figure~\ref{fig:trust}, see Appendix~\ref{app:trustExample}.  See Appendix~\ref{app:schemaCode} for the full OWL source code.  
 
 \subsection{The Konfidi Server}
 The Konfidi server handles requests for trust ratings, verifies that a PGP connection exists, and traverses the internal representation to find a path.  Since these three tasks are so distinct, all of Konfidi is divided into three parts.  Figure~\ref{fig:arch} shows the relationships between a frontend which listens for requests and dispatches them, and two internal components, one to search the PGP web-of-trust and another to query against Konfidi's trust network.  This separation, in addition to simpilifying the design by encapsulating the different functions, also allows for increased flexibility and scalability.  Each part is loosely coupled to the other parts, with a simple API for handling communications between them.
@@ -193,7 +192,7 @@ Second, requiring users to sign the key of each person they want to add to their
 
 Usability becomes an additional advantage of separating the two trust networks.  Aunt Sally can still use Konfidi to indicate trust if she and only one other person, say, a more technically savvy nephew, sign each other's keys.  She will then  be connected to the PGP web-of-trust within a reasonable distance of other family members which she is likely to include in her trust network.  Now there is no need to teach Aunt Sally the requirements for key signing, and explaining why they must be done for each person she wishes to add to her Konfidi trust network.  The system is easier to use, and the web-of-trust is less likely to be compromised\footnote{While the effects of individual keys being compromised on the web-of-trust as a whole would be restricted to the key's neighborhood in the web, as this happened with greater frequency, the usefulness of the entire web would be undermined.}.
 
-The frontend uses drivers in a Strategy pattern \citep{designPatterns}, so that different subsystems for doing PGP pathfinding can be interchanged as they are developed.  The current version utilizes the Wotsap pathfinder \citep{wotsap} described in Section~\ref{wotsap}.
+The frontend uses drivers in a Strategy pattern \citep{designPatterns}, so that different subsystems for doing PGP pathfinding can be interchanged as they are developed.  The current version utilizes the Wotsap pathfinder \citep{wotsap} described in Section~\ref{wotsap}.  
 
 \subsubsection{TrustServer}
 The Konfidi trust backend is responsible for storing the internal representation of the Konfidi trust network, incorporating updates into the network, and responding to queries about the nodes in the network.
@@ -202,13 +201,13 @@ The TrustServer can register with a FOAFServer as a mirror to receive notificati
 
 When it updates a record, the TrustServer parses the RDF input data and adds the relevant information to its internal representation of the trust network, which is a list of all \texttt{foaf:Person} records indexed by fingerprint and links to each \texttt{Person} marked as trusted, along with topic and rating data.  The updated data will then be available for subsequent queries.  This scheme accomplishes the goal of having trust links available in the proper direction, from source to sink, and avoiding one species of bogus data attack, as discussed in Section~\ref{earlierPGP}.  
 
-Let $m$ be the number of persons, $n$ the number of trust links, $l$ the average length of a path between two persons, $o$ the number of persons being updated, and $p$ the number of links being updated.  This representation requires $O(m+n)$ space to store and on average, $O(m*l)$ time to search, and $O(o+p)$ time to update.  On the other hand, a representation of a completely solved network, storing the trust values between any two individuals, requires $O(m^2)$ space, but makes trust queries take a maximum of $O(1)$ time.  However, such a representation requires $O(m^2*l)$ time to solve, which it must do again after every update, since it must recompute the value for every pair.  
+Let $m$ be the number of persons, $n$ the number of trust edges, $l$ the average length of a path between two persons, $k$ the average number of topics per relationships, $o$ the number of persons being updated, and $p$ the number of edges being updated.  This representation requires $O((m+n)*k)$ space to store and on average, $O(m*l)$ time to search, and $O(o+p)$ time to update.  On the other hand, a representation of a completely solved network, storing the trust values between any two individuals, requires $O(m^2*k)$ space, but makes trust queries take a maximum of $O(1)$ time.  However, such a representation requires $O(m^2*l*k)$ time to solve, which it must do again after every update, since it must recompute the value for every pair.  
 
 The tradeoff between storage space and query time makes it hard to settle on a representation.  Perhaps a compromise between a ``live" system that incorporates incremental updates with slow queries, and a system that updates its network several times a day, rather than on each update, could provide better performance.  Most users will not need up-to-date links with every user, since their queries will most likely be over a rather limited subset of the network.  Caching of previously computed trust values on the user's end, with periodic updating, might also make a difference.
 
 It may also be advantageous to store trust links going the other direction, perhaps for local representation analysis, or auxiliary information like name or email address.  Other information, such as when the record was last updated, could allow for record caching that might improve performance.
 
-Because of the apparent lack of psychological research on trust representations, we have again implemented the Strategy pattern \citep{designPatterns}, for the trust propagation algorithm.  This allows additional propagation strategies to be used as they are developed.  Our preliminary algorithm does simple multiplicative propagation over each link in a path.  It uses something like a breadth-first search, prioritized to follow whichever path has highest value after each iteration, to find the shortest path between source and sink, if one exists:
+Because of the apparent lack of psychological research on trust representations, we have again implemented the Strategy pattern \citep{designPatterns}, for the trust propagation algorithm.  This allows additional propagation strategies to be used as they are developed.  Our preliminary algorithm does simple multiplicative propagation over each link in a path.  It uses a breadth-first search, prioritized to follow whichever path has highest value after each iteration, to find the shortest path between source and sink, if one exists:
 
 \begin{verbatim}
 function findRating(source, sink):
@@ -228,6 +227,15 @@ $r = \prod_{i=0}^{n-1} Rating(i, i + 1)^{1/2}$
 \end{center}
 
 where $Rating$ returns the rating between two nodes in the network.
+
+Figure~\ref{fig:full} shows an example of how the PGP web-of-trust and the Konfidi trust network might be combined.  Note that while most PGP edges are two way, the usual outcome from a keysigning event, trust edges are more likely to be one way only.  The trust edges are labeled to indicate trust rating and topic, to show how a certain path through the network could yield a low rating for the spammer.  The RDF data of this labeled network can be found in Appendix~\ref{app:trustExample}.
+
+\begin{figure}[thp]
+\centering
+\epsfig{figure=fullnetwork.eps,width=0.45\textwidth}
+\caption{Combined Trust Network}
+\label{fig:full}
+\end{figure}
 
 \section{FOAFServer}
 \label{foafserver}
@@ -331,122 +339,12 @@ We would like to thank Jim Laing for assisting with test data, Prof. Vander Lind
 %Appendix A
 \section{OWL Trust Schema}
 \label{app:schemaCode}
-
-\begin{verbatim}
-
-<?xml version="1.0"?>
-<!DOCTYPE rdf:RDF [
-    <!ENTITY trust "http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#" >
-    <!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
-    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-    <!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
-    <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
-    <!ENTITY wot  "http://xmlns.com/wot/0.1/" >
-    <!ENTITY rel "http://vocab.org/relationship/#" >
-    <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
-    <!ENTITY vs "http://www.w3.org/2003/06/sw-vocab-status/ns#" >
-  ]>
-
-<rdf:RDF 
-    xmlns="&trust;"
-    xmlns:owl="&owl;" 
-    xmlns:rdf="&rdf;" 
-    xmlns:rdfs="&rdfs;"
-    xmlns:xsd="&xsd;"
-    xmlns:rel="&rel;"
-    xmlns:foaf="&foaf;"
-    xmlns:wot="&wot;"
-    xmlns:dc="&dc;"
-    xmlns:vs="&vs;"
->
-
-<rdf:Description rdf:about="">
-    <dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
-    <dc:date>2005-03-20</dc:date>
-    <dc:contributor>Andrew Schamp</dc:contributor>
-    <dc:contributor>Dave Brondsema</dc:contributor>
-</rdf:Description>
-
-<owl:Ontology 
-    rdf:about="&trust;" 
-    dc:title="Trust Vocabulary" 
-    dc:description="The Trust RDF vocabulary, in OWL and RDF." 
-    dc:date="$Date: 2005/03/19 11:38:02 $"
-    > 
-    <owl:versionInfo>v1.0</owl:versionInfo>
-</owl:Ontology>
-
-<!-- classes first -->
-<owl:Class rdf:about="&trust;Item" rdfs:label="Item" 
-    rdfs:comment="An item of trust">
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-    <rdfs:subClassOf rdf:resource="&rdfs;Resource" />
-</owl:Class>
-
-<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship"
-    rdfs:comment="A relationship between two agents">
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-    <rdfs:subClassOf rdf:resource="&rel;Relationship" />
-</owl:Class>
-
-<!-- for constraints -->
-<xsd:element xsd:name="percent" rdf:ID="percent">
-    <xsd:simpleType>
-        <xsd:restriction xsd:base="xsd:decimal">
-            <xsd:totalDigits>4</xsd:totalDigits>
-            <xsd:fractionDigits>2</xsd:fractionDigits>
-            <xsd:minInclusive> 0.00</xsd:minInclusive>
-            <xsd:maxInclusive> 1.00</xsd:maxInclusive>
-        </xsd:restriction>
-    </xsd:simpleType>
-</xsd:element>
-
-<!-- properties second -->
-<owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
-    rdfs:comment="The agent doing the trusting.">
-    <rdfs:domain rdf:resource="&trust;Relationship" />
-    <rdfs:range rdf:resource="&foaf;Agent" />
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="trusted" rdfs:label="trusted"
-    rdfs:comment="The agent being trusted.">
-    <rdfs:domain rdf:resource="&trust;Relationship" />
-    <rdfs:range rdf:resource="&foaf;Agent" />
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="about" rdfs:label="about" 
-    rdfs:comment="Relates things to trust items.">
-    <rdfs:domain rdf:resource="&trust;Relationship" />
-    <rdfs:range rdf:resource="#Item" />
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="rating" rdfs:label="rating">
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-    <rdfs:domain rdf:resource="#Item" />
-    <rdfs:range rdf:resource="&rdfs;Literal" rdf:type="#percent" />
-</owl:ObjectProperty>
-
-<owl:ObjectProperty rdf:ID="topic" rdfs:label="topic">
-    <rdfs:isDefinedBy rdf:resource="&trust;" />
-    <rdfs:domain rdf:resource="#Item" />
-    <rdfs:range rdf:resource="&owl;Thing" />
-</owl:ObjectProperty>
-
-
-</rdf:RDF>
-\end{verbatim}
+\input{appendixa.tex}
 
 %Appendix B
 \section{Example Trust Network}
 \label{app:trustExample}
-
-\begin{verbatim}
-edgecases example here
-\end{verbatim}
+\input{appendixb.tex}
 
 \twocolumn
 
