@@ -89,7 +89,7 @@ A more serious flaw in this approach is this:  because information about key sig
 
 \subsection{Wotsap}
 \label{wotsap}
-Wotsap \citep{wotsap} is a tool to work with the PGP web-of-trust.  From a keyserver it creates a data file with all keys' names, email addresses, and signature connections, but no cryptographic data.  A python script is available to use this data file to find paths between keys and generate statistics.
+Wotsap \citep{wotsap} is a tool to work with the PGP web-of-trust.  From a keyserver it creates a data file with the names, email addresses, and signature connections of all keys from the largest strongly connected set of keys, but no cryptographic data.  For technical reasons, it does not include all keys or even all reachable keys.  A python script is available to use this data file to find paths between keys and generate statistics.
 
 \subsection{Summary}
 This related work forms many of the building blocks, both technical and theoretical, for our work.  The system should determine authenticity through a decentralized network and determine trust in a topic through a similar network topology.  We integrate PGP, RDF and FOAF, and design ideas from Golbeck, Guha, and others.  We are extending FOAF with an RDF trust ontology to represent our trust network, which ties into the PGP web-of-trust to verify authorship and identity.  We expanded Golbeck's trust ontology to a relationship-centered model with values in a continuous range which represent trust and distrust.
