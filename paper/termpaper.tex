@@ -1,12 +1,21 @@
 \documentclass{acm_proc_article-sp}
 
 \usepackage{epsfig}
-\usepackage{url}
 \usepackage[square,authoryear]{natbib}
 
+%\usepackage{times}
+%\usepackage[usenames,dvipsnames]{color}
+%\usepackage[pdfborder= 0 0 0, citebordercolor= 0 0 0,  filebordercolor= 0 0 0, linkbordercolor= 0 0 0, menubordercolor= 0 0 0, pagebordercolor= 0 0 0, urlbordercolor= 0 0 0, colorlinks=true, anchorcolor=blue, filecolor=blue, citecolor=blue, linkcolor=blue, menucolor=blue, pagecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{url}
 \pagenumbering{arabic}
 
 \begin{document}
+\special{  pdf: docinfo << 
+  /Subject (Sr. Project Report: Konfidi)
+  /Author (Dave Brondsema and Andrew Schamp)
+  /Title (Konfidi:Trust Networks Using PGP and RDF)
+  /Keywords (Semantic web, trust network, FOAF, RDF, PGP, GPG, reputation, propagation, distributed, inference, delegation, social network)
+  >>}
 \special{  pdf:  docview <</PageMode /UseOutlines>>}
 
 \title{Konfidi:\titlenote{\textit{Konfidi} is the Esperanto term for trust.  
@@ -31,13 +40,13 @@ A universal concept in a universal language seemed appropriate for what we hope 
 
 \maketitle
 \begin{abstract}
-Email filtering, among many other topics, could be improved through social networks of trust.  To do this, we propose a the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  We discuss the design of the network and system architecture and the current state of implementation.
+Email filtering, and many other topics, could be improved through social networks of trust.  To do this, we propose a the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  We discuss the design of the network and system architecture and the current state of implementation.
 \end{abstract}
 
 \keywords{Semantic web, trust network, FOAF, RDF, PGP, GPG, reputation, propagation, distributed, inference, delegation, social network}
 
 \section{Introduction}
-As internet-based communication grows, there has been rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to users.  This gives rise to two questions: 
+As internet-based communication grows, the internet has experienced rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to users.  This gives rise to two questions: 
 How can one be sure that a message really comes from the indicated sender?  How can one be sure that the sender can be trusted to send good messages?
 
 There have been a number of attempts to answer either one question or the other.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity;  however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.  As for the second question, one answer that is growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems can be subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  A simple rating system for reputation within certain domains, such as eBay online auctions, may be of some limited use.  However, unless some there is a system to verify the raters, they may also be susceptible to malicious users who manipulate ratings.  Even if such systems can be guarded against such attacks, why should someone base their trust in another person on ratings given by people that they neither know nor trust?
@@ -148,9 +157,9 @@ As the FOAF project grows in popularity, an infrastructure is growing to support
 
 Konfidi uses the Web Ontology Language (OWL) \citep{owl} to define the RDF elements that make up the Konfidi trust ontology.  OWL builds on the existing RDF specification by providing a vocabulary to describe properties and classes, and their relations.  The Konfidi trust ontology provides two objects and five properties, which, in conjunction with the existing FOAF and WOT vocabularies, are sufficient to describe the trust relationships that Konfidi requires.
 
-The primary element is \texttt{Relationship}, which represents a relationship of trust that holds between two persons.  There are two properties required for every \texttt{Relationship}, \texttt{truster} and \texttt{trusted}, which indicate the two parties to the relationship.  Both \texttt{truster} and \texttt{trusted} have \texttt{foaf:Person} objects as their targets.  These \texttt{Person} objects should also contain at least one \texttt{wot:fingerprint} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Person} describes.  This property is required for verification; if no \texttt{fingerprint} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trusted} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:Person} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Relationship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fingerprint} of each \texttt{Person} listed as a \texttt{truster} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
+The primary element is \texttt{Re\-la\-tion\-ship}, which represents a relationship of trust that holds between two persons.  There are two properties required for every \texttt{Re\-la\-tion\-ship}, \texttt{trust\-er} and \texttt{trust\-ed}, which indicate the two parties to the relationship.  Both \texttt{trust\-er} and \texttt{trust\-ed} have \texttt{foaf:\-Per\-son} objects as their targets.  These \texttt{Per\-son} objects should also contain at least one \texttt{wot:\-fin\-ger\-print} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Per\-son} describes.  This property is required for verification; if no \texttt{fin\-ger\-print} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trust\-ed} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:\-Per\-son} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Re\-la\-tion\-ship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fin\-ger\-print} of each \texttt{Per\-son} listed as a \texttt{trust\-er} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
 
-In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Relationship} to a trust \texttt{Item}.  A \texttt{Relationship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it and so on may be recorded without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
+In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Re\-la\-tion\-ship} to a trust \texttt{Item}.  A \texttt{Re\-la\-tion\-ship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it and so on may be recorded without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
 
 A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  For example, remember the example given above, in which Alice trusts Bob highly about cooking, and distrusts him somewhat about the weather.  This might be represented in our ontology as something like the following\footnote{That is, supposing that the objects \texttt{alice123}, \texttt{bob1812}, \texttt{cooking}, and \texttt{weather} are all defined elsewhere in the same file.}:
 
@@ -217,7 +226,7 @@ function findRating(source, sink):
     find the path with the highest rating
     find the link not already seen
       concatenate ratings from path and link
-      add the path with its rating to the queue
+      add the path and its rating to the queue
   return the path rating
 \end{verbatim}
 
@@ -244,11 +253,11 @@ The Konfidi server uses data from PGP keyservers to act on identity trust.  To a
 
 The FOAFServer is a web service that stores and serves FOAF files that include trust relationships as specified by our trust ontology.  A separate FOAF file is stored for each person, identified by their PGP fingerprint.  All FOAF files must be PGP signed by the owner to prevent false data from being submitted and to prevent unauthorized modification of someone else's data.  When a FOAF file is requested, the PGP signature is included so that it may be verified by a client.
 
-Multiple FOAFServers will be available for public use and will synchronize their contents.  Like the SKS PGP Keyserver\citep{sks}, anti-entropy reconciliation will be used, in which, at each time of synchronization, servers synchronize the entire database no matter what the current states are.  There is a trade-off between computation and communication expenses.  This is preferred to the rumor-mongering reconciliation  used by traditional PGP keyservers, in which only the most recent updates are pushed to other servers, since this does not allow servers to be out of communication for an extended period of time.  Synchronization data will be PGP signed to maintain trusted secure communication channels everywhere.
+Multiple FOAFServers will be available for public use and will synchronize their contents.  Like the SKS PGP Keyserver\citep{sks}, anti-entropy reconciliation will be used, in which, at each time of synchronization, servers synchronize the entire database regardless of the current states.  There is a trade-off between computation and communication expenses.  This is preferred to the rumor-mongering reconciliation  used by traditional PGP keyservers, in which only the most recent updates are pushed to other servers, since this does not allow servers to be out of communication for an extended period of time.  Synchronization data will be PGP signed to maintain trusted secure communication channels everywhere.
 
 Since the primary function of the FOAFServer is data storage, it may hold FOAF files that are not related to trust.  A FOAF server may be configurable to act as one that is used for trust relationships, pet information, or r\'{e}sum\'{e}s.  Moreover, RDF features a \texttt{seeAlso} tag so a single FOAF file hosted on a FOAF server may refer to more FOAF data hosted elsewhere.  This gives the owner flexibility, including encrypting or limiting access to a FOAF file hosted under his or her direct control.
 
-Our FOAFServer is built with the Apache HTTP Server and mod\_python using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \url{http://domain.org/foafserver/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: \linebreak[0]multipart/signed} and \texttt{GET} requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
+Our FOAFServer is built with the Apache HTTP Server and mod\_\-py\-thon using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \url{http://domain.org/foafserver/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: mul\-ti\-part/\-signed} and \texttt{GET} requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
 
 Synchronization has not been implemented yet.  Currently the TrustServer listens on a port for filenames that it should load into its memory.  When someone updates a file via the FOAFServer, it sends the filename to the TrustServer update listening port so the TrustServer reloads it.  Thus currently the FOAFServer and TrustServer must run on systems with access to the same filesystem.
 
@@ -258,7 +267,7 @@ The PGP, FOAF, and Konfidi servers each have clients which end-users use to view
 \subsection{PGP Clients}
 Many clients have already been written to interact with PGP keyservers with the Horowitz Key Protocol (HKP), a standard, yet undocumented, set of filenames and conventions using HTTP.  The server itself also provides web forms to search for and view keys.  It may be useful to integrate a PGP client with other Konfidi clients to provide a more cohesive user interface to the system.
 
-Many MUAs have plugins or extensions to send multipart/signed PGP emails.  Users should use these for Konfidi to be useful for email filtering.
+Many MUAs have plugins or extensions to send \texttt{mul\-ti\-part/\-signed} PGP emails.  Users should use these for Konfidi to be useful for email filtering.
 
 \subsection{FOAF Clients}
 The FOAFServer provides some web forms to allow users to upload FOAF documents and PGP signatures.  We plan to develop desktop software for users to create, sign, and upload their FOAF documents.  See Section~\ref{foafserver} for a summary of the FOAFServer HTTP interface.
@@ -276,7 +285,7 @@ The client does the following tasks:
 \item  stops, if the message is not multipart/signed using PGP
 \item  stops, if the PGP signature does not validate
 \item  stops, if the \texttt{From:} header is not one of the email addresses listed on the key used to create the signature
-\item  queries the Konfidi server with the topic ``email" and the fingerprints of the source (recipient) and sink (signer)
+\item  queries the Konfidi server with the topic ``email" and the fingerprints of the source (recipient) and sink (signing party)
 \item  receives the computed trust value from the Konfidi server
 \end{enumerate}
 
