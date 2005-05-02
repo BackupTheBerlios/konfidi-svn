@@ -40,7 +40,7 @@ from TrustPath import Fifo
 from TrustPathFinder import TrustPathFinder
 import xmlgen
 
-class MultiplicativeTPF(TrustPathFinder):
+class Multiplicative2TPF(TrustPathFinder):
 	def query(self, source, sink, opts):
 		f = xmlgen.Factory()
 		options = {}
