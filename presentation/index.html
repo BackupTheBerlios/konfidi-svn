@@ -26,6 +26,34 @@ img#me01 {top: 0; left: 0;}
 img#me02 {left: 23px;}
 img#me04 {top: 44px;}
 img#me05 {top: 43px;left: 36px;}
+.inset {
+  position:absolute;
+  top:20%;
+  margin-right: 10px;
+  left:50%;
+  width: 50%;
+  white-space:pre;
+  font-size:0.5em;
+  filter:alpha(opacity=50);
+  -moz-opacity:.50;
+  opacity:.50;
+  background: white;
+  border: 2px solid black;
+  padding: 10px
+}
+.diagram {
+  text-align: center;
+  margin: 20px; 
+  padding: 20px; 
+  background: white; 
+  border: 2px solid black;
+}
+.inset .diagram {
+  opacity: .75;
+  -moz-opacity: .75;
+  filter: alpha(opacity=75);
+  width: 50%;
+}
 </style>
 <!-- S5 JS -->
 <script src="v11b5/default/slides.js" type="text/javascript"></script>
@@ -78,7 +106,7 @@ img#me05 {top: 43px;left: 36px;}
 
 <div class="slide">
 <h1>Related Work</h1>
-<div class="handout" style="font-style:italic">dave, andy</div>
+<div class="handout" style="font-style:italic">dave, andy - she's moved on to movie reviews, now</div>
 <ul>
 <li>SPF, IIM</li>
 <li>Jennifer Golbeck's TrustMail</li>
@@ -87,10 +115,8 @@ img#me05 {top: 43px;left: 36px;}
 
 <div class="slide">
 <h1>Trust Network</h1>
-<div class="handout" style="font-style:italic">andy</div>
-<ul>
-<li>diagram here</li>
-</ul>
+<div class="handout" style="font-style:italic">andy - explain nodes and edges and direction</div>
+<img class="diagram" src="trust_network.gif" />
 </div>
 
 <div class="slide">
@@ -106,7 +132,7 @@ img#me05 {top: 43px;left: 36px;}
 
 <div class="slide">
 <h1>Topical Trust with RDF</h1>
-<div class="handout" style="font-style:italic">andy</div>
+<div class="handout" style="font-style:italic">andy - explain source and sink<br />difference kinds of trust (email)<br />leadin for FOAFServer</div>
 <ul>
 <li>Person A trusts Person B</li>
   <ul>
@@ -127,8 +153,8 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
 <h1>Topical Trust with RDF</h1>
 <div class="handout" style="font-style:italic">andy</div>
-<div style="position:absolute;top:20%;margin-right: 10px;left:50%;white-space:pre;font-size:0.5em;filter:alpha(opacity=50);-moz-opacity:.50;opacity:.50;background: white;border: 2px solid black;padding: 10px">&lt;Relationship>
-        &lt;truster rdf:nodeID="person9BB3CE70"/>
+<div class="inset">&lt;Relationship>
+        &lt;truster rdf:nodeID="person9BB3CE70" />
         &lt;trusted>
                 &lt;foaf:Person>
                         &lt;wot:fingerprint>407CDD8D&lt;/wot:fingerprint>
@@ -136,7 +162,7 @@ img#me05 {top: 43px;left: 36px;}
         &lt;/trusted>
         &lt;about>
                 &lt;Item>
-                        &lt;topic rdf:resource="&amp;subject;#email"/>
+                        &lt;topic rdf:resource="&amp;subject;#email" />
                         &lt;rating>.8&lt;/rating>
                 &lt;/Item>
         &lt;/about>
@@ -173,7 +199,7 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
 <h1>System Architecture</h1>
 <div class="handout" style="font-style:italic">andy</div>
-<img src="arch_700.png" alt="" title="Konfidi System Architecture" />
+<div class="diagram"><img src="arch.gif" alt="" title="Konfidi System Architecture" /></div>
 </div>
 
 
@@ -191,15 +217,23 @@ img#me05 {top: 43px;left: 36px;}
 <div class="handout" style="font-style:italic">andy</div>
 <ul>
 <li>Data synchronized from FOAF server
-<li>Recursive computations</li>
 <li>Models</li>
   <ul>
+  <li>Distributed</li>
   <li>Relative to source</li>
-  <li>Scale</li>
-  <li>Distrust</li>
+  <li>Rating System</li>
   </ul>
 </ul>
+<li>Propagation Algorithm</li>
 </div>
+
+<div class="slide">
+<h1>TrustServer</h1>
+<div class="handout" style="font-style:italic">andy</div>
+<div class="diagram"><img src="trust_network_path_values.gif" /></div>
+</div>
+
+
 
 <div class="slide">
 <h1>Clients</h1>
@@ -222,7 +256,7 @@ img#me05 {top: 43px;left: 36px;}
 <div class="slide">
 <h1>Review System Architecture</h1>
 <div class="handout" style="font-style:italic">andy</div>
-<img src="arch_900.png" alt="" title="Konfidi System Architecture" />
+<div class="diagram"><img src="arch.gif" alt="" title="Konfidi System Architecture" /></div>
 </div>
 
 <div class="slide">
@@ -239,7 +273,7 @@ img#me05 {top: 43px;left: 36px;}
 
 <div class="slide">
 <h1>Other Applications</h1>
-<div class="handout" style="font-style:italic">andy</div>
+<div class="handout" style="font-style:italic">andy - good strangers</div>
 <ul>
 <li>Digital communication in general</li>
   <ul>
@@ -312,6 +346,9 @@ img#me05 {top: 43px;left: 36px;}
 </ul>
 </div>
 
+<div class="slide">
+<h1>Thank You</h1>
+</div>
 
 </div>
 
