@@ -2,11 +2,30 @@
 
 \usepackage{epsfig}
 \usepackage[square,authoryear]{natbib}
-
-%\usepackage{times}
-%\usepackage[usenames,dvipsnames]{color}
-%\usepackage[pdfborder= 0 0 0, citebordercolor= 0 0 0,  filebordercolor= 0 0 0, linkbordercolor= 0 0 0, menubordercolor= 0 0 0, pagebordercolor= 0 0 0, urlbordercolor= 0 0 0, colorlinks=true, anchorcolor=blue, filecolor=blue, citecolor=blue, linkcolor=blue, menucolor=blue, pagecolor=blue, urlcolor=blue]{hyperref}
 \usepackage{url}
+\usepackage{times}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage[
+dvips,
+pdfborder= 0 0 0, 
+citebordercolor= 0 0 0,  
+filebordercolor= 0 0 0, 
+linkbordercolor= 0 0 0, 
+menubordercolor= 0 0 0, 
+pagebordercolor= 0 0 0, 
+urlbordercolor= 0 0 0, 
+colorlinks=true, 
+anchorcolor=blue, 
+filecolor=blue, 
+citecolor=blue, 
+linkcolor=blue, 
+menucolor=blue, 
+pagecolor=blue, 
+urlcolor=blue,
+breaklinks
+]{hyperref}
+\usepackage{breakurl}
+
 \pagenumbering{arabic}
 
 \begin{document}
@@ -70,7 +89,7 @@ Golbeck suggests an important distinction between belief in statements and trust
 In addition to Golbeck, a number of others have explored the usefulness and implications of expressing trust relationships in the Semantic Web.
 
 \label{foaf}
-The FOAF project \citep{foafProject} is a Resource Description Framework (RDF) vocabulary used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing \texttt{Person}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.} objects which can specify name, email address, and so on, but more importantly, they can express relationships between \texttt{Person} objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF often uses uniform resource indicators (URIs) to identify each individual object.
+The FOAF project \citep{foafProject} is a vocabulary in the Resource Description Framework (RDF) that can be used to represent personal data and interpersonal relationships for the Semantic Web.  Users create RDF files describing \texttt{Person}\footnote{According to RDF standards, the names of objects are capitalized, while the names of properties remain lowercase.} objects which can specify name, email address, and so on, but more importantly, they can express relationships between \texttt{Person} objects.  There are a number of tools in development for processing FOAF data and traversing references between FOAF RDF files.  These tools can aggregate information because RDF often uses uniform resource indicators (URIs) to identify each individual object.
 
 Dan Brickley has made a practical attempt to investigate the use of FOAF, particularly the \texttt{mbox\_sha1} property, to automatically generate email whitelists. By hashing the sender's email address using SHA1, privacy is protected (and the address cannot be gathered by spiders), and so users can share whitelists of \texttt{mbox\_sha1}s of addresses they know not to send spam. Then for all incoming mail, the sender's address is hashed and the whitelist searched for the resulting value, and then is filtered accordingly. This use of FOAF is promising, but since it is decentralized, it is difficult for updates to propagate \citep{foafWhitelisting}. No effort is taken in this project to verify the sender's identity.
 
@@ -157,7 +176,7 @@ As the FOAF project grows in popularity, an infrastructure is growing to support
 
 Konfidi uses the Web Ontology Language (OWL) \citep{owl} to define the RDF elements that make up the Konfidi trust ontology.  OWL builds on the existing RDF specification by providing a vocabulary to describe properties and classes, and their relations.  The Konfidi trust ontology provides two objects and five properties, which, in conjunction with the existing FOAF and WOT vocabularies, are sufficient to describe the trust relationships that Konfidi requires.
 
-The primary element is \texttt{Re\-la\-tion\-ship}, which represents a relationship of trust that holds between two persons.  There are two properties required for every \texttt{Re\-la\-tion\-ship}, \texttt{trust\-er} and \texttt{trust\-ed}, which indicate the two parties to the relationship.  Both \texttt{trust\-er} and \texttt{trust\-ed} have \texttt{foaf:\-Per\-son} objects as their targets.  These \texttt{Per\-son} objects should also contain at least one \texttt{wot:\-fin\-ger\-print} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Per\-son} describes.  This property is required for verification; if no \texttt{fin\-ger\-print} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trust\-ed} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:\-Per\-son} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Re\-la\-tion\-ship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fin\-ger\-print} of each \texttt{Per\-son} listed as a \texttt{trust\-er} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
+The primary element is \texttt{Re\-la\-tion\-ship}, which represents a relationship of trust that holds between two persons.  There are two properties that are required for every \texttt{Re\-la\-tion\-ship}, \texttt{trust\-er} and \texttt{trust\-ed}, which indicate the two parties to the relationship.  Both \texttt{trust\-er} and \texttt{trust\-ed} have \texttt{foaf:\-Per\-son} objects as their targets.  These \texttt{Per\-son} objects should also contain at least one \texttt{wot:\-fin\-ger\-print} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Per\-son} describes.  This property is required for verification; if no \texttt{fin\-ger\-print} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trust\-ed} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:\-Per\-son} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Re\-la\-tion\-ship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fin\-ger\-print} of each \texttt{Per\-son} listed as a \texttt{trust\-er} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
 
 In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Re\-la\-tion\-ship} to a trust \texttt{Item}.  A \texttt{Re\-la\-tion\-ship} is not limited in the other properties it can have, so auxiliary information about the relationship, such as when it began, who introduced it and so on may be recorded without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
 
@@ -226,7 +245,7 @@ function findRating(source, sink):
     find the path with the highest rating
     find the link not already seen
       concatenate ratings from path and link
-      add the path and its rating to the queue
+      add the path and rating to the queue
   return the path rating
 \end{verbatim}
 
@@ -257,7 +276,7 @@ Multiple FOAFServers will be available for public use and will synchronize their
 
 Since the primary function of the FOAFServer is data storage, it may hold FOAF files that are not related to trust.  A FOAF server may be configurable to act as one that is used for trust relationships, pet information, or r\'{e}sum\'{e}s.  Moreover, RDF features a \texttt{seeAlso} tag so a single FOAF file hosted on a FOAF server may refer to more FOAF data hosted elsewhere.  This gives the owner flexibility, including encrypting or limiting access to a FOAF file hosted under his or her direct control.
 
-Our FOAFServer is built with the Apache HTTP Server and mod\_\-py\-thon using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs of the format \url{http://domain.org/foafserver/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70}.  \texttt{PUT} requests must be of \texttt{Content-Type: mul\-ti\-part/\-signed} and \texttt{GET} requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
+Our FOAFServer is built with the Apache HTTP Server and mod\_\-py\-thon using principles of REST architecture.  Various clients can retrieve and set data using HTTP \texttt{PUT} and \texttt{GET} methods on URIs like \url{http://domain.org/foafserver/9BB3CE70}.  \texttt{PUT} requests must be \texttt{Content-Type:multipart/signed} and \texttt{GET} requests are served with a content appropriate to the request's \texttt{Accept:} header.  A web form for uploading FOAF files and their signatures is also provided.
 
 Synchronization has not been implemented yet.  Currently the TrustServer listens on a port for filenames that it should load into its memory.  When someone updates a file via the FOAFServer, it sends the filename to the TrustServer update listening port so the TrustServer reloads it.  Thus currently the FOAFServer and TrustServer must run on systems with access to the same filesystem.
 
