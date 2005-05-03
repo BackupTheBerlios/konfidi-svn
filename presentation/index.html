@@ -29,9 +29,9 @@ img#me05 {top: 43px;left: 36px;}
 .inset {
   position:absolute;
   top:20%;
-  margin-right: 10px;
+  margin-right: 20px;
   left:50%;
-  width: 50%;
+  width: 42%;
   white-space:pre;
   font-size:0.5em;
   filter:alpha(opacity=50);
@@ -124,8 +124,8 @@ img#me05 {top: 43px;left: 36px;}
 <div class="handout" style="font-style:italic">dave</div>
 <ul>
 <li>Public/private keypairs</li>
-<li>web-of-trust</li>
 <li>keyservers</li>
+<li>web-of-trust</li>
 <li>multipart/signed emails</li>
 </ul>
 </div>
@@ -142,7 +142,6 @@ img#me05 {top: 43px;left: 36px;}
 <li>RDF</li>
   <ul>
   <li>XML markup</li>
-  <li>Subject-predicate-object statements</li>
   <li>FOAF subjects</li>
   <li>Trust schemas</li>
   <li>no servers</li>
@@ -154,16 +153,23 @@ img#me05 {top: 43px;left: 36px;}
 <h1>Topical Trust with RDF</h1>
 <div class="handout" style="font-style:italic">andy</div>
 <div class="inset">&lt;Relationship>
-        &lt;truster rdf:nodeID="person9BB3CE70" />
+        &lt;truster rdf:nodeID="alice123" />
         &lt;trusted>
                 &lt;foaf:Person>
+                        &lt;foaf:name>Bob&lt;/foaf:name>
                         &lt;wot:fingerprint>407CDD8D&lt;/wot:fingerprint>
                 &lt;/foaf:Person>
         &lt;/trusted>
         &lt;about>
                 &lt;Item>
-                        &lt;topic rdf:resource="&amp;subject;#email" />
-                        &lt;rating>.8&lt;/rating>
+                        &lt;topic rdf:resource="#cooking" />
+                        &lt;rating>.95&lt;/rating>
+                &lt;/Item>
+        &lt;/about>
+        &lt;about>
+                &lt;Item>
+                        &lt;topic rdf:resource="#weather" />
+                        &lt;rating>.35&lt;/rating>
                 &lt;/Item>
         &lt;/about>
 &lt;/Relationship>
@@ -177,7 +183,6 @@ img#me05 {top: 43px;left: 36px;}
 <li>RDF</li>
   <ul>
   <li>XML markup</li>
-  <li>Subject-predicate-object statements</li>
   <li>FOAF subjects</li>
   <li>Trust schemas</li>
   <li>no servers</li>
@@ -186,7 +191,7 @@ img#me05 {top: 43px;left: 36px;}
 </div>
 
 <div class="slide">
-<h1>FOAF Server</h1>
+<h1>FOAFServer</h1>
 <div class="handout" style="font-style:italic">dave</div>
 <ul>
 <li>Public server, like PGP keyserver</li>
@@ -216,15 +221,15 @@ img#me05 {top: 43px;left: 36px;}
 <h1>TrustServer</h1>
 <div class="handout" style="font-style:italic">andy</div>
 <ul>
-<li>Data synchronized from FOAF server
+<li>Data synchronized from FOAFServer
 <li>Models</li>
   <ul>
   <li>Distributed</li>
   <li>Relative to source</li>
   <li>Rating System</li>
   </ul>
-</ul>
 <li>Propagation Algorithm</li>
+</ul>
 </div>
 
 <div class="slide">
@@ -240,7 +245,7 @@ img#me05 {top: 43px;left: 36px;}
 <div class="handout" style="font-style:italic">dave</div>
 <ul>
 <li>PGP and Gnu Privacy Guard
-<li>"Trust-o-matic" for FOAF server</li>
+<li>"Trust-o-matic" for FOAFServer</li>
 <li>Email clients</li>
   <ul>
   <li>Sign outgoing emails</li>
@@ -282,9 +287,6 @@ img#me05 {top: 43px;left: 36px;}
   <li>phishing</li>
   </ul>
 <li>P2P online sales (eBay)</li>
-  <ul>
-  <li>"Reputation" studies in this area</li>
-  </ul>
 </ul>
 </div>
 
@@ -309,7 +311,6 @@ img#me05 {top: 43px;left: 36px;}
 <li>No anonymous communication</li>
 <li>Deployment - explaining PGP, etc</li>
 <li>Scumbags</li>
-<li>Bring accountability to communication</li>
 <li>Global network of users</li>
 </div>
 
@@ -318,10 +319,10 @@ img#me05 {top: 43px;left: 36px;}
 <div class="handout" style="font-style:italic">dave &amp; andy</div>
 <ul>
 <li>Security &amp; usability</li>
-<li>Topic hierarchy</li>
-<li>FOAFServer synch</li>
-<li>Trust Server: test strategies</li>
 <li>Email plugins, webmail</li>
+<li>FOAFServer synch</li>
+<li>Topic hierarchy</li>
+<li>Trust Server: test strategies</li>
 <li>Trust-o-matic</li>
 </ul>
 </div>
