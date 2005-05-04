@@ -22,7 +22,7 @@
 
 <foaf:Person rdf:nodeID="andy">
     <!-- andy schamp -->
-    <wot:fingerprint>8a335b856C4AE39a0 C36 : A4 7F152C15A0F2454727</wot:fingerprint>
+    <wot:fingerprint>8A335b856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
 <!-- test trusting a resource -->

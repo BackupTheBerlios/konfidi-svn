@@ -117,6 +117,7 @@ class Frontend:
 		<a href="query?strategy=Multiplicative&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
 		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
 		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative2&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=4135692DA2AD1F1EB9B27F22FBA13B553109E447&subject=email">sample: Dave, Andy, Jim, email (full fingerprints)</a><br>
 		<br>Edge cases:<br>
 		Ghandi, Spammer, email
 		Ghandi, Scumbag, email
@@ -316,17 +317,22 @@ class Frontend:
 		#req.write( "foo\n" )
 		req.write( "%s\n" % peops )
 		req.write( "%s\n" % options )
-		req.write("<table border=1><tr><td>Source:</td><td>Sink:</td><td>Query Time:</td><td>Lock Time:</td><td>Result:</td></tr>\n")
+		req.write("<table border=1><tr><td>Source:</td><td>Sink:</td><td>Rating:</td><td>Path:</td></tr>\n")
 		for source in peops:
 			for sink in peops:
 				if source == sink: continue
 				r = self.send_query(strategy, source, sink, options)
-				rating = float(minidom.parseString(r).documentElement.getElementsByTagName("rating")[0].firstChild.nodeValue)
-				if rating >= 0 and opts["map_errors"] != 1:
-					req.write( "<tr><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, r) )
+				result = minidom.parseString(r).documentElement
+				path = result.getElementsByTagName("path")
+				rating = result.getElementsByTagName("rating")[0].firstChild.nodeValue.strip()
+				if rating != "-1" and opts["map_errors"] != 1:
+					req.write( "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, rating, self.print_path(path.pop().firstChild.nodeValue) ) )
 		
 		req.write("</table>\n")
 		return apache.OK
+
+	def print_path(self, str):
+		return "<br>\n".join(str.strip('[]').split(", "))
 
 	def form(self, req):
 		req.content_type = "text/html"
