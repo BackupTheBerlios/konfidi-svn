@@ -22,51 +22,43 @@
 
 <foaf:Person rdf:nodeID="andy">
     <!-- andy schamp -->
-    <wot:fingerprint>8A335b856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
+    <wot:fingerprint>8A335B856C4AE39A0C36A47F152C15A0F2454727</wot:fingerprint>
 </foaf:Person>
 
-<!-- test trusting a resource -->
-<Relationship>
-	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
-	<trusted rdf:resource="http://www.yahoo.com"/>
-	<about>
-		<Item>
-			<topic rdf:resource="&subject;#okay-for-children"/>
-			<rating>0.9</rating>
-		</Item>
-	</about>
-</Relationship>
-
-
+<!--
 <Relationship>
 	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
 	<trusted rdf:nodeID="andy"/>
 	<about>
 		<Item>
 			<topic rdf:resource="&subject;#email"/>
-			<rating>0.80</rating>
-		</Item>
-	</about>
-	<about>
-		<Item>
-			<topic rdf:resource="&subject;#java"/>
 			<rating>0.90</rating>
 		</Item>
 	</about>
 	<about>
 		<Item>
-			<topic rdf:resource="&subject;#wiki"/>
+			<topic rdf:resource="&subject;#rate-okay-for-children"/>
 			<rating>0.60</rating>
 		</Item>
 	</about>
+</Relationship>
+-->
+
+<!-- santiago gala -->
+<Relationship>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted>
+		<foaf:Person>
+			<wot:fingerprint>4FD63B17F6BCC90BA0E20C2D30663A7B407CDD8D</wot:fingerprint>
+		</foaf:Person>
+	</trusted>
 	<about>
 		<Item>
-			<topic rdf:resource="&subject;#rate-okay-for-children"/>
-			<rating>0.80</rating>
+			<topic rdf:resource="&subject;#email"/>
+			<rating>.8</rating>
 		</Item>
 	</about>
 </Relationship>
-
 
 <foaf:Person rdf:nodeID="FB559CABDB811891B6D37E1439C06ED9D798EFD2">
     <!-- jeremy frens -->
@@ -94,21 +86,9 @@
 		</Item>
 	</about>
 </Relationship>
-<Relationship>
-	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
-	<trusted>
-		<foaf:Person>
-			<wot:fingerprint>4FD63B17F6BCC90BA0E20C2D30663A7B407CDD8D</wot:fingerprint>
-		</foaf:Person>
-	</trusted>
-	<about>
-		<Item>
-			<topic rdf:resource="&subject;#email"/>
-			<rating>.8</rating>
-		</Item>
-	</about>
-</Relationship>
 
+
+<!-- random guy -->
 <Relationship>
 	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
 	<trusted>
@@ -120,6 +100,18 @@
 		<Item>
 			<topic rdf:resource="&subject;#email"/>
 			<rating>.8</rating>
+		</Item>
+	</about>
+</Relationship>
+
+<!-- test trusting a resource -->
+<Relationship>
+	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
+	<trusted rdf:resource="http://www.yahoo.com"/>
+	<about>
+		<Item>
+			<topic rdf:resource="&subject;#okay-for-children"/>
+			<rating>0.9</rating>
 		</Item>
 	</about>
 </Relationship>
