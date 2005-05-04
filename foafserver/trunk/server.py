@@ -214,7 +214,7 @@ def form(req):
     
     # TODO: -----BEGIN PGP SIGNED MESSAGE----- option
     req.write("""
-    <h2>Submit an unsiqned FOAF record</h2>
+    <h2>Submit an signed FOAF record</h2>
     <form action="form" method="POST" enctype="multipart/form-data">
     Upload FOAF file: <input type="file" name="foaf_file"/><br/>
     Upload PGP signature file: <input type="file" name="sig_file"/><br/>
