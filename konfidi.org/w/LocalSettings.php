@@ -67,7 +67,7 @@ $wgMemCachedServers = array();
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then uncomment this:
-# $wgDisableUploads		= false;
+$wgDisableUploads		= false;
 $wgUseImageResize		= true;
 # $wgUseImageMagick = true;
 # $wgImageMagickConvertCommand = "/usr/bin/convert";
@@ -116,10 +116,11 @@ $wgNavigationLinks = array (
 	array( 'text'=>'mainpage',	'href'=>'mainpage' ),
 	array( 'text'=>'berliosproject',	'href'=>'berlios-project-url' ),
 	array( 'text'=>'browsesvn', 'href'=>'svn-url'),
+	array( 'text'=>'mailinglists', 'href'=>'mailinglists-url'),
 	#array( 'text'=>'portal',	'href'=>'portal-url' ),
 	#array( 'text'=>'currentevents', 'href'=>'currentevents-url' ),
 	array( 'text'=>'recentchanges', 'href'=>'recentchanges-url' ),
-	array( 'text'=>'randompage',	'href'=>'randompage-url' ),
+	#array( 'text'=>'randompage',	'href'=>'randompage-url' ),
 	#array( 'text'=>'help', 		'href'=>'helppage' ),
 	#array( 'text'=>'sitesupport',	'href'=>'sitesupport-url' ),
 );
