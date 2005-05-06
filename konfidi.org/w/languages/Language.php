@@ -1679,8 +1679,11 @@ ta[\'ca-nstab-category\'] = new Array(\'c\',\'View the category page\');
 'speciallogtitlelabel' => 'Title: ',
 
 # Konfidi
-'browsesvn' => 'Browse SVN',
-'svn-url' => 'http://svn.berlios.de/viewcvs/konfidi',
+'browsesvn' => 'SVN',
+#'svn-url' => 'http://svn.berlios.de/viewcvs/konfidi',
+'svn-url' => 'http://developer.berlios.de/svn/?group_id=3538',
+'mailinglists' => 'Mailing Lists',
+'mailinglists-url' => 'http://developer.berlios.de/mail/?group_id=3538',
 'berliosproject' => 'Berlios Project',
 'berlios-project-url' => 'http://developer.berlios.de/projects/konfidi/'
 
