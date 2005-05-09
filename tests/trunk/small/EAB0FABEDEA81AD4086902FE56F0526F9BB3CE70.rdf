@@ -104,7 +104,9 @@
 	</about>
 </Relationship>
 
-<!-- test trusting a resource -->
+<!-- test trusting a resource
+- this won't work yet, because the resource isn't a foaf:Person, and there's no wot:fingerprint to key it by (causes a "StopIteration" exception in UpdateListener.py
+- ams5
 <Relationship>
 	<truster rdf:nodeID="EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70"/>
 	<trusted rdf:resource="http://www.yahoo.com"/>
@@ -115,5 +117,5 @@
 		</Item>
 	</about>
 </Relationship>
-
+-->
 </rdf:RDF>
