@@ -64,7 +64,7 @@ class PGPSig:
         return filename
     
     def verify(self, signed_text):
-        """verify this signature against some plaintext"
+        """verify this signature against some plaintext"""
         #self.content = open("/home/ams5/foafs/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70.rdf.asc", 'r').read()
         #signed_text = open("/home/ams5/foafs/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70.rdf", 'r').read()
         self.ctx.op_verify(core.Data(self.content), core.Data(signed_text), None)
