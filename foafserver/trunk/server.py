@@ -156,6 +156,7 @@ def put(req):
         foaf = FOAFDoc(content)
         sig = PGPSig()
         signedFOAF = SignedFOAF(foaf, sig)
+        signedFOAF.verify_sig()
         err = storefoaf(req, signedFOAF, fingerprint)
     else:
         err = "Must PUT with Content-Type: multipart/signed"
@@ -206,6 +207,7 @@ def form(req):
             foaf = FOAFDoc(foaf_content)
             sig = PGPSig(sig_content)
             signedFOAF = SignedFOAF(foaf, sig)
+            signedFOAF.verify_sig()
             store_error = storefoaf(req, signedFOAF)
             if store_error:
                 req.write("<p>Error: " + store_error + "</p>")

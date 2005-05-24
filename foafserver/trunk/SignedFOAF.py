@@ -44,8 +44,6 @@ class SignedFOAF:
         self.signature = signature
         self.accept_types = accept_types
         
-        #TODO: validate signature
-        
         self.mimetype = None
         self.mimesubtype = None
         
@@ -78,6 +76,9 @@ class SignedFOAF:
         
         self.micalg = 'pgp-sha1'
     
+    def verify_sig(self):
+        return self.signature.verify(self.foaf.content)
+
     def return_mimetype(self):
         return self.mimetype
     
