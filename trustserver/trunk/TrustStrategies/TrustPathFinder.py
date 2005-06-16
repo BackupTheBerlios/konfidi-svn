@@ -56,13 +56,14 @@ class TrustPathFinder:
 	def do_query(self, source, sink):
 		raise NotImplementedError
 
+	def parse_cfg(self, options):
+		for o in options.split("|"):
+			(k, v) = o.split("=")
+			self.options[k] = v
+
 class ReadOnly(TrustPathFinder):
 	def query(self, source, sink, options):
-                # split the list of options, and build a dictionary out of it
-                for o in options.split("|"):
-                        (k, v) = o.split("=")
-                        self.options[k] = v
-		
+		self.parse_cfg(options)	
 		if self.__class__.restricted and self.options["password"] != self.__class__.password:
 			return	"Invalid password: %s\n" % (self.options["password"])
 		
@@ -73,11 +74,7 @@ class ReadOnly(TrustPathFinder):
 		
 class ReadWrite(TrustPathFinder):
 	def query(self, source, sink, options):
-                # split the list of options, and build a dictionary out of it
-                for o in options.split("|"):
-                        (k, v) = o.split("=")
-                        self.options[k] = v
-		
+		self.parse_cfg(options)	
 		if self.__class__.restricted and self.options["password"] != self.__class__.password:
 			return	"Invalid password: %s\n" % (self.options["password"])
 		
