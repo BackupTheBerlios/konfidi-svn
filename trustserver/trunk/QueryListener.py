@@ -70,11 +70,11 @@ class QueryListener(SocketServer.BaseRequestHandler):
 				exec("debug_module = (TrustStrategies.%sTPF.%sTPF.debug)" % (strategy, strategy))
 				if debug_module:
 					exec("reload(TrustStrategies.%sTPF) " % (strategy))
-				exec("tpf = TrustStrategies.%sTPF.%sTPF(self.people, self.server.lock)" % (strategy, strategy))
+				exec("tpf = TrustStrategies.%sTPF.%sTPF(self.server)" % (strategy, strategy))
 				
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
-				tpf = DefaultTPF(self.people)
+				tpf = DefaultTPF(self.server)
 				print "Caught ImportError: %s" % (i)
 			searchtime = time.time()
 			r = tpf.query(source, sink, options)

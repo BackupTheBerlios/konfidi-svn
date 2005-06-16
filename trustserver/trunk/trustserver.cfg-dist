@@ -28,3 +28,6 @@ query_port = 20000
 [Trust Server]
 # The strategy to use as default.  The class must exists in TrustStrategies/, and be a subclass of TrustStrategies.TrustPathFinder.  Use the strategy name, minus the "TPF.py" (e.g. "Prototype" for PrototypeTPF.py)
 default_strategy = Multiplicative
+
+[Strategies]
+strategy_password = konfidi

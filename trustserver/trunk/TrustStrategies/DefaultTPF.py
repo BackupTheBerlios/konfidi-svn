@@ -40,7 +40,8 @@ from TrustPathFinder import ReadOnly
 import xmlgen
 
 class DefaultTPF(ReadOnly):
-	def do_query(self, source, sink, options):
+	restricted = False
+	def do_query(self, source, sink):
 		f = xmlgen.Factory()
 		trustresult = f.trustresult[f.rating(str(-1)), f.error("You must specify a strategy to use.  This is the default.")]
 		return str(trustresult)

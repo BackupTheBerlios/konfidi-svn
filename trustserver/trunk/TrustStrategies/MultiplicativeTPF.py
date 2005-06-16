@@ -41,6 +41,7 @@ from TrustPathFinder import ReadOnly
 import xmlgen
 
 class MultiplicativeTPF(ReadOnly):
+	restricted = False
 	def do_query(self, source, sink, opts):
 		f = xmlgen.Factory()
 		options = {}

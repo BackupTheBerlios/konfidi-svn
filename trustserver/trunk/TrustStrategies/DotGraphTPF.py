@@ -43,7 +43,7 @@ import pickle
 
 class DotGraphTPF(ReadOnly):
 	debug = True
-	def do_query(self, source, sink, options):
+	def do_query(self, source, sink):
 		res = """
 		digraph konfidi {
 			edge [fontsize = 8]

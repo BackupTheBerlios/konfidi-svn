@@ -41,18 +41,13 @@ from TrustPathFinder import ReadOnly
 import xmlgen
 
 class Multiplicative2TPF(ReadOnly):
-	def do_query(self, source, sink, opts):
+	restricted = False
+	def do_query(self, source, sink):
 		f = xmlgen.Factory()
-		options = {}
-		xmlopt = []
-		# split the list of options, and build a dictionary out of it
-		for o in opts.split("|"):
-			(k, v) = o.split("=")
-			options[k] = v
 		
-		path = self.findPath(source, sink, options["subject"])
+		path = self.findPath(source, sink, self.options["subject"])
 		pathstr = "%s" % path
-		rating = self.getPathRating(path, options["subject"])
+		rating = self.getPathRating(path, self.options["subject"])
 		
 		trustresult = f.trustresult[f.rating("%s" % rating), f.path(pathstr)]
 		t = str(trustresult)

@@ -97,6 +97,7 @@ def main():
 	c.add_option('trust_url', type='string', default='http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl', keys='Schema')
 	c.add_option('wot_url', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
 	c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema', keys='Schema')
+	c.add_option('strategy_password', type='string', default='konfidi', keys='Strategies')
 	c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
 	config = c.parse()
 
@@ -108,27 +109,6 @@ def main():
 	# new processes of the above, and then exit.:
 	while 1:
 		time.sleep(240)
-		#print "people: \n"
-		#for p in t.getPeople():
-		#	print "\t%s" % (t.people[p])
-	# this is really just for output prettiness
-	#time.sleep(3)
-	#print "Server running.  Enter commands below: "
-	#selectables = [sys.stdin]
-	#while 1:
-	#	(input, output, exc) = select([sys.stdin], [], [sys.stdin], 60)
-	#	if input:
-	#		cmd = sys.stdin.readline()
-	#		if cmd.rstrip() == "quit": 
-	#			break
-	#		elif cmd.rstrip() == "people": 
-	#			for p in t.getPeople():
-	#				print t.people[p]
-	#		elif cmd.rstrip() == "help":
-	#			print "commands: \n\tpeople -- print the people dictionary\n\tquit -- exit the server."
-			#else:
-			#	print cmd
-	#os.unlink('/tmp/trustpipe')
 	sys.exit(0)		
 
 if __name__ == "__main__":

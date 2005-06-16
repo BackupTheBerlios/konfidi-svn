@@ -37,26 +37,51 @@
 class TrustPathFinder:
 	# set this to 1 in a subclass, if you want to reload the module in the QueryListener (for updates) without restarting the server.
 	debug = 0
-	def __init__(self, people, lock):
-		self.people = people
-		self.lock = lock
+	# All strategies are restricted by default, using the password specified in the configuration file.
+	# To unprotect a subclasse, override the class variable 'restricted' with 'False'
+	# To change the password for a subclass, override the class variable 'password' with the desired password.
+	# Anyone attempting to use that strategy must enter that strategy's password to do so.
+	restricted = True
+	password = ''
+	def __init__(self, server):
+		self.people = server.people
+		self.lock = server.lock
+		self.config = server.config
+		self.options = {}
+		TrustPathFinder.password = self.config.strategy_password
 			
 	def query(self, source, sink, options):
 		raise NotImplementedError
 	
-	def do_query(self, source, sink, options):
+	def do_query(self, source, sink):
 		raise NotImplementedError
 
 class ReadOnly(TrustPathFinder):
 	def query(self, source, sink, options):
+                # split the list of options, and build a dictionary out of it
+                for o in options.split("|"):
+                        (k, v) = o.split("=")
+                        self.options[k] = v
+		
+		if self.__class__.restricted and self.options["password"] != self.__class__.password:
+			return	"Invalid password: %s\n" % (self.options["password"])
+		
 		self.lock.acquire_read()
-		result = self.do_query(source, sink, options)
+		result = self.do_query(source, sink)
 		self.lock.release_read()
 		return result
 		
 class ReadWrite(TrustPathFinder):
 	def query(self, source, sink, options):
+                # split the list of options, and build a dictionary out of it
+                for o in options.split("|"):
+                        (k, v) = o.split("=")
+                        self.options[k] = v
+		
+		if self.__class__.restricted and self.options["password"] != self.__class__.password:
+			return	"Invalid password: %s\n" % (self.options["password"])
+		
 		self.lock.acquire_write()
-		result = self.do_query(source, sink, options)
+		result = self.do_query(source, sink)
 		self.lock.release_write()
 		return result
