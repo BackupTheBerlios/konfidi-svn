@@ -34,11 +34,11 @@
 #  License along with this library; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from TrustPathFinder import TrustPathFinder
+from TrustPathFinder import ReadOnly
 import xmlgen
 
-class PeopleListTPF(TrustPathFinder):
-	def query(self, source, sink, options):
+class PeopleListTPF(ReadOnly):
+	def do_query(self, source, sink, options):
 		f = xmlgen.Factory()
 		trustresult = f.trustresult[f.data("|".join(self.people.keys()))]
 		t = str(trustresult)

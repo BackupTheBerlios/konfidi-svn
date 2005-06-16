@@ -36,11 +36,11 @@
 
 from TrustPath import TrustPath	
 from TrustPath import Fifo
-from TrustPathFinder import TrustPathFinder
+from TrustPathFinder import ReadOnly
 import xmlgen
 
-class PeopleDumpTPF(TrustPathFinder):
-	def query(self, source, sink, options):
+class PeopleDumpTPF(ReadOnly):
+	def do_query(self, source, sink, options):
 		res = ""
 		print "People: %d" % (len(self.people.items()))
 		for (k, v) in self.people.items():

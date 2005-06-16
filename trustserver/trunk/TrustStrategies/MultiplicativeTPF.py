@@ -37,11 +37,11 @@
 from TrustPath import TrustPath
 from TrustPath import PathNotFoundError
 from TrustPath import Fifo
-from TrustPathFinder import TrustPathFinder
+from TrustPathFinder import ReadOnly
 import xmlgen
 
-class MultiplicativeTPF(TrustPathFinder):
-	def query(self, source, sink, opts):
+class MultiplicativeTPF(ReadOnly):
+	def do_query(self, source, sink, opts):
 		f = xmlgen.Factory()
 		options = {}
 		xmlopt = []

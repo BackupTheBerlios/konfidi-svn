@@ -37,11 +37,30 @@
 from TrustPath import TrustPath	
 from TrustPath import Fifo
 from TrustPathFinder import ReadOnly
+import pydot
 import xmlgen
+import pickle
 
-class DefaultTPF(ReadOnly):
+class DotGraphTPF(ReadOnly):
+	debug = True
 	def do_query(self, source, sink, options):
-		f = xmlgen.Factory()
-		trustresult = f.trustresult[f.rating(str(-1)), f.error("You must specify a strategy to use.  This is the default.")]
-		return str(trustresult)
+		res = """
+		digraph konfidi {
+			edge [fontsize = 8]
+			node [shape = circle, style=filled, fillcolor=lightsteelblue1, fixedsize=true, height=0.5, width=0.5, fontsize=8];
+			"""
+		for (k, v) in self.people.items():
+			for (trusted, items) in self.people[k].trusts.items():
+				val = 0.0
+				count = 0.0
+				for (topic, rating) in items.items():
+					val += float(rating)
+					count += 1
+				res += "%s -> %s [ label = \"%s\" ];\n" % (v.fingerprint[-8:], trusted[-8:], str(val/count))
+		res += "\n}"		
+
+		t = str(res)	
+		g = pydot.graph_from_dot_data(t)
+		
+		return "%s" % pickle.dumps(g, pickle.HIGHEST_PROTOCOL)
 

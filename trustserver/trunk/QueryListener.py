@@ -66,22 +66,21 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			print "\texecuting query: %s, %s, %s, %s" % (strategy, source, sink, options)
 			
 			try:
-				exec("from TrustStrategies.%sTPF import %sTPF" % (strategy, strategy))
-				exec("tpf = %sTPF(self.people)" % (strategy))
+				exec("import TrustStrategies.%sTPF " % (strategy))
+				exec("debug_module = (TrustStrategies.%sTPF.%sTPF.debug)" % (strategy, strategy))
+				if debug_module:
+					exec("reload(TrustStrategies.%sTPF) " % (strategy))
+				exec("tpf = TrustStrategies.%sTPF.%sTPF(self.people, self.server.lock)" % (strategy, strategy))
 				
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
 				tpf = DefaultTPF(self.people)
 				print "Caught ImportError: %s" % (i)
-			lockwait = time.time()
-			self.server.lock.acquire_read()	
-			lockwait = "%.6f" %  (time.time() - lockwait)
 			searchtime = time.time()
 			r = tpf.query(source, sink, options)
 			searchtime = "%.6f" % (time.time() - searchtime)
-			self.server.lock.release_read()
 			# build the xml response
-			result = f.queryresult(r, executed="1", strategy=strategy, search_time=searchtime, lock_time=lockwait)
+			result = f.queryresult(r, executed="1", strategy=strategy, search_time=searchtime)
 			
 			
 		except KeyError, k:

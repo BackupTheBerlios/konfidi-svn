@@ -35,8 +35,28 @@
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class TrustPathFinder:
-	def __init__(self, people):
+	# set this to 1 in a subclass, if you want to reload the module in the QueryListener (for updates) without restarting the server.
+	debug = 0
+	def __init__(self, people, lock):
 		self.people = people
+		self.lock = lock
 			
 	def query(self, source, sink, options):
 		raise NotImplementedError
+	
+	def do_query(self, source, sink, options):
+		raise NotImplementedError
+
+class ReadOnly(TrustPathFinder):
+	def query(self, source, sink, options):
+		self.lock.acquire_read()
+		result = self.do_query(source, sink, options)
+		self.lock.release_read()
+		return result
+		
+class ReadWrite(TrustPathFinder):
+	def query(self, source, sink, options):
+		self.lock.acquire_write()
+		result = self.do_query(source, sink, options)
+		self.lock.release_write()
+		return result
