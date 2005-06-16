@@ -47,14 +47,18 @@ import time
 #import exceptionTools
 from socket import *
 #from rdflib.Namespace import Namespace
-#from rdflib.TripleStore import TripleStore
-#from rdflib.StringInputSource import StringInputSource
+
 #from xml.sax import SAXParseException
 from mod_python import apache
 from mod_python import util
 import pickle
 import string
 from xml.dom import minidom
+
+# for graph output
+from PIL import Image
+import pydot
+
 
 frontend_version = "0.1"
 
@@ -86,6 +90,10 @@ class Frontend:
 			return self.map(self.req)
 		if (page == "form"):
 			return self.form(self.req)
+		if (page == "viewgraph"):
+			return self.viewgraph(self.req)
+		if (page == "graph_image"):
+			return self.graph_image(self.req)
 		if (page == ""):
 			return self.index(self.req)
 		else:
@@ -129,6 +137,10 @@ class Frontend:
 		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>-->
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
+		Or <a href="viewgraph?password=konfidi">view an image of the current network (password)</a><br>
+		Or <a href="viewgraph">view an image of the current network (incorrect password)</a><br>
+		Or <a href="viewgraph?password=krangfidi">view an image of the current network (no password)</a><br>
+		Or <a href="viewgraph?password=konfidi&update=1">update the images to reflect the current network</a><br>
 		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br/>
 		Or <a href="map?strategy=Multiplicative">Map all trust relationships and inferences</a><br/>
 		<h4><a href="test">debug output</a></h4>""" +
@@ -329,6 +341,32 @@ class Frontend:
 					req.write( "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n" % (source, sink, rating, self.print_path(path.pop().firstChild.nodeValue) ) )
 		
 		req.write("</table>\n")
+		return apache.OK
+	
+	def viewgraph(self, req):
+		try:
+			update = util.FieldStorage(req, 1)["update"]
+			password = util.FieldStorage(req, 1)["password"]
+		except KeyError:
+			update = 0
+			password = ''
+		req.content_type = "text/html"
+		if update:
+			# do that update thang!
+			dot = self.send_query("DotGraph", options="password=%s"%password)
+			# it's malformed XML, so we can't parse it proper.  we'll have to eat the enclosing tags, instead.
+			dot = dot[dot.index('>')+1:dot.rindex('<')].strip()
+			g = pickle.loads(dot)
+			g.write_gif("/tmp/trustgraph.gif", prog='neato')
+			req.write("The image has been updated successfully.<br />")
+		req.write("""<img src="graph_image"><br />""")
+		req.write("""<a href="viewgraph?update=1">Update Image</a>""")
+		return apache.OK
+
+	def graph_image(self, req):
+		req.content_type = "image/gif"
+		img = Image.open("/tmp/trustgraph.gif")
+		img.save(req, format=img.format)
 		return apache.OK
 
 	def print_path(self, str):
