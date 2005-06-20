@@ -41,7 +41,7 @@ class TrustPathFinder:
 	# To unprotect a subclasse, override the class variable 'restricted' with 'False'
 	# To change the password for a subclass, override the class variable 'password' with the desired password.
 	# Anyone attempting to use that strategy must enter that strategy's password to do so.
-	restricted = True
+	restricted = False # disabled for now
 	password = ''
 	def __init__(self, server):
 		self.people = server.people
