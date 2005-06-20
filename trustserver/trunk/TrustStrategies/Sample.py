@@ -34,21 +34,38 @@
 #  License along with this library; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from TrustPath import TrustPath	
-from TrustPath import Fifo
+# so no-one uses this strategy by accident.  remove this comment and the following line.
+raise Error
+
+# you must choose either
 from TrustPathFinder import ReadOnly
+# or
+from TrustPathFinder import ReadWrite
+# as the parent class depending on what your strategy is to do.  Read-only strategies use
+# the server's read lock, and so are more responsive.  Read-write strategies use the server's
+# read-write lock, and so must wait for all readers to finish before proceeding.  By making a 
+# read-only strategy, you are agreeing not to modify the data in the trust network.  Doing 
+# otherwise could create real problems.
+
+# This library is used to generate the XML response that will be parsed by the QueryListener
 import xmlgen
 
-class PeopleDump(ReadOnly):
+class StrategyName(ReadOnly): # or class StrategyName(ReadWrite):
+
+	# the do_query method receives the source and sink from the parent class, and returns the 
+	# result in XML.  any options that are passed to the strategy in the query will be in the 
+	# dictionary 'self.options', indexed by key.
 	def do_query(self, source, sink):
-		res = ""
-		print "People: %d" % (len(self.people.items()))
-		for (k, v) in self.people.items():
-			res += "%s\n\n" % (v)
-		
 		f = xmlgen.Factory()
-		trustresult = f.trustresult[f.rating("%d" % 0), f.data(res)]
+
+		# find the result however you'd like, analyze the data, or whatever, and assign 
+		# it as a string (possibly a pickled object)
+		result = "foobar"
+		
+		# package the result so that it can be parsed properly by the outer layers
+		trustresult = f.trustresult[f.data(result)]
+
+		# sometimes it isn't converted to a string properly.  who knows why?
 		t = str(trustresult)
-	
 		return "%s" % t
 

@@ -41,7 +41,7 @@ import pydot
 import xmlgen
 import pickle
 
-class DotGraphTPF(ReadOnly):
+class DotGraph(ReadOnly):
 	debug = True
 	def do_query(self, source, sink):
 		res = """

@@ -60,13 +60,20 @@ class TrustPathFinder:
 		for o in options.split("|"):
 			(k, v) = o.split("=")
 			self.options[k] = v
+			
+	def setup(self, options):
+		self.parse_cfg(options)
+		if self.__class__.restricted:
+			try:
+				if self.options["password"] != self.__class__.password:
+					raise InvalidPasswordError(self.options["password"])
+					
+			except (KeyError):
+				raise InvalidPasswordError()
 
 class ReadOnly(TrustPathFinder):
 	def query(self, source, sink, options):
-		self.parse_cfg(options)	
-		if self.__class__.restricted and self.options["password"] != self.__class__.password:
-			return	"Invalid password: %s\n" % (self.options["password"])
-		
+		self.setup(options)	
 		self.lock.acquire_read()
 		result = self.do_query(source, sink)
 		self.lock.release_read()
@@ -74,11 +81,19 @@ class ReadOnly(TrustPathFinder):
 		
 class ReadWrite(TrustPathFinder):
 	def query(self, source, sink, options):
-		self.parse_cfg(options)	
-		if self.__class__.restricted and self.options["password"] != self.__class__.password:
-			return	"Invalid password: %s\n" % (self.options["password"])
-		
+		self.setup(options)
 		self.lock.acquire_write()
 		result = self.do_query(source, sink)
 		self.lock.release_write()
 		return result
+
+class InvalidPasswordError(Exception):
+	def __init__(self, password=None):
+		self.password = password
+
+	def __str__(self):
+		if self.password:
+			return repr("%s" % self.password)
+		else:
+			return repr("No password supplied.")
+														

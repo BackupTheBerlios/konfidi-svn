@@ -40,7 +40,7 @@ from TrustPath import Fifo
 from TrustPathFinder import ReadOnly
 import xmlgen
 
-class MultiplicativeTPF(ReadOnly):
+class Multiplicative(ReadOnly):
 	restricted = False
 	def do_query(self, source, sink, opts):
 		f = xmlgen.Factory()

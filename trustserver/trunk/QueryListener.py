@@ -44,6 +44,7 @@ from xml.dom import minidom
 #local
 import xmlgen
 from TrustPath import PathNotFoundError
+from TrustStrategies.TrustPathFinder import InvalidPasswordError
 
 class SourceSinkSameError(Exception):
 	def __init__(self, source):
@@ -66,11 +67,11 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			print "\texecuting query: %s, %s, %s, %s" % (strategy, source, sink, options)
 			
 			try:
-				exec("import TrustStrategies.%sTPF " % (strategy))
-				exec("debug_module = (TrustStrategies.%sTPF.%sTPF.debug)" % (strategy, strategy))
+				exec("import TrustStrategies.%s " % (strategy))
+				exec("debug_module = (TrustStrategies.%s.%s.debug)" % (strategy, strategy))
 				if debug_module:
-					exec("reload(TrustStrategies.%sTPF) " % (strategy))
-				exec("tpf = TrustStrategies.%sTPF.%sTPF(self.server)" % (strategy, strategy))
+					exec("reload(TrustStrategies.%s) " % (strategy))
+				exec("tpf = TrustStrategies.%s.%s(self.server)" % (strategy, strategy))
 				
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
@@ -89,6 +90,8 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			result = f.queryresult[f.rating(str(-1)), f.error("No path found from source to sink: %s" % (p))] 
 		except SourceSinkSameError, s:
 			result = f.queryresult[f.rating(str(1)), f.error("The source and the sink are the same: %s" % (s))]
+		except InvalidPasswordError, i:
+			result = f.queryresult[f.rating(str(-1)), f.error("Invalid password: %s" % (i))]
 		#except (ValueError):
 		#	self.request.send("Invalid query")
 	

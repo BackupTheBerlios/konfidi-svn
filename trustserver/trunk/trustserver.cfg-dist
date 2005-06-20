@@ -26,7 +26,7 @@ query_port = 20000
 [FOAF Server] 
 
 [Trust Server]
-# The strategy to use as default.  The class must exists in TrustStrategies/, and be a subclass of TrustStrategies.TrustPathFinder.  Use the strategy name, minus the "TPF.py" (e.g. "Prototype" for PrototypeTPF.py)
+# The strategy to use as default.  The class must exist in TrustStrategies/, and be a subclass of TrustStrategies.ReadOnly or TrustStrategies.ReadWrite.  The class must be defined in a file of the same name (e.g. "Prototype" for PrototypeTPF.py).
 default_strategy = Multiplicative
 
 [Strategies]
