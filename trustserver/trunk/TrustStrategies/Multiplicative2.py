@@ -42,10 +42,10 @@ import xmlgen
 
 class Multiplicative2(ReadOnly):
 	restricted = False
-	def do_query(self, source, sink):
+	def do_query(self):
 		f = xmlgen.Factory()
 		
-		path = self.findPath(source, sink, self.options["subject"])
+		path = self.findPath(self.options["source"], self.options["sink"], self.options["subject"])
 		pathstr = "%s" % path
 		rating = self.getPathRating(path, self.options["subject"])
 		

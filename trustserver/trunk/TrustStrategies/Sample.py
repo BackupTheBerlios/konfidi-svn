@@ -55,7 +55,7 @@ class StrategyName(ReadOnly): # or class StrategyName(ReadWrite):
 	# the do_query method receives the source and sink from the parent class, and returns the 
 	# result in XML.  any options that are passed to the strategy in the query will be in the 
 	# dictionary 'self.options', indexed by key.
-	def do_query(self, source, sink):
+	def do_query(self):
 		f = xmlgen.Factory()
 
 		# find the result however you'd like, analyze the data, or whatever, and assign 

@@ -61,10 +61,11 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		f = xmlgen.Factory()
 		data = self.request.recv(1024)
 		try:
-			[strategy,source,sink,options] = data.split(":")
-			if source == sink:
-				raise SourceSinkSameError(source)
-			print "\texecuting query: %s, %s, %s, %s" % (strategy, source, sink, options)
+			[strategy,options] = data.split(":")
+			# we should put this in strategies that care about the source and sink.
+			# if source == sink:
+			#	raise SourceSinkSameError(source)
+			print "\texecuting query: %s, %s" % (strategy, options)
 			
 			try:
 				exec("import TrustStrategies.%s " % (strategy))
@@ -76,9 +77,9 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
 				tpf = DefaultTPF(self.server)
-				print "Caught ImportError: %s" % (i)
+				print "Caught ImportError: %s\nUsing DefaultTPF strategy." % (i)
 			searchtime = time.time()
-			r = tpf.query(source, sink, options)
+			r = tpf.query(options)
 			searchtime = "%.6f" % (time.time() - searchtime)
 			# build the xml response
 			result = f.queryresult(r, executed="1", strategy=strategy, search_time=searchtime)

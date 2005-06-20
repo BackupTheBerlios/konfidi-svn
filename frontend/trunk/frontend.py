@@ -153,41 +153,41 @@ class Frontend:
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
+
 			try:
 				strategy = form["strategy"]
 			except KeyError:
 				strategy = self.config["trustserver"]["strategy"]
-				
-			source = form["source"]
-			sink = form["sink"]
-
 		
 			opt = self.parse_options(form)
 			options = self.parse_options(form, True)
 			
-			pgpresult = None
+			pgp_result = None
 			if self.config["debug"] == "1":
 				reload(xmlgen)
 			f = xmlgen.Factory()
 			r = []
 			try:
 				if opt["pgpquery"]:
+					source = form["source"]
+					sink = form["sink"]
 					pgp_result = str(self.pgp_query(source, sink, f))
 					r.append(pgp_result)
 					
 				if opt["trustquery"]:
-					trust_result = str(self.trust_query(strategy, source, sink, options, f))
+					trust_result = str(self.trust_query(strategy, options, f))
 					r.append(trust_result)
 				
 				if opt["pgpquery"] and minidom.parseString(pgp_result).documentElement.getElementsByTagName("connected")[0].firstChild.nodeValue == "0":
 					shortoutput = "-1"
 				else:
 					shortoutput = minidom.parseString(trust_result).documentElement.getElementsByTagName("rating")[0].firstChild.nodeValue
-				r.extend([f.source(source), f.sink(sink), f.options(options)])
+				r.extend([f.options(options)])
 				longoutput = self.xml_indenter(str(f.result[r]))
 			except:
 				shortoutput = "-1"
-				longoutput = self.xml_indenter(str(f.result[f.error(str(sys.exc_info()[1]))]))
+				trace = "".join(traceback.format_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2]))
+				longoutput = self.xml_indenter(str(f.result[f.error(trace)]))
 			
 			if opt["trustoutput"] == "short":
 				req.write(str(shortoutput))
@@ -221,10 +221,10 @@ class Frontend:
 		
 		return f.pgp_result(search_time=pgptime)[connected.toxml(), pgp_path.toxml(), pgp_error.toxml()]	
 		
-	def trust_query(self, strategy, source, sink, options, f):
+	def trust_query(self, strategy, options, f):
 		# then, check the TrustServer:
 		try:
-			result = self.send_query(strategy, source, sink, options)
+			result = self.send_query(strategy, options)
 			result = minidom.parseString(result).documentElement
 			
 			try:
@@ -272,10 +272,11 @@ class Frontend:
 		xml = xml[bound:]
 		return (tag, xml)
 			
-	def send_query(self, strategy, source="foo", sink="bar", options="baz"):
+	def send_query(self, strategy, options = "no_options=true"):
+	
 		sockobj = socket(AF_INET, SOCK_STREAM)
 		sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-		sockobj.send("%s:%s:%s:%s" % (strategy, source, sink, options))
+		sockobj.send("%s:%s" % (strategy, options))
 		result = ""
 		while 1:
 			data = sockobj.recv(1024)
@@ -285,33 +286,37 @@ class Frontend:
 		return result
 	
 	def parse_options(self, form, retstr = False):
-		#handle the options here: 
+		# handle the default options and option processing here: 
+		# we might need another way to do it, to increase flexibility and allow options to be passed 
+		# through conveniently.
 		opt = {}
+		for k in form.keys():
+			opt[k] = form[k]
 		try:
-			opt["pgpquery"] = int(form["pgpquery"])
+			opt["pgpquery"] = int(opt["pgpquery"])
 		except KeyError:
 			opt["pgpquery"] = int(self.config["pgpserver"]["query"])
 		try:
-			opt["trustquery"] = int(form["trustquery"])
+			opt["trustquery"] = int(opt["trustquery"])
 		except KeyError:
 			opt["trustquery"] = int(self.config["trustserver"]["query"])
 		try:
-			opt["trustoutput"] = form["trustoutput"]
+			foo = opt["trustoutput"]
 		except KeyError:
 			opt["trustoutput"] = self.config["trustserver"]["output"]
 		try:
-			opt["pgpoutput"] = form["pgpoutput"]
+			foo = opt["pgpoutput"] 
 		except KeyError:
 			opt["pgpoutput"] = self.config["pgpserver"]["output"]
 		try:
-			opt["subject"] = form["subject"]
+			foo = opt["subject"]
 		except KeyError:
 			opt["subject"] = "default"
 		try:
-			opt["map_errors"] = form["map_errors"]
+			opt["map_errors"] = int(opt["map_errors"])
 		except KeyError:
 			opt["map_errors"] = 0
-			
+		
 		if retstr:
 			return "|".join(["%s=%s" % (k, v) for k, v in opt.items()])	
 		else:
@@ -333,7 +338,7 @@ class Frontend:
 		for source in peops:
 			for sink in peops:
 				if source == sink: continue
-				r = self.send_query(strategy, source, sink, options)
+				r = self.send_query(strategy, "%s|source=%s|sink=%s" % (options, source, sink))
 				result = minidom.parseString(r).documentElement
 				path = result.getElementsByTagName("path")
 				rating = result.getElementsByTagName("rating")[0].firstChild.nodeValue.strip()

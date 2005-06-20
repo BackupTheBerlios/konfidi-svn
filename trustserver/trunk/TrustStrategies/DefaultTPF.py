@@ -41,7 +41,7 @@ import xmlgen
 
 class DefaultTPF(ReadOnly):
 	restricted = False
-	def do_query(self, source, sink):
+	def do_query(self):
 		f = xmlgen.Factory()
 		trustresult = f.trustresult[f.rating(str(-1)), f.error("You must specify a strategy to use.  This is the default.")]
 		return str(trustresult)

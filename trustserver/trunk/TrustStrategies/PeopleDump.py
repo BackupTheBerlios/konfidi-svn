@@ -40,7 +40,7 @@ from TrustPathFinder import ReadOnly
 import xmlgen
 
 class PeopleDump(ReadOnly):
-	def do_query(self, source, sink):
+	def do_query(self):
 		res = ""
 		print "People: %d" % (len(self.people.items()))
 		for (k, v) in self.people.items():

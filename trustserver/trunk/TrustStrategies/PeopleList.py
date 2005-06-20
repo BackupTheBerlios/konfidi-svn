@@ -37,8 +37,8 @@
 from TrustPathFinder import ReadOnly
 import xmlgen
 
-class PeopleListTPF(ReadOnly):
-	def do_query(self, source, sink):
+class PeopleList(ReadOnly):
+	def do_query(self):
 		f = xmlgen.Factory()
 		trustresult = f.trustresult[f.data("|".join(self.people.keys()))]
 		t = str(trustresult)

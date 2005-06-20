@@ -50,10 +50,10 @@ class TrustPathFinder:
 		self.options = {}
 		TrustPathFinder.password = self.config.strategy_password
 			
-	def query(self, source, sink, options):
+	def query(self, options):
 		raise NotImplementedError
 	
-	def do_query(self, source, sink):
+	def do_query(self):
 		raise NotImplementedError
 
 	def parse_cfg(self, options):
@@ -72,18 +72,18 @@ class TrustPathFinder:
 				raise InvalidPasswordError()
 
 class ReadOnly(TrustPathFinder):
-	def query(self, source, sink, options):
+	def query(self, options):
 		self.setup(options)	
 		self.lock.acquire_read()
-		result = self.do_query(source, sink)
+		result = self.do_query()
 		self.lock.release_read()
 		return result
 		
 class ReadWrite(TrustPathFinder):
-	def query(self, source, sink, options):
+	def query(self, options):
 		self.setup(options)
 		self.lock.acquire_write()
-		result = self.do_query(source, sink)
+		result = self.do_query()
 		self.lock.release_write()
 		return result
 
@@ -93,7 +93,7 @@ class InvalidPasswordError(Exception):
 
 	def __str__(self):
 		if self.password:
-			return repr("%s" % self.password)
+			return "%s" % self.password
 		else:
-			return repr("No password supplied.")
+			return "No password supplied."
 														
