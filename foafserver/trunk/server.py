@@ -58,6 +58,13 @@ foafserver_version = "0.1"
 # Simple utility functions
 #
 
+def is_secure(req):
+    req.add_common_vars()
+    try:
+        return req.subprocess_env["HTTPS"] == "on"
+    except KeyError:
+        return False
+
 def uniqueURI(req):
     """Returns the URI portion unique to this request, disregarding the domain, real directory, etc"""
     req.add_common_vars()
@@ -73,7 +80,7 @@ def ishex(string):
 
 def handler(req):
     """main handler; called by mod_python"""
-    req.allow_methods(["GET", "PUT"])
+    req.allow_methods(["GET", "PUT", "DELETE"])
     
     if req.get_config().has_key('PythonDebug'):
         reload(dump)
@@ -93,6 +100,8 @@ def handler(req):
         return get(req)
     elif (req.method == "PUT"):
         return put(req)
+    elif (req.method == "DELETE"):
+        return delete(req)
     return apache.OK
 
 #
@@ -129,7 +138,6 @@ def get(req):
     uri = uniqueURI(req)
     # security check, allow hex only
     if ishex(uri):
-        
         try:
             foaf = FOAFDoc()
             foaf.load(req.get_options()['storage.dir.rdf'], uri)
@@ -150,25 +158,39 @@ def get(req):
 
 def put(req):
     fingerprint = uniqueURI(req)
-    # Content-Type: must begin with multipart/signed
-    if "Content-Type:" in req.headers_in and req.headers_in["Content-Type:"].find("multipart/signed") == 0:
-        content = req.read()
-        foaf = FOAFDoc(content)
-        sig = PGPSig()
-        signedFOAF = SignedFOAF(foaf, sig)
-        signedFOAF.verify_sig()
-        err = storefoaf(req, signedFOAF, fingerprint)
+    # security check, allow hex only
+    if ishex(uri):
+        # Content-Type: must begin with multipart/signed
+        if "Content-Type:" in req.headers_in and req.headers_in["Content-Type:"].find("multipart/signed") == 0:
+            content = req.read()
+            foaf = FOAFDoc(content)
+            sig = PGPSig()
+            signedFOAF = SignedFOAF(foaf, sig)
+            signedFOAF.verify_sig()
+            err = storefoaf(req, signedFOAF, fingerprint)
+        else:
+            err = "Must PUT with Content-Type: multipart/signed"
+        
+        if err:
+            apache.log_error(err, apache.APLOG_NOTICE)
+            req.status = apache.HTTP_NOT_ACCEPTABLE
+            req.write("Error: " + err)
+            return apache.OK
+        else:
+            #TODO: if a new file, return 201 (Created)
+            return apache.OK
     else:
-        err = "Must PUT with Content-Type: multipart/signed"
-    
-    if err:
-        apache.log_error(err, apache.APLOG_NOTICE)
-        req.status = apache.HTTP_NOT_ACCEPTABLE
-        req.write("Error: " + err)
-        return apache.OK
+        apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
+        return apache.HTTP_FORBIDDEN
+
+def delete(req):
+    fingerprint = uniqueURI(req)
+    # security check, allow hex only
+    if ishex(uri):
+        return apache.HTTP_NOT_IMPLEMENTED
     else:
-        #TODO: if a new file, return 201 (Created)
-        return apache.OK
+        apache.log_error("invalid: requested " + uri, apache.APLOG_ERR)
+        return apache.HTTP_FORBIDDEN
 
 def form(req):
     req.content_type = "text/html"
