@@ -4,7 +4,7 @@
 
 # *.headers must be sorted (use 'sort' command)
 
-APP=../dmail-cli-filter
+APP=../konfidi-cli-filter
 
 function namename()
 {

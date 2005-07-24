@@ -21,7 +21,7 @@
 #  STATIC=-static make mytargets
 #
 
-EXE = dmail-cli-filter
+EXE = konfidi-cli-filter
 
 SRC = src
 

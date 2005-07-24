@@ -32,7 +32,7 @@ bool Options::verbose = false;
 string Options::source_fingerprint;
 string Options::trust_server_url;
 string Options::trust_server_params;
-string Options::conf_file = ".dmail/cli-filter.conf";
+string Options::conf_file = ".konfidi/cli-filter.conf";
 
 void Options::process_args(int argc, char* argv[]) {
 	if (argc == 1) {
