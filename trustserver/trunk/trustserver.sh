@@ -7,7 +7,8 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 BASEDIR=`dirname $0`
-DAEMON=$BASEDIR/TrustServer.py
+DAEMON="$BASEDIR/TrustServer.py"
+ARGS="--daemonize"
 NAME=trustserver
 DESC="TrustServer"
 
@@ -19,7 +20,7 @@ case "$1" in
   start)
 	echo -n "Starting $DESC: "
 	mkdir -p $BASEDIR/run
-	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON 
+	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON -- $ARGS
 	echo "$NAME."
 	;;
   stop)
@@ -50,8 +51,9 @@ case "$1" in
 	echo -n "Restarting $DESC: "
 	start-stop-daemon --stop --pidfile $BASEDIR/run/$NAME.pid
 		# --exec $DAEMON
-	sleep 1
-	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON 
+	echo "Waiting for port to open..."
+	sleep 10
+	start-stop-daemon --start --pidfile $BASEDIR/run/$NAME.pid --exec $DAEMON --startas $DAEMON -- $ARGS
 	echo "$NAME."
 	;;
   *)
