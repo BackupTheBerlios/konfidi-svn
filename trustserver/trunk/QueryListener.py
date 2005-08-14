@@ -36,10 +36,11 @@
 
 #system
 import SocketServer
-import string
+from log4py import Logger
+#import string
 import time
-import imp
-from xml.dom import minidom
+#import imp
+#from xml.dom import minidom
 
 #local
 import xmlgen
@@ -58,14 +59,12 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		self.people = self.server.people
 		
 	def handle(self):
+		log = Logger().get_instance(self)
 		f = xmlgen.Factory()
 		data = self.request.recv(1024)
 		try:
 			[strategy,options] = data.split(":")
-			# we should put this in strategies that care about the source and sink.
-			# if source == sink:
-			#	raise SourceSinkSameError(source)
-			print "\texecuting query: %s, %s" % (strategy, options)
+			log.info("Executing query: %s, %s" % (strategy, options))
 			
 			try:
 				exec("import TrustStrategies.%s " % (strategy))
@@ -77,7 +76,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
 				tpf = DefaultTPF(self.server)
-				print "Caught ImportError: %s\nUsing DefaultTPF strategy." % (i)
+				log.warning("Caught ImportError: %s\nUsing DefaultTPF strategy." % (i))
 			searchtime = time.time()
 			r = tpf.query(options)
 			searchtime = "%.6f" % (time.time() - searchtime)
