@@ -41,7 +41,6 @@ import time
 import thread
 import sys
 import ConfigParser
-import sys
         
 from log4py import Logger, LOGLEVEL_DEBUG
 
