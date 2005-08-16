@@ -8,26 +8,28 @@
 # provides the URLs of the required XML and RDF schemas, ontologies, etc.
 # (won't this be handled by the FOAF server?  hmm..)
 [Schema]
-foaf_url = http://xmlns.com/foaf/0.1/
-trust_url = http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl
-#trust_url = http://www.abundantplunder.com/trust/owl/trust.owl
-wot_url = http://xmlns.com/wot/0.1/
-rdf_url = http://www.w3.org/2000/01/rdf-schema
+foaf_url: http://xmlns.com/foaf/0.1/
+trust_url: http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl
+wot_url: http://xmlns.com/wot/0.1/
+rdf_url: http://www.w3.org/2000/01/rdf-schema
 
 # server variables (port, etc.)
 [Server]
-host = 127.0.0.1
+# the address the server is listening on (default: 127.0.0.1) 
+#host: 127.0.0.1
+
 # the port the update thread listens on (default: 50010)
-update_port = 20010
+#update_port: 50010
+
 # the port the query thread listens on (default: 50000)
-query_port = 20000
+#query_port: 50000
 
 # this section is for info on the FOAF server, and synchronization, etc.
 [FOAF Server] 
 
 [Trust Server]
 # The strategy to use as default.  The class must exist in TrustStrategies/, and be a subclass of TrustStrategies.ReadOnly or TrustStrategies.ReadWrite.  The class must be defined in a file of the same name (e.g. "Prototype" for PrototypeTPF.py).
-default_strategy = Multiplicative
+default_strategy: Multiplicative
 
 [Strategies]
-strategy_password = konfidi
+strategy_password: konfidi

@@ -40,8 +40,9 @@ import os
 import time
 import thread
 import sys
-import cfgparse
-
+import ConfigParser
+import sys
+        
 from log4py import Logger, LOGLEVEL_DEBUG
 
 #from select import select 
@@ -67,114 +68,129 @@ PIDFILE = sys.path[0] + '/run/trustserver.pid'
 
 class TrustServer:
     def __init__(self, config=None, people=None):
-        self.host = config.host
         self.config = config
         self.lock = ReadWriteLock()
-        self.updatePort = config.update_port
-        self.queryPort = config.query_port
         # this people object should be the global object that is shared by both updateListener and queryListener
         self.people = people
-        self.updateListener = RequestServer((self.host, self.updatePort), UpdateListener, self.people, self.lock, self.config)
-        self.queryListener = RequestServer((self.host, self.queryPort), QueryListener, self.people, self.lock, self.config)
+        self.updateListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'update_port'))), UpdateListener, self.people, self.lock, self.config)
+        self.queryListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'query_port'))), QueryListener, self.people, self.lock, self.config)
     
         # logging
         self.log = Logger().get_instance(self)
         self.log.info("Creating TrustServer")
     
     def startUpdateListener(self, foo=None):
-        self.log.info("Starting Update Listener")
+        self.log.info("Starting Update Listener on port %s" % self.config.get('Server', 'update_port'))
         self.updateListener.serve_forever()
     
     def startQueryListener(self, foo=None):
-        self.log.info("Starting Query Listener")
+        self.log.info("Starting Query Listener on port %s" % self.config.get('Server', 'query_port'))
         self.queryListener.serve_forever()
     
     def getPeople(self):
         return self.people
 
-def main():
-  # load the configuration data
-  c = cfgparse.ConfigParser()
-  # default values
-  c.add_option('host', type='string', default='localhost', keys='Server')
-  c.add_option('update_port', type='int', default='50010', keys='Server')
-  c.add_option('query_port', type='int', default='50000', keys='Server')
-  c.add_option('foaf_url', type='string', default='http://xmlns.com/foaf/0.1/', keys='Schema')
-  c.add_option('trust_url', type='string', default='http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl', keys='Schema')
-  c.add_option('wot_url', type='string', default='http://xmlns.com/wot/0.1/', keys='Schema')
-  c.add_option('rdf_url', type='string', default='http://www.w3.org/2000/01/rdf-schema', keys='Schema')
-  c.add_option('strategy_password', type='string', default='konfidi', keys='Strategies')
-  c.add_file(sys.path[0] + '/trustserver.cfg', None, 'ini')
-  config = c.parse()
+def check_defaults(config):
+    """This function takes a config file and fills in default values, specified
+    in the dictionary 'config_defaults', with a dictionary for each section 
+    keyed by section name, below.  It returns the updated config object."""
+    config_defaults = { 
+        'Server'    : { 'host'         : 'localhost',
+                        'update_port'  : '50010',
+                        'query_port'   : '50000' },
+        'Schema'    : { 'foaf_url'     : 'http://xmlns.com/foaf/0.1/',
+                        'trust_url'    : 'http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl',
+                        'wot_url'      : 'http://xmlns.com/wot/0.1/',
+                        'rdf_url'      : 'http://www.w3.org/2000/01/rdf-schema' },
+        'Strategies' : {'strategy_password' : 'konfdi' }
+    }
+    for (section, entry) in config_defaults.items():
+        for (k, v) in entry.items():
+            if config.has_section(section):
+                try:
+                    config.get(section, k)
+                except ConfigParser.NoOptionError:
+                    config.set(section, k, v)
+            else:
+                config.add_section(section)
+                config.set(section, k, v)
+    return config
 
-  log = Logger(sys.path[0] + '/log4py.conf').get_instance()
-  log.get_root().set_loglevel(LOGLEVEL_DEBUG)
-  log.get_root().set_target(sys.path[0] + '/log/tserver.log')
-  log.get_root().info("Server Started")
-  t = TrustServer(config, {})
-  thread.start_new(t.startUpdateListener, ('',) )
-  thread.start_new(t.startQueryListener, ('',) )
-  # I don't know a better way to keep this from exiting, except maybe to fork 
-  # new processes of the above, and then exit.:
-  while 1:
-    time.sleep(240)
-  sys.exit(0)    
+def main():         
+    config = ConfigParser.ConfigParser()
+    config.read(sys.path[0] + '/trustserver.cfg')
+    config = check_defaults(config)
+
+    log = Logger(sys.path[0] + '/log4py.conf').get_instance()
+    log.get_root().set_loglevel(LOGLEVEL_DEBUG)
+    log.get_root().set_target(sys.path[0] + '/log/tserver.log')
+    log.get_root().info("Server Started")
+    t = TrustServer(config, {})
+    thread.start_new(t.startUpdateListener, ('',) )
+    thread.start_new(t.startQueryListener, ('',) )
+    # I don't know a better way to keep this from exiting, except maybe to fork 
+    # new processes of the above, and then exit.:
+    while 1:
+        time.sleep(240)
+    sys.exit(0)    
 
 if __name__ == "__main__":
-  if "--daemonize" in sys.argv:
-    # do the double-fork trick     
-    # see if I'm already started
-    # if so, just exit.
-    log = Logger(sys.path[0] + '/log4py.conf').get_instance()
-    try:
-      os.mkdir(os.path.dirname(PIDFILE))
-    except OSError:
-      pass
-    #pids = open(PIDFILE, 'r').read()
-    (stdin, stdout, stderr) = os.popen3("ps aux | grep `cat %s` | grep -v grep" % PIDFILE)
-    stdin.close()
-    stderr.close()
-    str = stdout.read().rstrip()
-    stdout.close()
-    if (len(str) > 0):
-    # I've already started
-      log.error("TrustServer already running.  Exiting.")
-      sys.exit(1)
+    if "--daemonize" in sys.argv:
+        # do the double-fork trick     
+        # see if I'm already started
+        # if so, just exit.
+        log = Logger(sys.path[0] + '/log4py.conf').get_instance()
+        try:
+            os.mkdir(os.path.dirname(PIDFILE))
+        except OSError:
+            pass
+        #pids = open(PIDFILE, 'r').read()
+        (stdin, stdout, stderr) = os.popen3("ps aux | grep `cat %s` | grep -v grep" % PIDFILE)
+        stdin.close()
+        stderr.close()
+        pid = stdout.read().rstrip()
+        stdout.close()
+        if (len(pid) > 0):
+        # I've already started
+            log.error("TrustServer already running.  Exiting.")
+            print >> stderr, "TrustServer already running.  Exiting."
+            sys.exit(1)
     
-    # do the UNIX double-fork magic, see Stevens' "Advanced
-    # Programming in the UNIX Environment" for details (ISBN 0201563177)
-    try:
-      pid = os.fork()
-      if pid > 0:
-        # exit first parent
-        sys.exit(0)
-    except OSError, e:
-      log.error("fork #1 failed: %d (%s)" % (e.errno, e.strerror))
-      sys.exit(1)
-    # decouple from parent environment
-    os.chdir("/")   #don't prevent unmounting....
-    os.setsid()
-    os.umask(0)
+        # double-fork to prevent zombie processes
+        try:
+            pid = os.fork()
+            if pid > 0:
+                # exit first parent
+                sys.exit(0)
+        except OSError, e:
+            log.error("Fork #1 failed: %d (%s)" % (e.errno, e.strerror))
+            print >> stderr, "Fork #1 failed: %d (%s)" % (e.errno, e.strerror)
+            sys.exit(1)
+        # decouple from parent environment
+        os.chdir("/")   #don't prevent unmounting....
+        os.setsid()
+        os.umask(0)
   
     # do second fork
-    try:
-      pid = os.fork()
-      if pid > 0:
-        # exit from second parent, print eventual PID before
-        #print "Daemon PID %d" % pid
-        open(PIDFILE,'w').write("%d"%pid)
-        sys.exit(0)
-    except OSError, e:
-      log.error("fork #2 failed: %d (%s)" % (e.errno, e.strerror))
-      sys.exit(1)
+        try:
+            pid = os.fork()
+            if pid > 0:
+                # exit from second parent, print eventual PID before
+                #print "Daemon PID %d" % pid
+                open(PIDFILE,'w').write("%d"%pid)
+                sys.exit(0)
+        except OSError, e:
+            log.error("Fork #2 failed: %d (%s)" % (e.errno, e.strerror))
+            print >> stderr, "Fork #2 failed: %d (%s)" % (e.errno, e.strerror)
+            sys.exit(1)
   
     
-    #try:
-    #  os.mkdir(os.path.dirname(LOGFILE))
-    #except OSError:
-    #   pass
-    #sys.stdout = sys.stderr = Log(open(LOGFILE, 'a+'))
+        #try:
+        #  os.mkdir(os.path.dirname(LOGFILE))
+        #except OSError:
+        #   pass
+        #sys.stdout = sys.stderr = Log(open(LOGFILE, 'a+'))
   
-  # start the daemon main loop  
-  main()
+    # start the daemon main loop  
+    main()
 
