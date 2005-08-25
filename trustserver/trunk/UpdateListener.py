@@ -47,6 +47,8 @@ import time
 from TrustValue import TrustValue
 from BasicTrustValue import BasicTrustValue
 import re
+
+from log4py import Logger
 #from pickle import dumps
 
 #local
@@ -65,7 +67,8 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		self.TRUST = Namespace("http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-
+		
+		self.log = Logger().get_instance(self)
 		# load trust values into list for later
 		#trust = TripleStore()
 		#trust.load(self.server.config.trust_url)
@@ -93,11 +96,10 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		#print "update connection closed."
 		
 	def load(self, source):	
-		print "Update Listener: parsing input: %s" % source
+		self.log.info("Parsing input: %s" % source)
 		# this is the main object we're concerned with
 		trust = TripleStore()
 		trust.load(source)	
-		#self.server.lock.acquire_write()
 		# new version
 		count = 0
 		for (relationship, truster) in trust.subject_objects(self.TRUST["truster"]):
@@ -118,6 +120,5 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 				if rating >= 0.0 and rating <= 1.0:
 					source.addTrustLink(sink.getFingerprint(), topic, rating)
 					count += 1
-		print "Added %d trust links." % count
-		#self.server.lock.release_write()
+		self.log.info("Added %d trust links." % count)
 		

@@ -39,7 +39,7 @@ class TrustPath:
 	Don't quite know how I'll do it, yet.
 	for now, we'll use a tuple-based stack"""
 	def __init__(self, data=None,path=()):
-		print "creating new TrustPath: (%s, %s)" % (data, path)
+		#print "creating new TrustPath: (%s, %s)" % (data, path)
 		if data == None:
 			self.path = path
 		else:
@@ -63,7 +63,8 @@ class TrustPath:
 				(ret, self.path) = self.path
 				l.insert(0, ret)
 			except (ValueError):
-				print "nooo!  value error!"
+			#	print "nooo!  value error!"
+				pass
 		return l
 	def __repr__(self):
 		return "%s, %s" % self.path

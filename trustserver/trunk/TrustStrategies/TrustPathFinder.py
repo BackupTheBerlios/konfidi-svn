@@ -56,13 +56,13 @@ class TrustPathFinder:
 	def do_query(self):
 		raise NotImplementedError
 
-	def parse_cfg(self, options):
+	def __parse_cfg(self, options):
 		for o in options.split("|"):
 			(k, v) = o.split("=")
 			self.options[k] = v
 			
-	def setup(self, options):
-		self.parse_cfg(options)
+	def __setup(self, options):
+		self.__parse_cfg(options)
 		if self.__class__.restricted:
 			try:
 				if self.options["password"] != self.__class__.password:
@@ -73,7 +73,7 @@ class TrustPathFinder:
 
 class ReadOnly(TrustPathFinder):
 	def query(self, options):
-		self.setup(options)	
+		self.__setup(options)	
 		self.lock.acquire_read()
 		result = self.do_query()
 		self.lock.release_read()
@@ -81,7 +81,7 @@ class ReadOnly(TrustPathFinder):
 		
 class ReadWrite(TrustPathFinder):
 	def query(self, options):
-		self.setup(options)
+		self.__setup(options)
 		self.lock.acquire_write()
 		result = self.do_query()
 		self.lock.release_write()
