@@ -229,12 +229,13 @@ def form(req):
             foaf = FOAFDoc(foaf_content)
             sig = PGPSig(sig_content)
             signedFOAF = SignedFOAF(foaf, sig)
-            signedFOAF.verify_sig()
+            signers = signedFOAF.verify_sig()
             store_error = storefoaf(req, signedFOAF)
             if store_error:
                 req.write("<p>Error: " + store_error + "</p>")
             else:
                 req.write("<p>FOAF succesfully uploaded</p>")
+                req.write("<p>FOAF was signed by <br/><pre>" + signers.replace("<","&lt;") + "</pre></p>");
     
     # TODO: -----BEGIN PGP SIGNED MESSAGE----- option
     req.write("""

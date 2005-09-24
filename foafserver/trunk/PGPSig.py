@@ -34,8 +34,10 @@
 #  License along with this library; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os
-from pyme import core, callbacks
+import dump
+
+import os, sys
+from pyme import core, callbacks, errors, gpgme
 from pyme.constants.sig import mode
 
 from FOAFServerError import FOAFServerError
@@ -46,6 +48,7 @@ class PGPSig:
     def __init__(self, content=None):
         self.content = content
         self.ctx = core.Context()
+        gpgme.gpgme_set_keylist_mode(self.ctx.wrapped, gpgme.GPGME_KEYLIST_MODE_EXTERN)
 
     def load(self, dir, fingerprint):
         """ open, read, close """
@@ -65,26 +68,31 @@ class PGPSig:
     
     def verify(self, signed_text):
         """verify this signature against some plaintext"""
-        #self.content = open("/home/ams5/foafs/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70.rdf.asc", 'r').read()
-        #signed_text = open("/home/ams5/foafs/EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70.rdf", 'r').read()
         self.ctx.op_verify(core.Data(self.content), core.Data(signed_text), None)
         result = self.ctx.op_verify_result()
         sign = result.signatures
+        
+        if sign is None:
+            raise FOAFServerError("No PGP signature found")
+        # status equal 0 means "Ok".
+        if result.signatures.status != 0:
+            raise FOAFServerError("PGP signature is not valid")
+        
+        ret = ""
         index = 0
         while sign:
             index += 1
+            if sign.status != 0:
+                ret += "NOT VALID (todo: add more info why):"
+            ret += "{" + str(sign.status) + "} " + sign.fpr + " at " + str(sign.timestamp) + "\n"
+            
+            #TODO: change to non-blocking op_keylist_()?
             key = self.ctx.get_key(sign.fpr, 0)
-            #print "signature", index, ":"
-            #print "  status:     ", sign.status
-            #print "  timestamp:  ", sign.timestamp
-            #print "  fingerprint:", sign.fpr
-            #print "  uid:        ", key.uids.uid
-            #print "  subkey:     ", key.subkeys.keyid[-8:]
-            raise FOAFServerError("boo: " + sign.fpr + "|" + key.uids.uid)
+            uid = key.uids
+            while uid:
+                ret += "    "  + uid.uid + "\n"
+                uid = uid.next
+                #print "  subkey:     ", key.subkeys.keyid[-8:]
             sign = sign.next
-        if result.signatures is None:
-            raise FOAFServerError("No PGP signature found")
+        return ret
         
-        # List results for all signatures. Status equal 0 means "Ok".
-        if result.signatures.status != 0:
-            raise FOAFServerError("PGP signature is not valid")
