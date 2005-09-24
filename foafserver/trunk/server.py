@@ -116,7 +116,7 @@ def index(req):
     <body>
     <h2>FOAFServer v""" + foafserver_version + """</h2>
     
-    <h3>Retrieving</h3>
+    <h3>Retrieve</h3>
     Do an HTTP GET using a URL of the PGP fingerprint.  Examples:
     <br>
     <a href="8A335B856C4AE39A0C36A47F152C15A0F2454727">andy schamp</a><br>
@@ -124,9 +124,9 @@ def index(req):
     <br>
     Different outputs will be served when the request has an HTTP 'Accept:' header with a value in the following: "multipart/signed", "application/pgp-signature", {"application/xml+rdf", "text/xml", "text/*", "application/xml"}
     
-    <h3>Uploading</h3>
+    <h3>Submit</h3>
     <b>Human web interface:</b> Use this <a href="form">web form</a><br>
-    <b>Programmatic interface:</b> Do an HTTP PUT using a URI of the PGP fingerprint (like retrieving).  You must send a Content-Type: multipart/signed message that contains the FOAF document and the pgp-signature.
+    <b>Programmatic interface:</b> <i>implementation incomplete</i> Do an HTTP PUT using a URI of the PGP fingerprint (like retrieving).  You must send a Content-Type: multipart/signed message that contains the FOAF document and the pgp-signature.
     
     <h4><a href="test">debug output</a></h4>
     </body>
@@ -163,6 +163,7 @@ def put(req):
         # Content-Type: must begin with multipart/signed
         if "Content-Type:" in req.headers_in and req.headers_in["Content-Type:"].find("multipart/signed") == 0:
             content = req.read()
+            # TODO: get this working
             foaf = FOAFDoc(content)
             sig = PGPSig()
             signedFOAF = SignedFOAF(foaf, sig)
@@ -239,10 +240,10 @@ def form(req):
     
     # TODO: -----BEGIN PGP SIGNED MESSAGE----- option
     req.write("""
-    <h2>Submit an signed FOAF record</h2>
+    <h2>Submit a signed FOAF record</h2>
     <form action="form" method="POST" enctype="multipart/form-data">
     Upload FOAF file: <input type="file" name="foaf_file"/><br/>
-    Upload PGP signature file: <input type="file" name="sig_file"/><br/>
+    Upload PGP signature file (ascii armored): <input type="file" name="sig_file"/><br/>
     <input type="submit" name="submit_upload" value="Submit">
     </form>
     <br/><hr/><br/>
@@ -250,7 +251,7 @@ def form(req):
     <form action="form" method="POST">
     paste FOAF XML:<br/>
     <textarea name="foaf_content" rows="12" cols="50" wrap="none"></textarea><br/>
-    paste PGP signature:<br/>
+    paste PGP signature (ascii armored):<br/>
     <textarea name="sig_content" rows="8" cols="50" wrap="none"></textarea><br/>
     <input type="submit" name="submit_text" value="Submit">
     </form>
