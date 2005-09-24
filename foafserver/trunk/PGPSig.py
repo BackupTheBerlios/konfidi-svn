@@ -47,6 +47,7 @@ class PGPSig:
     
     def __init__(self, content=None):
         self.content = content
+        # TODO: convert content to ascii-armored if not already
         self.ctx = core.Context()
         gpgme.gpgme_set_keylist_mode(self.ctx.wrapped, gpgme.GPGME_KEYLIST_MODE_EXTERN)
 
@@ -75,6 +76,7 @@ class PGPSig:
         if sign is None:
             raise FOAFServerError("No PGP signature found")
         # status equal 0 means "Ok".
+        # TODO: check status of all, not just first
         if result.signatures.status != 0:
             raise FOAFServerError("PGP signature is not valid")
         
