@@ -48,7 +48,7 @@ class TrustPathFinder:
 		self.lock = server.lock
 		self.config = server.config
 		self.options = {}
-		TrustPathFinder.password = self.config.strategy_password
+		TrustPathFinder.password = self.config.get('Strategies', 'strategy_password')
 			
 	def query(self, options):
 		raise NotImplementedError
