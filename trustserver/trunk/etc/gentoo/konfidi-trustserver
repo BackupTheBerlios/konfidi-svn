@@ -6,7 +6,7 @@ depend() {
 
 start() {
 	ebegin "Starting konfidi trustserver"
-        start-stop-daemon --start --quiet --background --chuid konfidi:konfidi --chdir /opt/konfidi/trustserver --exec /opt/konfidi/trustserver/TrustServer.py
+        start-stop-daemon --start --chuid konfidi:konfidi --chdir /opt/konfidi/trustserver --exec /opt/konfidi/trustserver/TrustServer.py -- --daemonize
 	eend $?
 }
 
