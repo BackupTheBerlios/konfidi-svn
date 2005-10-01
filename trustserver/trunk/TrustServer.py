@@ -71,8 +71,6 @@ class TrustServer:
         self.lock = ReadWriteLock()
         # this people object should be the global object that is shared by both updateListener and queryListener
         self.people = people
-        self.updateListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'update_port'))), UpdateListener, self.people, self.lock, self.config)
-        self.queryListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'query_port'))), QueryListener, self.people, self.lock, self.config)
     
         # logging
         self.log = Logger().get_instance(self)
@@ -80,10 +78,12 @@ class TrustServer:
     
     def startUpdateListener(self, foo=None):
         self.log.info("Starting Update Listener on port %s" % self.config.get('Server', 'update_port'))
+        self.updateListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'update_port'))), UpdateListener, self.people, self.lock, self.config)
         self.updateListener.serve_forever()
     
     def startQueryListener(self, foo=None):
         self.log.info("Starting Query Listener on port %s" % self.config.get('Server', 'query_port'))
+        self.queryListener = RequestServer((self.config.get('Server', 'host'), int(self.config.get('Server', 'query_port'))), QueryListener, self.people, self.lock, self.config)
         self.queryListener.serve_forever()
     
     def getPeople(self):
