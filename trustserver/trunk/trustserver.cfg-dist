@@ -51,10 +51,10 @@ rdf_url: http://www.w3.org/2000/01/rdf-schema
 
 # server variables (port, etc.)
 [Server]
-# host address/name the server will listen on (default: 127.0.0.1) 
+# host address/name the server will listen on (default: all) 
 # leave blank ("host: ") to bind to all
 # binding to localhost on linux may bind to 'lo' not 'ethX' which will make it not publically accessible
-#host: 127.0.0.1
+#host: 
 
 # the port the update thread listens on (default: 50010)
 #update_port: 50010

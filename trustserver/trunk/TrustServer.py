@@ -94,7 +94,7 @@ def check_defaults(config):
     in the dictionary 'config_defaults', with a dictionary for each section 
     keyed by section name, below.  It returns the updated config object."""
     config_defaults = { 
-        'Server'    : { 'host'         : 'localhost',
+        'Server'    : { 'host'         : '',
                         'update_port'  : '50010',
                         'query_port'   : '50000' },
         'Schema'    : { 'foaf_url'     : 'http://xmlns.com/foaf/0.1/',
