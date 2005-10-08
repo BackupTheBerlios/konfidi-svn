@@ -6,7 +6,7 @@
 # place the daemon scripts in a folder accessible by root. /usr/local/sbin is a good idea
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-BASEDIR=`dirname $0`
+BASEDIR=`dirname $0`/..
 DAEMON="$BASEDIR/TrustServer.py"
 ARGS="--daemonize"
 NAME=trustserver
