@@ -96,6 +96,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 		#	self.request.send("Invalid query")
 	
 		r = str(result)
+		log.debug("writing %s" % r)
 		# check to see if we need to make this smarter/bigger
 		self.request.send("%s" % r)
 		self.request.close()
