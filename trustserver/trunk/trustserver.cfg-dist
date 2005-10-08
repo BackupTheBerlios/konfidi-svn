@@ -67,6 +67,7 @@ rdf_url: http://www.w3.org/2000/01/rdf-schema
 
 [Trust Server]
 # The strategy to use as default.  The class must exist in TrustStrategies/, and be a subclass of TrustStrategies.ReadOnly or TrustStrategies.ReadWrite.  The class must be defined in a file of the same name (e.g. "Prototype" for PrototypeTPF.py).
+# unimplemented
 default_strategy: Multiplicative
 
 [Strategies]
