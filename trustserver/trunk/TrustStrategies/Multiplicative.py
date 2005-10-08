@@ -55,6 +55,10 @@ class Multiplicative(ReadOnly):
 	
 	def findPath(self, source, sink, subject):
 		#print "searching for: %s to %s regarding %s" % (source, sink, subject)
+		
+		if source == sink:
+			return [source,sink]
+		
 		paths = {}
 		seen = {source:1}
 		newpaths = { source:list([u"%s" % source]) }
@@ -106,7 +110,13 @@ class Multiplicative(ReadOnly):
 	def getPathRating(self, path, subject):
 		source = path.pop(0)
 		sink = path.pop(0)
-		rating = self.getRating(source, sink, subject)
+		try:
+			rating = self.getRating(source, sink, subject)
+		except KeyError:
+			if source == sink:
+				return 1
+			else:
+				raise
 		while (len(path) > 0):
 			source = sink
 			sink = path.pop(0)
