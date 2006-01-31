@@ -40,7 +40,7 @@
   \endinput
 }
 
-\RequirePackage{xkeyval}
+%\RequirePackage{xkeyval}
 
 \newif\if@preserveurlmacro\@preserveurlmacrofalse
 \newif\if@burl@fitstrut\@burl@fitstrutfalse
@@ -95,13 +95,13 @@
   \fi\fi\fi
 }
 
-\DeclareOptionX{preserveurlmacro}{\@preserveurlmacrotrue}
-\DeclareOptionX{hyphenbreaks}{\bgroup
-  \catcode`\&=12\relax\hyper@normalise\burl@addtocharlist{-}%
-  \egroup}
-\DeclareOptionX{vertfit}[local]{\burl@setvertfit{#1}}
-
-\ProcessOptionsX\relax
+%\DeclareOptionX{preserveurlmacro}{\@preserveurlmacrotrue}
+%\DeclareOptionX{hyphenbreaks}{\bgroup
+%  \catcode`\&=12\relax\hyper@normalise\burl@addtocharlist{-}%
+%  \egroup}
+%\DeclareOptionX{vertfit}[local]{\burl@setvertfit{#1}}
+%
+%\ProcessOptionsX\relax
 
 \ifx\pdfoutput\undefined\else\ifx\pdfoutput\relax\else\ifcase\pdfoutput\else
   \PackageWarning{breakurl}{%

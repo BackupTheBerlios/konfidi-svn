@@ -1,15 +1,13 @@
 \begin{verbatim}
-
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
-<!ENTITY subject "http://www.abundantplunder.com/trust/subjects">
+<!ENTITY subject "http://www.konfidi.org/example/subject-ns">
 ]>
 <rdf:RDF
     xmlns:foaf="http://xmlns.com/foaf/0.1/"
     xmlns="http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:wot="http://xmlns.com/wot/0.1/"
-    >
+    xmlns:wot="http://xmlns.com/wot/0.1/">
 
 <foaf:Person rdf:nodeID="alice"> 
     <foaf:name>Alice</foaf:name>
@@ -27,12 +25,6 @@
     <foaf:name>Clara</foaf:name>
     <foaf:mbox>demo-clara@brondsema.net</foaf:mbox>
     <wot:fingerprint>BB5B 0D92 A23D 31CA 559C 3D86 FF9B D44A DCD8 155F</wot:fingerprint>
-</foaf:Person>
-
-<foaf:Person rdf:nodeID="dave"> 
-    <foaf:name>Dave</foaf:name>
-    <foaf:mbox>demo-dave@brondsema.net</foaf:mbox>
-    <wot:fingerprint>7FCF F03C 22F4 D696 1495 FB0A 65B5 A3E7 0571 171E</wot:fingerprint>
 </foaf:Person>
 
 <foaf:Person rdf:nodeID="spammer">
@@ -69,17 +61,6 @@
                 <Item>
                         <topic rdf:resource="&subject;#email"/>
                         <rating>0</rating>
-                </Item>
-        </about>
-</Relationship>
-
-<Relationship>
-        <truster rdf:nodeID="dave"/>
-        <trusted rdf:nodeID="alice"/>
-        <about>
-                <Item>
-                        <topic rdf:resource="&subject;#email"/>
-                        <rating>0.80</rating>
                 </Item>
         </about>
 </Relationship>
