@@ -28,6 +28,15 @@ breaklinks
 
 \pagenumbering{arabic}
 
+
+\newenvironment{enumerate_tight}{
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}}{\end{enumerate}
+}
+
+
 \begin{document}
 \special{  pdf: docinfo << 
 % /Subject (Sr. Project Report: Konfidi)
@@ -55,7 +64,7 @@ A universal concept in a universal language seemed appropriate for what we hope 
        \affaddr{schamp@gmail.com}
 }
 
-\date{4 May 2005}
+\date{31 Jan 2006}
 
 \maketitle
 \begin{abstract}
@@ -127,14 +136,14 @@ This related work forms many of the building blocks, both technical and theoreti
 
 Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.  Figure~\ref{fig:arch} shows the components of the Konfidi architecture and how they relate to external components and one another.  The numbered paths indicate the steps in the process:  
 
-\begin{enumerate}
+\begin{enumerate_tight}
 \item  A client makes a request to the Konfidi server, indicating the source, which is the person at the beginning of a desired path\footnote{and usually the one making the request} and the sink, which is the person to which the path leads.
 \item  The frontend passes the request to the PGP Pathfinder, which verifies that some path exists from the source to the sink in the PGP web-of-trust.
 \item  The Pathfinder returns its response.
 \item  The frontend passes the request to the TrustServer, which traverses the Konfidi trust network that is built from data kept up-to-date by the FOAFServer.
 \item  The TrustServer responds with the inferred trust value or an appropriate error message.
 \item  The Frontend combines the responses of the Pathfinder and the TrustServer, and sends it back to the client.
-\end{enumerate}
+\end{enumerate_tight}
 
 In the remainder of this section, we discuss the underlying data structure for representing trust, how it is implemented in these steps, and the rationale for the system design.
 
@@ -298,7 +307,7 @@ Only the Command Line Email Client has been written yet, but most clients will w
 This client is designed to be invoked from a mail processing daemon, such as procmail \citep{procmail}.  It reads a single email message from standard in, adds several headers, and writes the message back to standard out.  By doing this, a MUA can filter the message based on the value of the added headers.
 
 The client does the following tasks:
-\begin{enumerate}
+\begin{enumerate_tight}
 \item determines the source's PGP fingerprint (normally from a configuration file)
 \item  removes any existing X-Konfidi-* and X-PGP-* headers\footnote{This is done in case a spammer sends an email with invalid headers in an attempt to get past the filter.}
 \item  stops, if the message is not multipart/signed using PGP
@@ -306,7 +315,7 @@ The client does the following tasks:
 \item  stops, if the \texttt{From:} header is not one of the email addresses listed on the key used to create the signature
 \item  queries the Konfidi server with the topic ``email" and the fingerprints of the source (recipient) and sink (signing party)
 \item  receives the computed trust value from the Konfidi server
-\end{enumerate}
+\end{enumerate_tight}
 
 The client adds the following headers to the email:
 \begin{center}
