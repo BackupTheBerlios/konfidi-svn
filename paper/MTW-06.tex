@@ -40,7 +40,7 @@ breaklinks
 \begin{document}
 \special{  pdf: docinfo << 
 % /Subject (Sr. Project Report: Konfidi)
-  /Author (Dave Brondsema and Andrew Schamp)
+  /Author (David Brondsema and Andrew Schamp)
   /Title (Konfidi:Trust Networks Using PGP and RDF)
   /Keywords (Semantic web, trust network, FOAF, RDF, PGP, GPG, reputation, propagation, distributed, inference, delegation, social network)
   >>}
@@ -52,7 +52,7 @@ A universal concept in a universal language seemed appropriate for what we hope 
 \numberofauthors{2}
 
 \author{
-\alignauthor Dave Brondsema\\
+\alignauthor David Brondsema\\
        \affaddr{Calvin College}\\
        \affaddr{3201 Burton St., SE}\\
        \affaddr{Grand Rapids, MI 49546}\\
@@ -68,13 +68,13 @@ A universal concept in a universal language seemed appropriate for what we hope 
 
 \maketitle
 \begin{abstract}
-Email filtering, and many other topics, could be improved through social networks of trust.  To do this, we propose the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  We discuss the design of the network and system architecture and the current state of implementation.
+Email filtering and many other processes could be improved through social networks of trust.  To do this, we propose the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  We discuss the design of the network and system architecture and the current state of implementation.
 \end{abstract}
 
 \keywords{Semantic web, trust network, FOAF, RDF, PGP, GPG, reputation, propagation, distributed, inference, delegation, social network}
 
 \section{Introduction}
-As internet-based communication grows, the internet has experienced rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to users.  This gives rise to two questions: 
+As internet-based communication grows, it has experienced rapid growth of unscrupulous users taking advantage of the system to send spam and propagating viruses to users.  This gives rise to two questions: 
 How can one be sure that a message really comes from the indicated sender?  How can one be sure that the sender can be trusted to send good messages?
 
 There have been a number of attempts to answer either one question or the other.  The Pretty Good Privacy (PGP) encryption system has developed a web-of-trust which can help provide verification of an individual's identity;  however, it does not allow the expression of any additional information about that individual's trustworthiness on matters other than personal identification.  As for the second question, one answer that is growing in popularity is that of creating a network of trust between individuals who know one another and have good reason to trust their estimations of others.  However, these systems can be subject to problems; suppose someone impersonating a trusted party provides incorrect data boosting the reputation of an untrustworthy party.  A simple rating system for reputation within certain domains, such as eBay online auctions, may be of some limited use.  However, unless some there is a system to verify the raters, they may also be susceptible to malicious users who manipulate ratings.  Even if such systems can be guarded against such attacks, why should someone base their trust in another person on ratings given by people that they neither know nor trust?
@@ -90,7 +90,7 @@ There seems to be a general lack of psychological research on ways of representi
 \subsection{Trust Networks and Inferences}
 There are several different propagation strategies for weighted, directed graphs \citep{richardson03management} \citep{abdul-rahman:relying} \citep{guha04propagation}.  For the most part, however, the work is concerned with mathematical description of the networks and their operations, and do not have much in the way of practical application.  While these issues are of interest and relevance, they concern only the subsystem and do not discuss the design of a larger infrastructure.
 
-Jennifer Golbeck, at the University of Maryland, is doing work on trust systems  \citep{golbeckDissertation} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and ratings are different in significant ways, which we will address later.}.  She has created TrustMail  \citep{trustMail}, a modified email client that uses her trust network.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she prefers to help research other applications and implications of semantic social networks.
+Jennifer Golbeck, at the University of Maryland, is doing work on trust systems  \citep{golbeckDissertation} that is similar to our work on this project.  Like us, she uses an extension of FOAF to represent trust relationships and a rating system\footnote{Though both our ontologies and ratings are different in significant ways, which we will address later.}.  She has created TrustMail  \citep{trustMail}, a modified email client that uses her trust network.  She is more concerned with an academic approach than a pragmatic one, since this field is still growing rapidly and she emphasizes her research on other applications and implications of semantic social networks.
 
 Golbeck suggests an important distinction between belief in statements and trust in people \citep{golbeck:accuracy}.  While networks of both kinds can be created, the latter are usually smaller and more connected.  Golbeck argues that in a combined network of trust in people and of belief in statements, a path composed of trust edges and terminating with a belief edge is equivalent to, and on average smaller than, one composed entirely of belief edges.  Thus, a trust network comprising mostly trust edges allows for simpler traversal.
 
