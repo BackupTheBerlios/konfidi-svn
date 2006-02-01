@@ -68,7 +68,7 @@ A universal concept in a universal language seemed appropriate for what we hope 
 
 \maketitle
 \begin{abstract}
-Email filtering and many other processes could be improved through social networks of trust.  To do this, we propose the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  We discuss the design of the network and system architecture and the current state of implementation.
+Email filtering and many other processes could be improved through social networks of trust.  To do this, we propose the Konfidi system.  Konfidi uses PGP connections to determine authenticity, and topical trust connections described in RDF to compute inferred trust values.  Between yourself and some person X whom you do not know, Konfidi works to find a path of cryptographic PGP signatures to assure the identity of X, and estimates a trust rating by an algorithm that operates along the trust paths that connect you to X.  The trust paths are formed from public person-to-person trust ratings that are maintained by those individuals.  We discuss the design of the network and system architecture and the current state of implementation.
 \end{abstract}
 
 \keywords{Semantic web, trust network, FOAF, RDF, PGP, GPG, reputation, propagation, distributed, inference, delegation, social network}
@@ -134,7 +134,7 @@ This related work forms many of the building blocks, both technical and theoreti
 
 \section{Konfidi}
 
-Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.  Figure~\ref{fig:arch} shows the components of the Konfidi architecture and how they relate to external components and one another.  The numbered paths indicate the steps in the process:  
+Konfidi refers to the trust network design, the ontology used to encode it, and the software to make it usable.  The central idea is that between yourself and person X whom you do not know, there is a path of PGP signatures to assure the identity of X, and an estimated trust rating is computed by some algorithm that operates along the trust paths that connect you to X.  Figure~\ref{fig:arch} shows the components of the Konfidi architecture and how they relate to external components and one another.  The numbered paths indicate the steps in the process:  
 
 \begin{enumerate_tight}
 \item  A client makes a request to the Konfidi server, indicating the source, which is the person at the beginning of a desired path\footnote{and usually the one making the request} and the sink, which is the person to which the path leads.
@@ -245,7 +245,7 @@ The tradeoff between storage space and query time makes it hard to settle on a r
 
 It may also be advantageous to store trust links going the other direction, perhaps for local representation analysis, or auxiliary information like name or email address.  Other information, such as when the record was last updated, could allow for record caching that might improve performance.
 
-Because of the apparent lack of psychological research on trust representations, we have again implemented the Strategy pattern \citep{designPatterns}, for the trust propagation algorithm.  This allows additional propagation strategies to be used as they are developed.  Our preliminary algorithm does simple multiplicative propagation over each link in a path.  It uses a breadth-first search, prioritized to follow whichever path has highest value after each iteration, to find the shortest path between source and sink, if one exists:
+Because of the apparent lack of psychological research on trust representations, we have again implemented the Strategy pattern \citep{designPatterns}, for the trust propagation algorithm.  This allows additional propagation strategies to be used as they are developed.  The algorithm we present is the one that seemed most intuitive to us; we expect there are ones that more accurately reflect the human understanding of trust. It does simple multiplicative propagation over each link in a path.  It uses a breadth-first search, prioritized to follow whichever path has highest value after each iteration, to find the shortest path between source and sink, if one exists:
 
 \begin{verbatim}
 function findRating(source, sink):
@@ -266,7 +266,9 @@ $r = \prod_{i=0}^{n-1} Rating(i, i + 1)^{1/2}$
 
 where $Rating$ returns the rating on the edge of two adjacent nodes.
 
-Figure~\ref{fig:full} shows an example of how the PGP web-of-trust and the Konfidi trust network might be combined.  Note that while most PGP edges are two way, the usual outcome from a keysigning event, trust edges are more likely to be one way only.  The trust edges are labeled to indicate trust rating and topic, to show how a certain path through the network could yield a low rating for the spammer.  The RDF data of this labeled network can be found in Appendix~\ref{app:trustExample}.
+Figure~\ref{fig:full} shows an example of how the PGP web-of-trust and the Konfidi trust network might be combined.  According to the algorithm, Dave's inferred trust of Clara on the topic of email is $0.8^{1/2} * 0.9^{1/2} * 0.7^{1/2} = 0.71$.
+
+Note that while most PGP edges are two way, the usual outcome from a keysigning event, trust edges are more likely to be one way only.  The trust edges are labeled to indicate trust rating and topic, to show how a certain path through the network could yield a low rating for the spammer.  The RDF data of this labeled network can be found in Appendix~\ref{app:trustExample}.
 
 \begin{figure}[thp]
 \centering
