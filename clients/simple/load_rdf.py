@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 #  Copyright (C) 2005-2005 Dave Brondsema, Andrew Schamp
 #  This file is part of Konfidi http://konfidi.org/
 #  It is licensed under two alternative licenses (your choice):
@@ -41,5 +42,6 @@ import re
 tc = "svn cat svn://svn.berlios.de/konfidi/clients/simple/TrustClient.py | /usr/bin/python - "
 files = [os.path.abspath(f) for f in os.listdir('.') if os.path.isfile(os.path.join('.', f)) and re.compile(".rdf$").search(f, 1)]
 for f in files:
+	print ("loading %s" % f)
 	# TODO: configurable
 	os.system("%s localhost 20010 %s" % (tc, f))
