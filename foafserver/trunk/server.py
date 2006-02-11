@@ -243,7 +243,7 @@ def form(req):
     <h2>Submit a signed FOAF record</h2>
     <form action="form" method="POST" enctype="multipart/form-data">
     Upload FOAF file: <input type="file" name="foaf_file"/><br/>
-    Upload PGP signature file (ascii armored): <input type="file" name="sig_file"/><br/>
+    Upload PGP signature file (ascii armored, detached): <input type="file" name="sig_file"/><br/>
     <input type="submit" name="submit_upload" value="Submit">
     </form>
     <br/><hr/><br/>
