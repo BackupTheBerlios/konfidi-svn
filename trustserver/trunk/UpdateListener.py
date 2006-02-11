@@ -39,7 +39,7 @@ from rdflib.Literal import Literal
 from rdflib.BNode import BNode
 from rdflib.Namespace import Namespace
 from rdflib.constants import TYPE
-from rdflib.TripleStore import TripleStore
+from rdflib.Graph import Graph 
 from rdflib.constants import DATATYPE
 import SocketServer
 import operator
@@ -98,7 +98,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 	def load(self, source):	
 		self.log.info("Parsing input: %s" % source)
 		# this is the main object we're concerned with
-		trust = TripleStore()
+		trust = Graph()
 		trust.load(source)	
 		# new version
 		count = 0
