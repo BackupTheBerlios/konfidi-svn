@@ -6,7 +6,8 @@ depend() {
 
 start() {
 	ebegin "Starting konfidi trustserver"
-        start-stop-daemon --start --chuid konfidi:konfidi --chdir /opt/konfidi/trustserver --exec /opt/konfidi/trustserver/TrustServer.py -- --daemonize
+	start-stop-daemon --start --chuid konfidi:konfidi --chdir /opt/konfidi/trustserver --exec /opt/konfidi/trustserver/TrustServer.py -- --daemonize
+	cd /var/lib/konfidi/foafs && /opt/konfidi/simple-client/load_rdf.py
 	eend $?
 }
 
