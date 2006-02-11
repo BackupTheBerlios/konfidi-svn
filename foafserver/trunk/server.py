@@ -251,7 +251,7 @@ def form(req):
     <form action="form" method="POST">
     paste FOAF XML:<br/>
     <textarea name="foaf_content" rows="12" cols="50" wrap="none"></textarea><br/>
-    paste PGP signature (ascii armored):<br/>
+    paste PGP signature (ascii armored, detached):<br/>
     <textarea name="sig_content" rows="8" cols="50" wrap="none"></textarea><br/>
     <input type="submit" name="submit_text" value="Submit">
     </form>
