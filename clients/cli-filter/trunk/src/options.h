@@ -34,6 +34,7 @@ protected:
 	Options();
 public:
 	static bool verbose;
+	static bool version;
 	static string source_fingerprint;
 	static string trust_server_url;
 	static string trust_server_params;

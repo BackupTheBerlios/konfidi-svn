@@ -18,8 +18,8 @@
 
 #
 # To make a static executable, run:
-#  STATIC=-static make mytargets
-#
+#               STATIC=-static make clean all
+#  All dependencies will have to have built static libraries.  Do so by adding --enable-static to ./configure
 
 EXE = konfidi-cli-filter
 

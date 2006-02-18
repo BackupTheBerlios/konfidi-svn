@@ -251,6 +251,11 @@ int main(int argc, char* argv[]) {
     
 	// load options
 	Options::process_args(argc, argv);
+    if (Options::version) {
+        cout << header_this_app_value << endl;
+        return 0;
+    }
+        
 	Options::guess_source_fingerprint(ctx);
 	Options::load_config_file();
 	if (!Options::safety_check()) {
