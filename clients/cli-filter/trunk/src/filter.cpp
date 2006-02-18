@@ -262,6 +262,35 @@ int main(int argc, char* argv[]) {
 		return 5;
 	}
 
+    if (Options::verbose) {
+        gpgme_engine_info_t info;
+        gpgme_error_t err;
+        err = gpgme_get_engine_info (&info);
+        if (!err)
+        {
+            clog << "Current protocol: " << gpgme_get_protocol_name(gpgme_get_protocol(ctx)) << endl;
+            while (info) {
+                if (!info) {
+                    clog << "No protocol " << endl;
+                }
+                else if (info->file_name && !info->version) {
+                    clog << "Engine " << info->file_name << " not installed properly (no version)."
+                    << " Protocol: " << gpgme_get_protocol_name(info->protocol) << endl;
+                }
+                else if (info->file_name && info->version && info->req_version) {
+                    clog << "Engine " << info->file_name << " version " << info->version 
+                    << " installed; at least version " << info->req_version << " required."
+                    << " Protocol: " << gpgme_get_protocol_name(info->protocol) << endl;
+                }
+                else {
+                    clog << "Unknown problem with engine for protocol " << gpgme_get_protocol_name(info->protocol) << endl;
+                }
+                info = info->next;
+            }
+        }
+    }
+        
+    
 	Email* email = new Email(slurp(cin));
 
     clean_headers(email);
