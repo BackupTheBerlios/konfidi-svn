@@ -35,6 +35,7 @@ LFLAGS = $(STATIC) `gpgme-config --libs` -lmimetic `curl-config --libs`
 
 
 all: $(EXE)
+	strip $(EXE)
 
 $(EXE): $(OBJS)
 	g++ -o $(EXE) $(OBJS) $(LFLAGS)
