@@ -38,6 +38,8 @@ public:
 	static string source_fingerprint;
 	static string trust_server_url;
 	static string trust_server_params;
+	static string openpgp_exe;
+	static string openpgp_homedir;
 	
 	/** parse commandline arguments */
 	static void process_args(int argc, char* argv[]);

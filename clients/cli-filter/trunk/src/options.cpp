@@ -34,6 +34,8 @@ string Options::source_fingerprint;
 string Options::trust_server_url;
 string Options::trust_server_params;
 string Options::conf_file = ".konfidi/cli-filter.conf";
+string Options::openpgp_exe;
+string Options::openpgp_homedir;
 
 void Options::process_args(int argc, char* argv[]) {
 	if (argc == 1) {
@@ -92,6 +94,14 @@ void Options::load_config_file() {
     		file >> source_fingerprint;
     		if (verbose)
     			clog << "read source_fingerprint: " << source_fingerprint << endl;
+    	} else if (word == "openpgp_exe") {
+    		file >> openpgp_exe;
+    		if (verbose)
+    			clog << "read openpgp_exe: " << openpgp_exe << endl;
+    	} else if (word == "openpgp_homedir") {
+    		file >> openpgp_homedir;
+    		if (verbose)
+    			clog << "read openpgp_homedir: " << openpgp_homedir << endl;
     	} else {
     		if (verbose)
     			clog << "skipping config entry: " << word << endl;
@@ -140,6 +150,9 @@ bool Options::safety_check() {
 	} else if (!trust_server_params.size()) {
 		cerr << "You must specify a trust_server_params in the config file" << endl;
 		return false;
+    } else if (openpgp_homedir.size() && !openpgp_exe.size()) {
+        cerr << "You cannot specify openpgp_homedir unless you also specify openpgp_exe" << endl;
+        return false;
 	} else {
 		return true;
 	}

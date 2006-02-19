@@ -35,8 +35,8 @@ using namespace mimetic;
 
 const char* header_sig = "X-PGP-Signature";
 const char* header_sig_finger = "X-PGP-Fingerprint";
-const char* header_trust_num = "X-Trust-Email-Rating";
-const char* header_trust_level = "X-Trust-Email-Level";
+const char* header_trust_num = "X-Konfidi-Email-Rating";
+const char* header_trust_level = "X-Konfidi-Email-Level";
 const char* header_this_app = "X-Konfidi-Client";
 const char* header_this_app_value = "cli-filter 0.1";
 
@@ -243,25 +243,39 @@ void add_trust_headers(Email * email, string to) {
 }
 
 int main(int argc, char* argv[]) {
-	// set up context
 	gpgme_error_t err;
     gpgme_ctx_t ctx;
-    err = gpgme_new(&ctx);
-    fail_if_err(err);
     
-	// load options
 	Options::process_args(argc, argv);
     if (Options::version) {
         cout << header_this_app_value << endl;
         return 0;
     }
-        
-	Options::guess_source_fingerprint(ctx);
+    
+    // create a context solely for guessing source fingerprint
+    // must guess source fingerprint before loading config file, so that the file has priority
+    err = gpgme_new(&ctx);
+    fail_if_err(err);
+    Options::guess_source_fingerprint(ctx);
+    gpgme_release(ctx);
+    
 	Options::load_config_file();
 	if (!Options::safety_check()) {
 		return 5;
 	}
-
+    
+    
+    // set pgp exe configuration, if we have options for it
+    // must be done before creating our main context
+    if (Options::openpgp_exe.size()) {
+        err = gpgme_set_engine_info(GPGME_PROTOCOL_OpenPGP, Options::openpgp_exe.c_str(), (Options::openpgp_homedir.size() ? Options::openpgp_homedir.c_str() : NULL));
+        fail_if_err(err);
+    }
+    
+    // our main context
+    err = gpgme_new(&ctx);
+    fail_if_err(err);
+    
     if (Options::verbose) {
         gpgme_engine_info_t info;
         gpgme_error_t err;
@@ -270,17 +284,15 @@ int main(int argc, char* argv[]) {
         {
             clog << "Current protocol: " << gpgme_get_protocol_name(gpgme_get_protocol(ctx)) << endl;
             while (info) {
-                if (!info) {
-                    clog << "No protocol " << endl;
-                }
-                else if (info->file_name && !info->version) {
-                    clog << "Engine " << info->file_name << " not installed properly (no version)."
-                    << " Protocol: " << gpgme_get_protocol_name(info->protocol) << endl;
-                }
-                else if (info->file_name && info->version && info->req_version) {
-                    clog << "Engine " << info->file_name << " version " << info->version 
-                    << " installed; at least version " << info->req_version << " required."
-                    << " Protocol: " << gpgme_get_protocol_name(info->protocol) << endl;
+                if (info->file_name) {
+                    clog << "Engine " << info->file_name;
+                    if (!info->version)
+                        clog << " not installed properly (no version detected).";
+                    else
+                        clog << " version " << info->version << " installed.";
+                    clog << " At least version " << (info->req_version ? info->req_version : "(null)") << " required."
+                    << " Protocol: " << gpgme_get_protocol_name(info->protocol)
+                    << ". Home dir: " << (info->home_dir ? info->home_dir : "(default)") << endl;
                 }
                 else {
                     clog << "Unknown problem with engine for protocol " << gpgme_get_protocol_name(info->protocol) << endl;
