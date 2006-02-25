@@ -23,6 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sstream>
 #include <string>
 
+// posix only; for dup/dup2 for redirection of stdout
+#include <unistd.h>
+
 #include <mimetic/mimetic.h>
 #include <gpgme.h>
 #include <curl/curl.h>
@@ -39,6 +42,8 @@ const char* header_trust_num = "X-Konfidi-Email-Rating";
 const char* header_trust_level = "X-Konfidi-Email-Level";
 const char* header_this_app = "X-Konfidi-Client";
 const char* header_this_app_value = "cli-filter 0.1";
+
+int original_stdout;
 
 #define fail_if_err(err)                                        \
   do                                                            \
@@ -58,6 +63,11 @@ const char* header_this_app_value = "cli-filter 0.1";
 // TODO: handle this better
 // TODO: release gpg context
 int quit(Email * email, int flag=0) {
+    int dup2_result = dup2(original_stdout,1);
+    if (dup2_result < 0) {
+        cerr << "Could not restore stdout: " << dup2_result << endl;
+        exit(1);
+    }
 	email->printOn(&cout);
 	clog << endl;
 	exit(flag);
@@ -243,6 +253,21 @@ void add_trust_headers(Email * email, string to) {
 }
 
 int main(int argc, char* argv[]) {
+    // We must ensure that only our message content gets written to stdout, never any stray output from dependencies
+    // duplicate the reference to stdout, for later restoration
+    original_stdout = dup(1);
+    if (original_stdout < 0) {
+        cerr << "Could not duplicate reference to 'stdout': " << original_stdout << endl;
+        exit(1);
+    }
+    // redirect stdout to stderr
+    int dup2_result = dup2(2, 1);
+    if (dup2_result < 0) {
+        cerr << "Could not redirect 'stdout' to 'stderr': " << dup2_result << endl;
+        exit(1);
+    }
+    
+    
 	gpgme_error_t err;
     gpgme_ctx_t ctx;
     
@@ -304,6 +329,9 @@ int main(int argc, char* argv[]) {
         
     
 	Email* email = new Email(slurp(cin));
+    if (Options::verbose)
+	    clog << "processing " << email->message->header().messageid().str() << endl;
+
 
     clean_headers(email);
     email->message->header().field(header_this_app).value(header_this_app_value);
@@ -313,9 +341,6 @@ int main(int argc, char* argv[]) {
 	string sig = parse_email_sig(email);
     
     
-    if (Options::verbose)
-	    clog << "processing " << email->message->header().messageid().str() << endl;
-
 	gpgme_verify_result_t result = gpg_validate(ctx, text, sig);
     
     if (Options::verbose)
