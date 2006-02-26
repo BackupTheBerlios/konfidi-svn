@@ -6,7 +6,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:wot="http://xmlns.com/wot/0.1/#"
    xmlns:owl="http://www.w3.org/2002/07/owl#" 
-   xmlns:trust="http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#"
+   xmlns="http://www.konfidi.org/ns/trust/1.2#"
    >
 
 <foaf:Person rdf:nodeID="ams5"> 
