@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!--
+  Copyright (C) 2005-2005 Dave Brondsema, Andrew Schamp
+  This file is part of Konfidi http://konfidi.org/
+  It is licensed under two alternative licenses (your choice):
+      1. Apache License, Version 2.0
+      2. GNU Lesser General Public License, Version 2.1
+
+
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+-->
+
+<!DOCTYPE rdf:RDF [
+	<!ENTITY trust "http://www.konfidi.org/ns/trust/1.2#" >
+	<!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+	<!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
+	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
+	<!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
+	<!ENTITY wot  "http://xmlns.com/wot/0.1/" >
+	<!ENTITY rel "http://vocab.org/relationship/#" >
+	<!ENTITY dc "http://purl.org/dc/elements/1.1/" >
+	<!ENTITY vs "http://www.w3.org/2003/06/sw-vocab-status/ns#" >
+  ]>
+<!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
+<rdf:RDF 
+	xmlns="&trust;"
+	xmlns:owl="&owl;" 
+	xmlns:rdf="&rdf;" 
+	xmlns:rdfs="&rdfs;"
+	xmlns:xsd="&xsd;"
+	xmlns:rel="&rel;"
+	xmlns:foaf="&foaf;"
+	xmlns:wot="&wot;"
+	xmlns:dc="&dc;"
+	xmlns:vs="&vs;"
+>
+
+<rdf:Description rdf:about="">
+	<dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
+	<dc:date>2005-03-20</dc:date>
+	<dc:description xml:lang="en">This is the description</dc:description>
+	<dc:contributor>Andrew Schamp</dc:contributor>
+	<dc:contributor>Dave Brondsema</dc:contributor>
+</rdf:Description>
+
+<owl:Ontology 
+	rdf:about="&trust;" 
+	dc:title="Trust Vocabulary" 
+	dc:description="The Trust RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language." 
+	dc:date="$Date: 2005/03/19 11:38:02 $"
+	> 
+	<owl:versionInfo>v1.0</owl:versionInfo>
+	<wot:assurance rdf:resource="../trustsig"/>
+</owl:Ontology>
+
+<!-- classes first -->
+
+<!-- what about restrictions like "must have fingerprint", and "must have trustees"?  or are we going more generic than that? -->
+<!-- what about someone with multiple keys?  we should cover that in the trust-server importer-->
+<owl:Class rdf:about="&trust;Item" rdfs:label="Item" rdfs:comment="An item of trust">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:subClassOf rdf:resource="&rdfs;Resource" />
+</owl:Class>
+
+<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship" rdfs:comment="A relationship between two agents">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:subClassOf rdf:resource="&rel;Relationship" />
+</owl:Class>
+<!-- we want to use this for constraints -->
+<xsd:element xsd:name="percent" rdf:ID="percent">
+	<xsd:simpleType>
+		<xsd:restriction xsd:base="xsd:decimal">
+			<xsd:totalDigits>4</xsd:totalDigits>
+			<xsd:fractionDigits>2</xsd:fractionDigits>
+			<xsd:minInclusive> 0.00</xsd:minInclusive>
+			<xsd:maxInclusive> 1.00</xsd:maxInclusive>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:element>
+
+<!-- properties second -->
+<!--
+<owl:ObjectProperty rdf:ID="trusts" rdfs:Label="trusts"
+	rdfs:comment="Relates people in trust relationships">
+	<rdfs:domain rdf:resource="&foaf;Agent" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+-->
+<owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
+	rdfs:comment="The agent doing the trusting.">
+	<rdfs:domain rdf:resource="&trust;Relationship" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="trusted" rdfs:label="trusted"
+	rdfs:comment="The agent being trusted.">
+	<rdfs:domain rdf:resource="&trust;Relationship" />
+	<rdfs:range rdf:resource="&foaf;Agent" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="about" rdfs:label="about" 
+	rdfs:comment="Relates things to trust items.">
+	<rdfs:domain rdf:resource="&trust;Relationship" />
+	<rdfs:range rdf:resource="#Item" />
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="rating" rdfs:label="rating">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:domain rdf:resource="#Item" />
+	<rdfs:range rdf:resource="&rdfs;Literal" rdf:type="#percent" />
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:ID="topic" rdfs:label="topic">
+	<rdfs:isDefinedBy rdf:resource="&trust;" />
+	<rdfs:domain rdf:resource="#Item" />
+	<rdfs:range rdf:resource="&owl;Thing" />
+</owl:ObjectProperty>
+
+
+</rdf:RDF>
