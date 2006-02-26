@@ -64,7 +64,7 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		#self.RDF = Namespace(self.server.config.rdf_url + "#")
 		
 		self.FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-		self.TRUST = Namespace("http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#")
+		self.TRUST = Namespace("http://www.konfidi.org/ns/trust/1.2#")
 		self.WOT = Namespace("http://xmlns.com/wot/0.1/")
 		self.RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 		

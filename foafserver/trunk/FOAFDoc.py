@@ -75,7 +75,7 @@ class FOAFDoc:
         """validate the format of the document"""
         
         FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-        TRUST = Namespace("http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#")
+        TRUST = Namespace("http://www.konfidi.org/ns/trust/1.2#")
         WOT = Namespace("http://xmlns.com/wot/0.1/")
         RDF = Namespace("http://www.w3.org/2000/01/rdf-schema#")
         store = TripleStore()

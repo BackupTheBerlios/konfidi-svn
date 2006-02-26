@@ -98,7 +98,7 @@ def check_defaults(config):
                         'update_port'  : '50010',
                         'query_port'   : '50000' },
         'Schema'    : { 'foaf_url'     : 'http://xmlns.com/foaf/0.1/',
-                        'trust_url'    : 'http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl',
+                        'trust_url'    : 'http://www.konfidi.org/ns/trust/1.2',
                         'wot_url'      : 'http://xmlns.com/wot/0.1/',
                         'rdf_url'      : 'http://www.w3.org/2000/01/rdf-schema' },
         'Strategies' : {'strategy_password' : 'konfdi' }
