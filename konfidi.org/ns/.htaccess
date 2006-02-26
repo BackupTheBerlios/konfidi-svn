@@ -8,5 +8,6 @@
 RewriteEngine On 
 
 # viewcvs doesn't support application/rdf+xml, so we fall back to application/xml
-RewriteRule "trust/(.*)/(.*)\.owl$" "http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/tags/release-$1/$2.owl?content-type=application/xml"
+RewriteRule "trust/(.*)$" "http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/tags/release-$1/trust.owl?content-type=application/xml" [P]
+# trailing [P] means to use internal proxy; [R] would do external redirect
 
