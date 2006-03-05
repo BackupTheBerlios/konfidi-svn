@@ -76,7 +76,7 @@ class QueryListener(SocketServer.BaseRequestHandler):
 			except (ImportError), i:
 				from TrustStrategies.DefaultTPF import DefaultTPF
 				tpf = DefaultTPF(self.server)
-				log.warning("Caught ImportError: %s\nUsing DefaultTPF strategy." % (i))
+				log.warn("Caught ImportError: %s\nUsing DefaultTPF strategy." % (i))
 			searchtime = time.time()
 			r = tpf.query(options)
 			searchtime = "%.6f" % (time.time() - searchtime)
