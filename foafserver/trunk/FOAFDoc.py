@@ -89,12 +89,14 @@ class FOAFDoc:
         
         fingerprint = last_fingerprint = None
         for (relationship, truster) in store.subject_objects(TRUST["truster"]):
-            fingerprint = store.objects(truster, WOT["fingerprint"]).next()
-            if last_fingerprint:
-                if fingerprint != last_fingerprint:
-                    raise FOAFServerError, "All 'wot:fingerprint's from 'trust:truster's must be the same.  Found '%s' and '%s'" % (fingerprint, last_fingerprint)
-            last_fingerprint = fingerprint
+            for (key) in store.objects(truster, WOT["hasKey"]):
+                fingerprint = store.objects(key, WOT["fingerprint"]).next()
+                if last_fingerprint:
+                    if fingerprint != last_fingerprint:
+                        raise FOAFServerError, "All wot:fingerprint's from trust:truster's PubKeys must be the same.  Found '%s' and '%s'" % (fingerprint, last_fingerprint)
+                last_fingerprint = fingerprint
         
+        # per http://xmlns.com/wot/0.1/, we really shouldn't replace these
         fingerprint = fingerprint.replace(" ", "")
         fingerprint = fingerprint.replace(":", "")
         if require_hex_fpr and not(ishex(fingerprint)):
