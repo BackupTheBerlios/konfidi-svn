@@ -105,8 +105,10 @@ class UpdateListener(SocketServer.BaseRequestHandler):
 		for (relationship, truster) in trust.subject_objects(self.TRUST["truster"]):
 			#print "r: %s, t: %s" % (relationship, truster)
 			# clean up the fingerprints
-			source_fingerprint = trust.objects(truster, self.WOT["fingerprint"]).next()
-			sink_fingerprint = trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["fingerprint"]).next()
+			source_pubkey = trust.objects(truster, self.WOT["hasKey"]).next()
+			source_fingerprint = trust.objects(source_pubkey, self.WOT["fingerprint"]).next()
+			sink_pubkey = trust.objects(trust.objects(relationship, self.TRUST["trusted"]).next(), self.WOT["hasKey"]).next()
+			sink_fingerprint = trust.objects(sink_pubkey, self.WOT["fingerprint"]).next()
 			# turn these off for now, for our test cases.  figure a better solution later
 			source_fingerprint = re.sub(r'[^0-9A-Z]', r'', source_fingerprint.upper())
 			sink_fingerprint = re.sub(r'[^0-9A-Z]', r'', sink_fingerprint.upper())
