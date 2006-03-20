@@ -17,6 +17,9 @@ class ValidationError(Exception):
 
 class FromMismatchError(Exception):
     pass
+    
+class InvalidEmailAddressError(Exception):
+    pass
 
 def check_message(filename):
     m = email.message_from_file(open(filename))
@@ -28,8 +31,11 @@ def check_message(filename):
             raise ContentTypeError(sig.get_content_type())
         
         sig = verify(m.get_payload()[0], m.get_payload()[1])
-        if sig.stderr.find(email.Utils.parseaddr(m['From'][1])) < 0:
-            raise FromMismatchError(email.Utils.parseaddr(m['From'][1]))
+        email_address = re.compile(r'[\w\-][\w\-\.]+@[\w\-][\w\-\.]+[a-zA-Z]{1,4}').search(m['From']).group()
+        if email_address is None:
+            raise InvalidEmailAddressError(m['From'])
+        if sig.stderr.find(email_address.group()) < 0:
+            raise FromMismatchError(email.Utils.parseaddr(m['From']))
         
         konfidi_lookup(source, sig.fingerprint)
         
@@ -39,6 +45,8 @@ def check_message(filename):
         m['X-PGP-Signature'] = "public key not available"
     except ValidationError, e:
         m['X-PGP-Signature'] = "invalid: %s" % (e.error_text)
+#    except InvalidEmailAddressError, i:
+#        m['X-PGP-Signature'] =
     except FromMismatchError, f:
         m['X-PGP-Signature'] = "from mismatch: %s not found" % (f.address)
 
