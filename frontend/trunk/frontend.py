@@ -54,6 +54,7 @@ from mod_python import util
 import pickle
 import string
 from xml.dom import minidom
+from Konfidi.Client import TrustClient
 
 # for graph output
 from PIL import Image
@@ -74,6 +75,7 @@ class Frontend:
 	def __init__(self, req):
 		self.req = req
 		self.config = parse_config(req.get_options())
+        self.trust_client = TrustClient(self.config['trustserver'])
 
 	def handle(self):
 		self.req.allow_methods(["GET"])
@@ -81,21 +83,11 @@ class Frontend:
 		if self.req.get_config().has_key('PythonDebug'):
 			reload(dump)
 		
+        pages = ['test', 'query', 'map', 'form', 'viewgraph', 'graph_image', 'howmuchdoes', '']
+        
 		page = uniqueURI(self.req)
-		if (page == "test"):
-			return self.test(self.req)
-		if (page == "query"):
-			return self.query(self.req)
-		if (page == "map"):
-			return self.map(self.req)
-		if (page == "form"):
-			return self.form(self.req)
-		if (page == "viewgraph"):
-			return self.viewgraph(self.req)
-		if (page == "graph_image"):
-			return self.graph_image(self.req)
-		if (page == ""):
-			return self.index(self.req)
+        if "/".split(page.lower())[0] in pages:
+			return self.getattr("/".split(page.lower()))(self.req)
 		else:
 			self.req.status = apache.HTTP_NOT_IMPLEMENTED
 			self.req.content_type = "text/html"
@@ -149,7 +141,14 @@ class Frontend:
 		</html>
 		""")
 		return apache.OK
-		
+        
+    def howmuchdoes(self, req):
+        (h, source, t, sink, a, subject) = "/".split(uniqueURI(req))
+        if h.lower() != "howmuchdoes" or t.lower() != "trust" or a.lower() != "about":
+            req.write("Error: malformed query.")
+        self.trust_client.Query(source, sink, subject)
+        return apache.OK
+        
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
 			form = util.FieldStorage(req, 1)
@@ -271,19 +270,7 @@ class Frontend:
 		tag = xml[:bound]
 		xml = xml[bound:]
 		return (tag, xml)
-			
-	def send_query(self, strategy, options = "no_options=true"):
-	
-		sockobj = socket(AF_INET, SOCK_STREAM)
-		sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
-		sockobj.send("%s:%s" % (strategy, options))
-		result = ""
-		while 1:
-			data = sockobj.recv(1024)
-			if not data: break
-			result += data
-		#sockobj.close()
-		return result
+		
 	
 	def parse_options(self, form, retstr = False):
 		# handle the default options and option processing here: 
