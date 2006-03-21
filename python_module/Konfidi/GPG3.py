@@ -58,6 +58,7 @@ Thu Jun 23 21:27:20 PDT 2005
 import os
 import StringIO
 import popen2
+import tempfile
 
 class GPG:
 
@@ -197,11 +198,28 @@ class GPG:
         self._handle_gigo([], file, sig)
         return sig
 
-    def verify_detached(self, body_file, sig_file):
+    def verify_detached(self, body, sig):
         """Verify the detached signature on a given file.  Arguments:
-        body_file -- the full pathname to the file containing the full text to be verified
-        sig_file  -- the full pathname to the file containing the detached signature
+        body -- a string containing the full text to be verified
+        sig  -- a string containing the detached signature
         """
+        
+        (body_fd, body_file) = tempfile.mkstemp()
+        (sig_fd, sig_file)   = tempfile.mkstemp()
+        
+        b = os.fdopen(body_fd, 'wb')        
+        # need the body intact to verify it, including MIME headers
+        # also, convert line endings from \n to \r\n
+        b.write(body)
+        b.close()
+        
+        s = os.fdopen(sig_fd, 'wb')
+        # need the payload of the sig without its MIME headers
+        s.write(sig)
+        s.close()
+        
+        os.remove(body_file)
+        os.remove(sig_file)
         args = ["--keyserver x-hkp://random.sks.keyserver.penguin.de --keyserver-options auto-key-retrieve --verify %s %s" % (sig_file, body_file)]
         sig = Verify()
         self._handle_gigo(args, StringIO.StringIO(""), sig)
