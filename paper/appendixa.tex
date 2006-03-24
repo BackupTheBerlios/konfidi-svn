@@ -1,7 +1,7 @@
 \begin{verbatim}
 <?xml version="1.0"?>
 <!DOCTYPE rdf:RDF [
-    <!ENTITY trust "http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#" >
+    <!ENTITY trust "http://www.konfidi.org/ns/trust/1.4#" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
     <!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
@@ -9,39 +9,36 @@
   ]>
 <rdf:RDF 
     xmlns="&trust;" xmlns:owl="&owl;" xmlns:rdfs="&rdfs;" xmlns:rel="&rel;" xmlns:foaf="&foaf;"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+>
 
 <rdf:Description rdf:about="">
     <dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
-    <dc:date>2005-03-20</dc:date>
+    <dc:date>2006-03-23</dc:date>
+    <dc:description xml:lang="en">This is the description</dc:description>
     <dc:contributor>Andrew Schamp</dc:contributor>
     <dc:contributor>Dave Brondsema</dc:contributor>
 </rdf:Description>
 
-<owl:Ontology 
-    rdf:about="&trust;" 
+<owl:Ontology rdf:about="&trust;" 
     dc:title="Trust Vocabulary" 
-    dc:description="The Trust RDF vocabulary, in OWL and RDF." 
-    dc:date="$Date: 2005/03/19 11:38:02 $"> 
+    dc:description="The Trust RDF vocabulary, described using W3C RDF Schema and the Web Ontology Language." 
+    dc:date="$Date: 2005/03/19 11:38:02 $">
     <owl:versionInfo>v1.0</owl:versionInfo>
 </owl:Ontology>
 
-<!-- classes first -->
-<owl:Class rdf:about="&trust;Item" rdfs:label="Item" 
-    rdfs:comment="An item of trust">
+<owl:Class rdf:about="&trust;Item" rdfs:label="Item" rdfs:comment="An item of trust">
     <rdfs:isDefinedBy rdf:resource="&trust;" />
     <rdfs:subClassOf rdf:resource="&rdfs;Resource" />
 </owl:Class>
 
-<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship"
-    rdfs:comment="A relationship between two agents">
+<owl:Class rdf:about="&trust;Relationship" rdfs:label="Relationship" rdfs:comment="A relationship between two agents">
     <rdfs:isDefinedBy rdf:resource="&trust;" />
     <rdfs:subClassOf rdf:resource="&rel;Relationship" />
 </owl:Class>
-
-<!-- for constraints -->
+<!-- we want to use this for constraints -->
 <xsd:element xsd:name="percent" rdf:ID="percent">
     <xsd:simpleType>
         <xsd:restriction xsd:base="xsd:decimal">
@@ -53,7 +50,6 @@
     </xsd:simpleType>
 </xsd:element>
 
-<!-- properties second -->
 <owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
     rdfs:comment="The agent doing the trusting.">
     <rdfs:domain rdf:resource="&trust;Relationship" />
@@ -86,6 +82,5 @@
     <rdfs:domain rdf:resource="#Item" />
     <rdfs:range rdf:resource="&owl;Thing" />
 </owl:ObjectProperty>
-
 </rdf:RDF>
 \end{verbatim}
