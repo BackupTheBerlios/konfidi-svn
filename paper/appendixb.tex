@@ -5,62 +5,78 @@
 ]>
 <rdf:RDF
     xmlns:foaf="http://xmlns.com/foaf/0.1/"
-    xmlns="http://svn.berlios.de/viewcvs/*checkout*/konfidi/schema/trunk/trust.owl#"
+    xmlns="http://www.konfidi.org/ns/trust/1.3#"
     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
     xmlns:wot="http://xmlns.com/wot/0.1/">
 
 <foaf:Person rdf:nodeID="alice"> 
     <foaf:name>Alice</foaf:name>
     <foaf:mbox>demo-alice@brondsema.net</foaf:mbox>
-    <wot:fingerprint>3868 47DB 8862 E226 2DB3 F94E EA6E 22F6 38E7 6598</wot:fingerprint>
+    <wot:hasKey>
+        <wot:PubKey>
+            <wot:fingerprint>386847DB8862E2262DB3F94EEA6E22F638E76598</wot:fingerprint>
+        </wot:PubKey>
+    </wot:hasKey>
 </foaf:Person>
 
 <foaf:Person rdf:nodeID="bob"> 
     <foaf:name>Bob</foaf:name>
     <foaf:mbox>demo-bob@brondsema.net</foaf:mbox>
-    <wot:fingerprint>CA1C 7BC2 FA3A C95E A8AA 3E7A 1FF9 47DC C5D9 54BE</wot:fingerprint>
+    <wot:hasKey>
+        <wot:PubKey>
+            <wot:fingerprint>CA1C7BC2FA3AC95EA8AA3E7A1FF947DCC5D954BE</wot:fingerprint>
+        </wot:PubKey>
+    </wot:hasKey>
 </foaf:Person>
 
 <foaf:Person rdf:nodeID="clara"> 
     <foaf:name>Clara</foaf:name>
     <foaf:mbox>demo-clara@brondsema.net</foaf:mbox>
-    <wot:fingerprint>BB5B 0D92 A23D 31CA 559C 3D86 FF9B D44A DCD8 155F</wot:fingerprint>
+    <wot:hasKey>
+        <wot:PubKey>
+            <wot:fingerprint>BB5B0D92A23D31CA559C3D86FF9BD44ADCD8155F</wot:fingerprint>
+        </wot:PubKey>
+    </wot:hasKey>
 </foaf:Person>
 
 <foaf:Person rdf:nodeID="spammer">
     <foaf:mbox>demo-spammer@brondsema.net</foaf:mbox>
-    <wot:fingerprint>ACC2 6799 2DDC 9AF0 05D4 E24F 5013 CB50 882E C55C</wot:fingerprint>
+    <wot:hasKey>
+        <wot:PubKey>
+            <wot:fingerprint>ACC267992DDC9AF005D4E24F5013CB50882EC55C</wot:fingerprint>
+        </wot:PubKey>
+    </wot:hasKey>
 </foaf:Person>
 
 <Relationship>
-        <truster rdf:nodeID="alice"/>
-        <trusted rdf:nodeID="bob"/>
-        <about>
-                <Item>
-                        <topic rdf:resource="&subject;#email"/>
-                        <rating>0.90</rating>
-                </Item>
-        </about>
+    <truster rdf:nodeID="alice"/>
+    <trusted rdf:nodeID="bob"/>
+    <about>
+            <Item>
+                    <topic rdf:resource="&subject;#email"/>
+                    <rating>0.90</rating>
+            </Item>
+    </about>
 </Relationship>
 <Relationship>
-        <truster rdf:nodeID="bob"/>
-        <trusted rdf:nodeID="clara"/>
-        <about>
-                <Item>
-                        <topic rdf:resource="&subject;#email"/>
-                        <rating>0.70</rating>
-                </Item>
-        </about>
+    <truster rdf:nodeID="bob"/>
+    <trusted rdf:nodeID="clara"/>
+    <about>
+            <Item>
+                    <topic rdf:resource="&subject;#email"/>
+                    <rating>0.70</rating>
+            </Item>
+    </about>
 </Relationship>
 <Relationship>
-        <truster rdf:nodeID="clara"/>
-        <trusted rdf:nodeID="spammer"/>
-        <about>
-                <Item>
-                        <topic rdf:resource="&subject;#email"/>
-                        <rating>0</rating>
-                </Item>
-        </about>
+    <truster rdf:nodeID="clara"/>
+    <trusted rdf:nodeID="spammer"/>
+    <about>
+            <Item>
+                    <topic rdf:resource="&subject;#email"/>
+                    <rating>0</rating>
+            </Item>
+    </about>
 </Relationship>
 
 </rdf:RDF>
