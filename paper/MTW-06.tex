@@ -53,18 +53,12 @@ A universal concept in a universal language seemed appropriate for what we hope 
 
 \author{
 \alignauthor David Brondsema\\
-       \affaddr{Calvin College}\\
-       \affaddr{3201 Burton St., SE}\\
-       \affaddr{Grand Rapids, MI 49546}\\
        \affaddr{dave@brondsema.net}
 \alignauthor Andrew Schamp\\
-       \affaddr{Calvin College}\\
-       \affaddr{3201 Burton St., SE}\\
-       \affaddr{Grand Rapids, MI  49546}\\
        \affaddr{schamp@gmail.com}
 }
 
-\date{31 Jan 2006}
+\date{29 Mar 2006}
 
 \maketitle
 \begin{abstract}
@@ -123,7 +117,7 @@ One approach would be for a Mail User Agent (MUA) to find a path from any PGP-si
 
 Using this approach to filter spam would require that most users digitally sign email messages, and it depends on users to be aware of known spammers and avoid signing their keys. However, the recommended PGP keysigning practices require only the careful verification of the key-holder's identity, and a signed key does not entail anything about trustworthiness in other areas.  Furthermore, if the identification requirements for keysigning are met, even by a spammer, it would be unfair to refrain from signing that spammer's key\footnote{In fact, such positive identification might be of use.}.  Whether a user should be trusted to send good email, and not spam, is information over and above that expressed in the PGP web-of-trust itself, so another system would be required to encode such information.
 
-Another serious flaw in this approach is this:  because key signatures are listed with the signed key and not the signing key, the MUA must search for a path between users that can only be constructed from the sender to the recipient.  Since these paths would have to be built starting from the sender, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign their sender's key.  This could inundate the client's search domain making such a search impractical.  A deluge of false information would put undue strain on the clients and keyserver infrastructure, and would amount to a denial-of-service, of sorts.  Existing keyserver infrastructure provides no effecient way to tell which keys a particular key has signed, which would allow searches in the reverse direction that are not susceptible to this mis-use.
+Another serious flaw in this approach is this:  because key signatures are listed with the signed key and not the signing key, the MUA must search for a path between users that can only be constructed from the sender to the recipient.  Since these paths would have to be built starting from the sender, a spammer or other malicious user could generate a large number of fake keys that are inter-signed, and then use these keys to sign their sender's key.  This could inundate the client's search domain making such a search impractical.  A deluge of false information would put undue strain on the clients and keyserver infrastructure, and would amount to a denial-of-service, of sorts.  Existing keyserver infrastructure provides no effecient way to tell which keys a particular key has signed, which would allow searches in the reverse direction that are not susceptible to this misuse.
 
 \subsection{PGP Web of Trust}
 \label{wotsap}
@@ -187,7 +181,7 @@ Konfidi uses the Web Ontology Language (OWL) \citep{owl} to define the RDF eleme
 
 The primary element is \texttt{Re\-la\-tion\-ship}, which represents a relationship of trust that holds between two persons.  There are two properties that are required for every \texttt{Re\-la\-tion\-ship}, \texttt{trust\-er} and \texttt{trust\-ed}, which indicate the two parties to the relationship.  Both \texttt{trust\-er} and \texttt{trust\-ed} have \texttt{foaf:\-Per\-son} objects as their targets.  These \texttt{Per\-son} objects should also contain at least one \texttt{wot:\-fin\-ger\-print} property specifying the PGP fingerprint of a public key held by the individual the \texttt{Per\-son} describes.  This property is required for verification; if no \texttt{fin\-ger\-print} is available, then Konfidi cannot use the relationship.  In general, any object described in RDF with a resource URI can be the \texttt{trust\-ed} party, such as specific documents or websites, but for simplicity in our examples, we will focus on persons. which may be defined in the same file, inline, or in external documents indicated by their resource URIs.  Because it does not matter where the \texttt{foaf:\-Per\-son} data is stored, users may keep files indicating trust relationships separate from main FOAF files.  However, to ensure authenticity, any file containing one or more \texttt{Re\-la\-tion\-ship} objects must have a valid PGP signature from a public key corresponding to the \texttt{fin\-ger\-print} of each \texttt{Per\-son} listed as a \texttt{trust\-er} in that file.  As described in Section~\ref{foafserver}, flexibility in data location can have a number of advantages.  
 
-In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Re\-la\-tion\-ship} to a trust \texttt{Item}.  A \texttt{Re\-la\-tion\-ship} is not limited in the other properties it can have, so the schema can be extended to include auxiliary information about the relationship, such as when it began, who introduced it and so on may be recorded without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
+In addition to \texttt{truster} and \texttt{trusted}, each \texttt{Relationship} requires at least one \texttt{about} property, which relates the trust \texttt{Re\-la\-tion\-ship} to a trust \texttt{Item}.  A \texttt{Re\-la\-tion\-ship} is not limited in the other properties it can have, so the schema can be extended to include auxiliary information about the relationship, such as when it began, who introduced it and so on without having an effect on the requirements of Konfidi.  Each \texttt{Item} has two properties belonging to it.  The \texttt{topic} property specifies the subject of the trust according to a trust topic hierarchy\footnote{yet to be developed} and the \texttt{rating} property indicates the value, according to the 0-1 scale of trust (specified in Section~\ref{rating}) that is assigned to the relationship on that topic.  
 
 A \texttt{Relationship} may have more than one \texttt{Item} that it is about.  For example, remember the example given above, in which Alice trusts Bob highly about cooking, and distrusts him somewhat about the weather.  This might be represented in our ontology as something like the following\footnote{That is, supposing that the objects \texttt{alice123} and \texttt{bob1812} are defined elsewhere in the same file, and \texttt{cooking}, and \texttt{weather} are defined as part of the topic hierarchy.}:
 
