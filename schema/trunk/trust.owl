@@ -38,32 +38,22 @@
 -->
 
 <!DOCTYPE rdf:RDF [
-	<!ENTITY trust "http://www.konfidi.org/ns/trust/1.3#" >
-	<!ENTITY rdf  "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+	<!ENTITY trust "http://www.konfidi.org/ns/trust/1.4#" >
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
-	<!ENTITY xsd  "http://www.w3.org/2001/XMLSchema#" >
 	<!ENTITY owl  "http://www.w3.org/2002/07/owl#" >
 	<!ENTITY foaf "http://xmlns.com/foaf/0.1/" >
 	<!ENTITY rel "http://vocab.org/relationship/#" >
-	<!ENTITY dc "http://purl.org/dc/elements/1.1/" >
-	<!ENTITY vs "http://www.w3.org/2003/06/sw-vocab-status/ns#" >
   ]>
-<!-- note:  the following entity references may not work, if they have the octothorpe.  If it doesn't, consider changing them. -->
 <rdf:RDF 
-	xmlns="&trust;"
-	xmlns:owl="&owl;" 
-	xmlns:rdf="&rdf;" 
-	xmlns:rdfs="&rdfs;"
-	xmlns:xsd="&xsd;"
-	xmlns:rel="&rel;"
-	xmlns:foaf="&foaf;"
-	xmlns:dc="&dc;"
-	xmlns:vs="&vs;"
+	xmlns="&trust;" xmlns:owl="&owl;" xmlns:rdfs="&rdfs;" xmlns:rel="&rel;" xmlns:foaf="&foaf;"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
 >
 
 <rdf:Description rdf:about="">
 	<dc:title xml:lang="en">Trust: A vocabulary for indicating trust relationships</dc:title>
-	<dc:date>2005-03-20</dc:date>
+	<dc:date>2006-03-23</dc:date>
 	<dc:description xml:lang="en">This is the description</dc:description>
 	<dc:contributor>Andrew Schamp</dc:contributor>
 	<dc:contributor>Dave Brondsema</dc:contributor>
@@ -104,14 +94,6 @@
 </xsd:element>
 
 <!-- properties second -->
-<!--
-<owl:ObjectProperty rdf:ID="trusts" rdfs:Label="trusts"
-	rdfs:comment="Relates people in trust relationships">
-	<rdfs:domain rdf:resource="&foaf;Agent" />
-	<rdfs:range rdf:resource="&foaf;Agent" />
-	<rdfs:isDefinedBy rdf:resource="&trust;" />
-</owl:ObjectProperty>
--->
 <owl:ObjectProperty rdf:ID="truster" rdfs:label="truster"
 	rdfs:comment="The agent doing the trusting.">
 	<rdfs:domain rdf:resource="&trust;Relationship" />
