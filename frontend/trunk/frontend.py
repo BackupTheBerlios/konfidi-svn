@@ -109,30 +109,17 @@ class Frontend:
 		<h4>Querying</h4>
 		Just do a GET using to the url "query", defining the variables "source", "sink", and "subject"
 		<br>
-		<a href="query?strategy=Multiplicative&source=Schamp&sink=Crowe&subject=cooking">sample: Schamp, Crowe, cooking</a><br>
-		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Schamp&subject=dmail">sample: Brondsema, Schamp, dmail</a><br>
-		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Laing&subject=email">sample: Brondsema, Laing, email</a><br>
-		<a href="query?strategy=Multiplicative&source=Brondsema&sink=Goforth&subject=default">sample: Brondsema, Goforth, default</a><br>
-		<a href="query?strategy=Multiplicative&source=Schamp&sink=Goforth&subject=default">sample: Schamp, Goforth, default</a><br>
-		<a href="query?strategy=Multiplicative&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens, java (full fingerprints)</a><br>
-		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=email">sample: Andy, Frens, email (full fingerprints)</a><br>
-		<a href="query?strategy=Multiplicative&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave, cooking (full fingerprints)</a><br>
-		<a href="query?strategy=Multiplicative2&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=4135692DA2AD1F1EB9B27F22FBA13B553109E447&subject=email">sample: Dave, Andy, Jim, email (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative2&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=java">sample: Dave, Frens; java (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative2&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=FB559CABDB811891B6D37E1439C06ED9D798EFD2&subject=internet-communication">sample: Andy, Frens; internet-communication (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative2&source=8A335B856C4AE39A0C36A47F152C15A0F2454727&sink=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&subject=cooking">sample: Andy, Dave; cooking (full fingerprints)</a><br>
+		<a href="query?strategy=Multiplicative2&source=EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70&sink=4135692DA2AD1F1EB9B27F22FBA13B553109E447&subject=internet-communication">sample: Dave, Andy, Jim; internet-communication (full fingerprints)</a><br>
+		<!--
 		<br>Edge cases:<br>
 		Ghandi, Spammer, email
 		Ghandi, Scumbag, email
-		<h4>TrustServer commands</h4>
-		<!--<a href="command?cmd=start">Start server</a><br>
-		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.<br>
-		<a href="command?cmd=load1">Load data set 1 (schamp, laing, brondsema)</a><br>
-		<a href="command?cmd=load2">Load data set 2 (real keys, etc)</a><br>
-		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>-->
+		-->
 		<h4>Web interface</h4>
 		Or use <a href="form">this form</a><br>
-		Or <a href="viewgraph?password=konfidi">view an image of the current network (password)</a><br>
-		Or <a href="viewgraph">view an image of the current network (incorrect password)</a><br>
-		Or <a href="viewgraph?password=krangfidi">view an image of the current network (no password)</a><br>
-		Or <a href="viewgraph?password=konfidi&update=1">update the images to reflect the current network</a><br>
 		Or <a href="query?strategy=PeopleDump&source=foo&sink=bar&subject=baz&pgpquery=0">show people</a><br/>
 		Or <a href="map?strategy=Multiplicative">Map all trust relationships and inferences</a><br/>
 		<h4><a href="test">debug output</a></h4>""" +
@@ -140,6 +127,18 @@ class Frontend:
 		"""</body>
 		</html>
 		""")
+		# commented out:
+		"""		<h4>TrustServer commands</h4>
+		<a href="command?cmd=start">Start server</a><br>
+		<a href="command?cmd=stop">Stop server</a> <!--NOTE: This will kill all python processes.<br>
+		<a href="command?cmd=load1">Load data set 1 (schamp, laing, brondsema)</a><br>
+		<a href="command?cmd=load2">Load data set 2 (real keys, etc)</a><br>
+		<a href="command?cmd=load3">Load data set 3 (edge cases)</a><br>"""
+		"""		Or <a href="viewgraph?password=konfidi">view an image of the current network (password)</a><br>
+		Or <a href="viewgraph">view an image of the current network (incorrect password)</a><br>
+		Or <a href="viewgraph?password=krangfidi">view an image of the current network (no password)</a><br>
+		Or <a href="viewgraph?password=konfidi&update=1">update the images to reflect the current network</a><br>"""
+		
 		return apache.OK
         
     def howmuchdoes(self, req):
