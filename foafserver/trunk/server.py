@@ -51,7 +51,7 @@ from socket import *
 from mod_python import apache
 from mod_python import util
 
-foafserver_version = "0.1"
+foafserver_version = "1.0.0"
 
 
 #

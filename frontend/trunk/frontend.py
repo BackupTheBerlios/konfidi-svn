@@ -61,7 +61,7 @@ from PIL import Image
 import pydot
 
 
-frontend_version = "0.1"
+frontend_version = "1.0.0"
 
 # our own error class
 class FrontendError(Exception):
