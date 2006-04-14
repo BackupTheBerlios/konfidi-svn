@@ -5,36 +5,49 @@ subproject=$1
 version=$2
 dest=$3
 
+branchpath=trunk
+
 if [ "$subproject" == "" ] || [ "$version" == "" ]; then
-    echo "Usage: $0 SUBPROJECT VERSION [DEST]"
+    echo "Usage: $0 SUBPROJECTDIR VERSION [DEST]"
     echo "Example:  $0 ../foafserver 1.0.0 dist"
     echo 
-    echo "SUBPROJECT:   a folder having 'trunk' and 'tags' subfolders"
-    echo "VERSION:      a version number"
-    echo "DEST:         a folder to hold the generated distributables"
-    echo "              (default '.')"
+    echo "SUBPROJECTDIR:   an SVN working copy having 'trunk' and 'tags' subfolders"
+    echo "VERSION:         a version number"
+    echo "DEST:            a folder to hold the generated distributables"
+    echo "                 (default '.')"
     echo
     echo "When run, this will tag a release version, build a tar.bz2 file, and sign it"
     exit
 fi
 
+projectname=`basename $subproject`
 
 if [ "$dest" == "" ]; then
     dest=.
 fi
 
-echo "Tagging $subproject/trunk as $version"
-pushd $subproject >/dev/null || exit $?
-svn cp trunk tags/$version || exit $?
-popd >/dev/null || exit $?
+url=`svn info $subproject | awk '/^URL: / {print $2}'` || exit $?
+if [ "$url" == "" ]; then
+    echo "$subproject does not appear to be a SVN working copy" >&2
+    exit 1
+fi
 
-projectname=`basename $subproject`
+svnexportdir=$dest/$projectname-$version
+mkdir -p $dest || exit $?
+echo "Running: svn export $url/$branchpath $svnexportdir -q"
+svn export $url/$branchpath $svnexportdir -q || exit $?
+
+
 distr=$dest/$projectname-$version-src.tar.bz2
 
-echo "Making $distr"
-tar -cjpf $distr $subproject/tags/$version --exclude '.svn' || exit $?
+echo "Making: $distr"
+tar -cjpf $distr $svnexportdir || exit $?
 
-echo "Signing $distr"
+echo "Deleting: $svnexportdir"
+rm -rf $svnexportdir
+
+echo "Signing: $distr"
 gpg --armor --detach-sign $distr || exit $?
 
-echo "You need to commit the tagged version"
+echo "You should now run:"
+echo svn cp $url/$branchpath $url/tags/$version -m \"release $version\" || exit $?
