@@ -75,7 +75,7 @@ svn export $url/$branchpath $svnexportdir -q || exit $?
 distr=$dest/$projectname-$version-src.tar.bz2
 
 echo "Making: $distr"
-tar -cjpf $distr $svnexportdir || exit $?
+tar -cjf $distr $svnexportdir || exit $?
 
 echo "Deleting: $svnexportdir"
 rm -rf $svnexportdir || exit $?
