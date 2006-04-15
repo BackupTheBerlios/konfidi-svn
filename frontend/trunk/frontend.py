@@ -54,7 +54,6 @@ from mod_python import util
 import pickle
 import string
 from xml.dom import minidom
-from Konfidi.Client import TrustClient
 
 # for graph output
 from PIL import Image
@@ -75,7 +74,6 @@ class Frontend:
 	def __init__(self, req):
 		self.req = req
 		self.config = parse_config(req.get_options())
-        self.trust_client = TrustClient(self.config['trustserver'])
 
 	def handle(self):
 		self.req.allow_methods(["GET"])
@@ -83,17 +81,20 @@ class Frontend:
 		if self.req.get_config().has_key('PythonDebug'):
 			reload(dump)
 		
-        pages = ['test', 'query', 'map', 'form', 'viewgraph', 'graph_image', 'howmuchdoes', '']
-        
+		pages = ['index','test', 'query', 'map', 'form', 'viewgraph', 'graph_image', '']
+
 		page = uniqueURI(self.req)
-        if "/".split(page.lower())[0] in pages:
-			return self.getattr("/".split(page.lower()))(self.req)
+		page_first_part = page.lower().split("/")[0]
+		if page_first_part == "":
+			page_first_part = "index"
+		if page_first_part in pages:
+			return getattr(self, page_first_part)(self.req)
 		else:
 			self.req.status = apache.HTTP_NOT_IMPLEMENTED
 			self.req.content_type = "text/html"
 			self.req.write("501: HTTP_NOT_IMPLEMENTED.  tried to access page=%s" % page)
 			return apache.OK
-			
+
 	#
 	# various handlers depending on the request
 	#
@@ -140,13 +141,6 @@ class Frontend:
 		Or <a href="viewgraph?password=konfidi&update=1">update the images to reflect the current network</a><br>"""
 		
 		return apache.OK
-        
-    def howmuchdoes(self, req):
-        (h, source, t, sink, a, subject) = "/".split(uniqueURI(req))
-        if h.lower() != "howmuchdoes" or t.lower() != "trust" or a.lower() != "about":
-            req.write("Error: malformed query.")
-        self.trust_client.Query(source, sink, subject)
-        return apache.OK
         
 	def query(self, req):	
 		if (req.method == "POST" or req.method == "GET"):
@@ -270,6 +264,18 @@ class Frontend:
 		xml = xml[bound:]
 		return (tag, xml)
 		
+	def send_query(self, strategy, options = "no_options=true"):
+
+		sockobj = socket(AF_INET, SOCK_STREAM)
+		sockobj.connect((self.config['trustserver']['host'], int(self.config['trustserver']['port'])))
+		sockobj.send("%s:%s" % (strategy, options))
+		result = ""
+		while 1:
+			data = sockobj.recv(1024)
+			if not data: break
+			result += data
+		#sockobj.close()
+		return result
 	
 	def parse_options(self, form, retstr = False):
 		# handle the default options and option processing here: 
