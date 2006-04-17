@@ -1,0 +1,113 @@
+#  Copyright (C) 2005-2005 Dave Brondsema, Andrew Schamp
+#  This file is part of Konfidi http://konfidi.org/
+#  It is licensed under two alternative licenses (your choice):
+#      1. Apache License, Version 2.0
+#      2. GNU Lesser General Public License, Version 2.1
+#
+#
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+#
+#
+#  This library is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU Lesser General Public
+#  License as published by the Free Software Foundation; either
+#  version 2.1 of the License, or (at your option) any later version.
+#
+#  This library is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+#  Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public
+#  License along with this library; if not, write to the Free Software
+#  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+#
+# Configuration file for Trust server Apache module frontend
+#
+# Copy this file to .htaccess and then modify the top section of settings
+#
+#
+
+# If debugging is turned on, modules will be reloaded.
+PythonOption debug 1
+
+# the host and port on which these servers run
+PythonOption trustserver.host 127.0.0.1
+PythonOption trustserver.port 20000
+PythonOption pgpserver.host localhost
+PythonOption pgpserver.port 50000
+
+# the default querying behavior, if nothing is specified
+# (1 = query, 0 = do not query)
+PythonOption trustserver.query 1
+PythonOption pgpserver.query 1
+
+# full XML output, or short value
+# full = complete result
+# short = value (1 or 0 for PGP server, double from 0-1 for trustserver)
+# Note:  
+# If short is chosen for the trustserver:
+#	* If pgpserver.query is true, then if there is no pgp path, the frontend will return -1.  
+# 	* If there is a pgp path, then the frontend will return the trust score for that path.
+# If full is chosen for the trustserver:
+#	* The PGP section of the XML output will contain either the full or short pgp output.
+#
+PythonOption trustserver.output full
+PythonOption pgpserver.output full
+
+# PGP Pathfinding strategy
+# just use the name, not the full class name
+# e.g. LocalWotsap instead of LocalWotsapPathfinder
+PythonOption pgpserver.pathfinder LocalWotsap
+
+# TrustServer propagation strategy
+# The name of the strategy to be used by default, when none other is specified.
+# (e.g., for PrototypeTPF.py, use "Prototype")
+PythonOption trustserver.strategy Multiplicative
+
+# PGPServer Specific Directives:
+# These should be parsed into a 2-level dictionary as key.key2 = value
+# (e.g., config["LocalWotsap"]["app"] = whatev)
+# and then the config of the chosen pathfinder can be passed into the
+# constructor, and it can expect to find what it's looking for:
+PythonOption LocalWotsap.app /home/dpb2/downloads/wotsap-0.6/wotsap
+PythonOption LocalWotsap.data /data/prg/data/keys/latest.wot
+PythonOption LocalWotsap.path /home/dpb2/downloads/wotsap-0.6/
+PythonOption LocalWotsap.file wotsap
+
+# this was for the foafserver, don't know if we need it for the trust server.
+# limit uploads to 100K
+# unfortunately (AFAICT), if this is exceeded apache closes the connection and we cannot provide useful info to the user
+LimitRequestBody 102400
+
+
+########################################
+#  Do not change any of these settings #
+########################################
+
+# don't try to use mod_negotiation at all, it can mess up URI handling
+Options -MultiViews
+
+# ALL requests handled by mod_python
+SetHandler mod_python
+
+# all mod_python requests go to frontend.py
+PythonHandler frontend
+
+PythonDebug On
+PythonAutoReload On
+# seperate interpreter for this app; otherwise mod_python shares a namespace for each apache virtual domain
+PythonInterpPerDirective On
