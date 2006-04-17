@@ -1,0 +1,88 @@
+Return-Path: <party-return-972-apmail-brondsem=apache.org@apache.org>
+Delivered-To: user0009-dave@brondsema.net
+Received: (qmail 23541 invoked from network); 28 Nov 2004 14:22:29 -0000
+Received: from minotaur.apache.org (209.237.227.194)
+  by 0 with SMTP; 28 Nov 2004 14:22:29 -0000
+Received: (qmail 25746 invoked by uid 1775); 28 Nov 2004 14:22:29 -0000
+Delivered-To: brondsem@locus.apache.org
+Received: (qmail 25644 invoked from network); 28 Nov 2004 14:22:28 -0000
+Received: from hermes.apache.org (HELO mail.apache.org) (209.237.227.199)
+  by minotaur.apache.org with SMTP; 28 Nov 2004 14:22:28 -0000
+Received: (qmail 52248 invoked by uid 500); 28 Nov 2004 14:22:27 -0000
+Delivered-To: apmail-brondsem@apache.org
+Received: (qmail 52114 invoked by uid 500); 28 Nov 2004 14:22:26 -0000
+Mailing-List: contact party-help@apache.org; run by ezmlm
+Reply-To: party@apache.org
+Precedence: bulk
+list-help: <mailto:party-help@apache.org>
+list-unsubscribe: <mailto:party-unsubscribe@apache.org>
+list-post: <mailto:party@apache.org>
+Delivered-To: mailing list party@apache.org
+Received: (qmail 52100 invoked by uid 99); 28 Nov 2004 14:22:26 -0000
+X-ASF-Spam-Status: No, hits=0.1 required=10.0
+	tests=FORGED_RCVD_HELO,RCVD_IN_SORBS_DUL
+X-Spam-Check-By: apache.org
+Received-SPF: pass (hermes.apache.org: local policy)
+Received: from 60.Red-213-97-200.pooles.rima-tde.net (HELO marlow.intranet.hisitech.com) (213.97.200.60)
+  by apache.org (qpsmtpd/0.28) with ESMTP; Sun, 28 Nov 2004 06:22:24 -0800
+Received: from localhost (localhost [127.0.0.1])
+	by marlow.intranet.hisitech.com (Postfix) with ESMTP id DDB6C374CD4
+	for <party@apache.org>; Sun, 28 Nov 2004 15:22:18 +0100 (CET)
+Subject: Re: Javahispano
+From: Santiago Gala <sgala@hisitech.com>
+To: party@apache.org
+In-Reply-To: <200411281251.iASCp0622918@samburan.intranet.hisitech.com>
+References: <200411281251.iASCp0622918@samburan.intranet.hisitech.com>
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-2lhe+R6IB8M4JXSVmmyA"
+Organization: High Sierra Technology, SLU
+Date: Sun, 28 Nov 2004 15:22:16 +0100
+Message-Id: <1101651737.9980.14.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.0.2 
+X-Virus-Checked: Checked
+X-Spam-Rating: minotaur.apache.org 1.6.2 0/1000/N
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on ferrari
+X-Spam-Level: 
+X-Spam-Status: No, hits=0.0 required=4.0 tests=none autolearn=no version=2.63
+
+--=-2lhe+R6IB8M4JXSVmmyA
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+El dom, 28-11-2004 a las 13:51 +0100, Carlos Sanchez escribi=C3=B3:
+> Hi,
+>=20
+> I'll be at JavaHispano http://congreso.javahispano.org/ in Madrid, decemb=
+er 15,16
+>=20
+
+I'll probably be around, but I'm not sure, as I'm looking for a job or
+contracts, and will take any opportunity to work, even if it means
+traveling to Antarctica in Christmas. :-(
+
+> Anyone up for a beer?
+
+Probably. I'm giving a talk (unpaid, of course) on "Open Source in
+Mobility" during the Movilforum Show, next Wed Dec 1st at 17h55m.
+Another occasion if Apache people is around Madrid.
+
+Regards
+--=20
+Santiago Gala <sgala@hisitech.com>
+High Sierra Technology, SLU
+
+--=-2lhe+R6IB8M4JXSVmmyA
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description: Esta parte del mensaje =?ISO-8859-1?Q?est=E1?= firmada
+	digitalmente
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQBBqd8YMGY6e0B83Y0RAiudAJ91zxEiU9JYvCAWTtSCAO4E0Z0g4wCfdB5k
+XpUocbYIc53DPbVuDfUr/n4=
+=FsVQ
+-----END PGP SIGNATURE-----
+
+--=-2lhe+R6IB8M4JXSVmmyA--
+

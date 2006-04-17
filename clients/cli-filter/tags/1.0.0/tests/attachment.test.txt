@@ -1,0 +1,145 @@
+Return-Path: <ctc2@calvin.edu>
+Delivered-To: user0009-dave@brondsema.net
+Received: (qmail 1932 invoked from network); 4 Mar 2005 17:31:40 -0000
+Received: from ursa.calvin.edu (153.106.4.1)
+  by 0 with SMTP; 4 Mar 2005 17:31:40 -0000
+Received: from D600 ([153.106.141.206])
+	by ursa.calvin.edu (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id j24HVZLk002996
+	for <dave@brondsema.net>; Fri, 4 Mar 2005 12:31:39 -0500
+Message-Id: <200503041731.j24HVZLk002996@ursa.calvin.edu>
+From: "Chris Crowe" <ctc2@calvin.edu>
+To: "'Dave Brondsema'" <dave@brondsema.net>
+Subject: hey
+Date: Fri, 4 Mar 2005 12:31:35 -0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0000_01C520B6.1B2D2F90"
+X-Mailer: Microsoft Office Outlook, Build 11.0.6353
+Thread-Index: AcUg4AN5A25aJmgLSgSQj3PeE18oxA==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on ferrari
+X-Spam-Level: 
+X-Spam-Status: No, score=0.2 required=4.0 tests=HTML_90_100,HTML_MESSAGE 
+	autolearn=no version=3.0.2
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C520B6.1B2D2F90
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hey dave
+
+Do you have any plans for today, tonight, tomorrow??  Just wondering also
+what are your plans for dinner (do you want to do beans) 
+
+Let me know
+
+Thanks 
+
+ 
+
+Chris 
+
+ 
+
+ 
+
+
+------=_NextPart_000_0000_01C520B6.1B2D2F90
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Batang;
+	panose-1:2 3 6 0 0 1 1 1 1 1;}
+@font-face
+	{font-family:"\@Batang";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hey dave<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Do you have any plans for today, tonight, tomorrow?? =
+&nbsp;Just
+wondering also what are your plans for dinner (do you want to do beans) =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Let me know<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Chris <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0000_01C520B6.1B2D2F90--
+
+

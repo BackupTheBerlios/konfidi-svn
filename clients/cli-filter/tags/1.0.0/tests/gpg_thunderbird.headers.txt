@@ -1,0 +1,3 @@
+From dave@brondsema.net Mon Feb 28 01:48:55 2005
+X-PGP-Fingerprint: EAB0FABEDEA81AD4086902FE56F0526F9BB3CE70
+X-PGP-Signature: valid
